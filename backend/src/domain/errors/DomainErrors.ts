@@ -21,6 +21,12 @@ export class AcessoNegadoError extends DominioError {
   }
 }
 
+export class ObjetoNaoEncontradoError extends DominioError {
+  constructor(mensagem: string) {
+    super(mensagem, 404);
+  }
+}
+
 export class TransicaoStatusInvalidaError extends RegraNegocioError {
   constructor(statusAtual: string, statusTentado: string, motivo?: string) {
     const detalhe = motivo ? ` Motivo: ${motivo}` : '';
