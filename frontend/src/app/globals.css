@@ -684,22 +684,29 @@ main h1 {
 }
 
 .cedro-sidebar-logo-wrap {
-  display: block;
+  display: flex;
+  align-items: center;
   height: 48px;
   width: 138px;
-  overflow: hidden;
   transition: width 0.25s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 
 .cedro-sidebar.is-collapsed .cedro-sidebar-logo-wrap {
   width: 48px;
+  justify-content: center;
 }
 
-.cedro-sidebar-logo-wrap img {
+.cedro-sidebar-logo-wrap .cedro-logo-full {
   display: block;
-  height: 48px;
+  height: 44px;
   width: auto;
-  max-width: none;
+}
+
+.cedro-sidebar-logo-wrap .cedro-logo-icon {
+  display: block;
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
 }
 
 .cedro-nav-item {
