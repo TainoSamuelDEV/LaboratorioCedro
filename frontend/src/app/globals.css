@@ -338,6 +338,7 @@ main h1 {
 .cedro-more {
   display: grid;
   grid-template-rows: 0fr;
+  margin: 0 -8px;
   transition: grid-template-rows 0.4s cubic-bezier(0.3, 0.7, 0.2, 1);
 }
 
@@ -350,7 +351,7 @@ main h1 {
 }
 
 .cedro-more-inner {
-  padding-top: 32px;
+  padding: 32px 8px 8px;
 }
 
 .cedro-label-q {
@@ -374,16 +375,18 @@ main h1 {
   background: var(--field);
   border: 1.5px solid var(--line);
   border-radius: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .cedro-textarea::placeholder {
   color: var(--ph);
 }
 
+.cedro-textarea:focus,
 .cedro-textarea:focus-visible {
-  outline: 3px solid var(--tone);
-  outline-offset: 2px;
-  border-color: transparent;
+  outline: none;
+  border-color: var(--tone);
+  box-shadow: 0 0 0 1.5px var(--tone);
 }
 
 .cedro-ticket-input {
@@ -395,16 +398,18 @@ main h1 {
   background: var(--field);
   border: 1.5px solid var(--line);
   border-radius: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .cedro-ticket-input::placeholder {
   color: var(--ph);
 }
 
+.cedro-ticket-input:focus,
 .cedro-ticket-input:focus-visible {
-  outline: 3px solid var(--tone);
-  outline-offset: 2px;
-  border-color: transparent;
+  outline: none;
+  border-color: var(--tone);
+  box-shadow: 0 0 0 1.5px var(--tone);
 }
 
 .cedro-unit-select {
@@ -418,12 +423,14 @@ main h1 {
   background: var(--field);
   border: 1.5px solid var(--line);
   border-radius: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
+.cedro-unit-select:focus,
 .cedro-unit-select:focus-visible {
-  outline: 3px solid var(--forest);
-  outline-offset: 2px;
-  border-color: transparent;
+  outline: none;
+  border-color: var(--forest);
+  box-shadow: 0 0 0 1.5px var(--forest);
 }
 
 .cedro-hint {
