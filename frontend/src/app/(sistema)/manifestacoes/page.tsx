@@ -6,6 +6,16 @@ import { Search, Filter, MessageSquareWarning, ArrowRight } from 'lucide-react';
 import { PrioridadeBadge, StatusBadge } from '../../../components/ui/Badge';
 import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
+import {
+  Drawer,
+  DrawerBody,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '../../../components/ui/Drawer';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { TableSkeleton } from '../../../components/ui/Skeleton';
@@ -31,6 +41,7 @@ export default function ManifestacoesPage() {
   const [statusFiltro, setStatusFiltro] = useState<string>('');
   const [prioridadeFiltro, setPrioridadeFiltro] = useState<string>('');
   const [unidadeFiltro, setUnidadeFiltro] = useState<string>('');
+  const [filtroDrawerOpen, setFiltroDrawerOpen] = useState(false);
 
   const carregarManifestacoes = async () => {
     setCarregando(true);
@@ -64,7 +75,7 @@ export default function ManifestacoesPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Gestão de Manifestações da Ouvidoria
@@ -73,10 +84,18 @@ export default function ManifestacoesPage() {
             Visualização, filtros avançados e tratativa operacional das avaliações dos clientes
           </p>
         </div>
+
+        {/* Botão Mobile para abrir Filtros em Gaveta (Drawer) */}
+        <div className="flex md:hidden">
+          <Button variant="outline" size="sm" onClick={() => setFiltroDrawerOpen(true)} className="w-full sm:w-auto">
+            <Filter className="w-3.5 h-3.5" />
+            Filtros Avançados
+          </Button>
+        </div>
       </div>
 
-      {/* Barra de Filtros (Seção 10 da Documentação Funcional) */}
-      <Card className="p-4 bg-slate-50/50">
+      {/* Barra de Filtros Desktop (Seção 10 da Documentação Funcional) */}
+      <Card className="hidden md:block p-4 bg-slate-50/50">
         <form onSubmit={handleBuscar} className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <div className="relative">
             <Input
@@ -216,6 +235,86 @@ export default function ManifestacoesPage() {
           </div>
         )}
       </Card>
+
+      {/* Drawer de Filtros Mobile */}
+      <Drawer open={filtroDrawerOpen} onOpenChange={setFiltroDrawerOpen} direction="bottom">
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Filtrar Manifestações</DrawerTitle>
+            <DrawerDescription>
+              Refine a listagem por protocolo, status, prioridade ou unidade
+            </DrawerDescription>
+          </DrawerHeader>
+          <DrawerBody className="space-y-4">
+            <Input
+              label="Protocolo"
+              placeholder="Buscar por protocolo..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
+            <Select
+              label="Status Operacional"
+              value={statusFiltro}
+              onChange={(e) => setStatusFiltro(e.target.value)}
+              options={[
+                { value: '', label: 'Todos os Status' },
+                { value: 'NAO_RESPONDIDA', label: 'Não Respondida' },
+                { value: 'EM_TRATAMENTO', label: 'Em Tratamento' },
+                { value: 'ESCALONADA', label: 'Escalonada' },
+                { value: 'RESPONDIDA', label: 'Respondida' },
+                { value: 'CONCLUIDA', label: 'Concluída' },
+              ]}
+            />
+            <Select
+              label="Prioridade"
+              value={prioridadeFiltro}
+              onChange={(e) => setPrioridadeFiltro(e.target.value)}
+              options={[
+                { value: '', label: 'Todas as Prioridades' },
+                { value: 'BAIXA', label: 'Baixa' },
+                { value: 'MEDIA', label: 'Média' },
+                { value: 'ALTA', label: 'Alta (Detratora)' },
+                { value: 'CRITICA', label: 'Crítica (Escalonada)' },
+              ]}
+            />
+            {!usuario?.unidadeId && (
+              <Select
+                label="Unidade"
+                value={unidadeFiltro}
+                onChange={(e) => setUnidadeFiltro(e.target.value)}
+                options={[
+                  { value: '', label: 'Todas as Unidades' },
+                  ...unidades.map((u) => ({ value: u.id, label: u.nome })),
+                ]}
+              />
+            )}
+          </DrawerBody>
+          <DrawerFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setBusca('');
+                setStatusFiltro('');
+                setPrioridadeFiltro('');
+                setUnidadeFiltro('');
+                setFiltroDrawerOpen(false);
+              }}
+            >
+              Limpar
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                carregarManifestacoes();
+                setFiltroDrawerOpen(false);
+              }}
+            >
+              Aplicar Filtros
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }

@@ -182,31 +182,31 @@ function DetalheManifestacaoContent() {
 
   return (
     <div className="space-y-6 max-w-5xl animate-fade-in">
-      {/* Barra de Topo */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      {/* Barra de Topo Responsiva */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-start sm:items-center gap-3 min-w-0">
           <Link
             href="/manifestacoes"
-            className="p-1.5 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors"
+            className="p-2 rounded-lg border border-[#E3E3E3] text-[#323232] hover:bg-[#F3F3F3] transition-colors shrink-0"
           >
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xl font-bold text-slate-900">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-lg sm:text-xl font-black text-[#075618]">
                 {manifestacao.protocolo}
               </span>
               <StatusBadge status={manifestacao.status} />
               <PrioridadeBadge prioridade={manifestacao.prioridade} />
             </div>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-[#5E5E5E] block mt-0.5">
               Protocolo imutável gerado automaticamente a partir da avaliação do cliente
             </span>
           </div>
         </div>
 
-        {/* Botões de Ação Dinâmicos (RBAC / Polimorfismo) */}
-        <div className="flex items-center gap-2">
+        {/* Botões de Ação Dinâmicos (Abrem em Gaveta / Drawer) */}
+        <div className="flex flex-wrap items-center gap-2">
           {/* Ações da Unidade */}
           {podeTratar && manifestacao.status === 'NAO_RESPONDIDA' && (
             <Button onClick={handleIniciarTratamento} isLoading={executandoAcao}>
