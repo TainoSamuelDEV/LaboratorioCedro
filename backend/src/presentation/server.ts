@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { criarApp } from './app';
+import { ProtocoloService } from '../domain/services/IProtocoloService';
 import { SupabaseManifestacaoRepository } from '../infrastructure/repositories/SupabaseManifestacaoRepository';
 import { SupabasePesquisaRepository } from '../infrastructure/repositories/SupabasePesquisaRepository';
 import { SupabaseRespostaPesquisaRepository } from '../infrastructure/repositories/SupabaseRespostaPesquisaRepository';
@@ -33,6 +34,23 @@ async function bootstrap() {
   const pesquisaRepo = new SupabasePesquisaRepository();
   const respostaRepo = new SupabaseRespostaPesquisaRepository();
   const manifestacaoRepo = new SupabaseManifestacaoRepository();
+
+  // Sincroniza o contador de protocolos com o maior sequencial já existente no Supabase
+  try {
+    const existentes = await manifestacaoRepo.listar();
+    let maiorSequencial = 0;
+    for (const m of existentes) {
+      const partes = m.protocolo.split('-');
+      const num = parseInt(partes[partes.length - 1], 10);
+      if (!isNaN(num) && num > maiorSequencial) {
+        maiorSequencial = num;
+      }
+    }
+    ProtocoloService.resetarContador(maiorSequencial + 1);
+    console.log(`[Cedro API] Contador de protocolos sincronizado: próximo sequencial #${maiorSequencial + 1}`);
+  } catch (err) {
+    console.warn('[Cedro API] Aviso ao sincronizar contador de protocolos:', err);
+  }
 
   const app = criarApp({
     usuarioRepo,

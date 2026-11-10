@@ -59,7 +59,7 @@ export class ResponderPesquisaUseCase {
       new Date()
     );
 
-    const manifestacao = Manifestacao.criar({
+    let manifestacao = Manifestacao.criar({
       id: randomUUID(),
       resposta,
       unidade,
@@ -67,6 +67,23 @@ export class ResponderPesquisaUseCase {
       slaCalculator: this.slaCalculator,
       criadoEm: resposta.dataHora,
     });
+
+    // Garante que o protocolo gerado não colida com protocolos já persistidos no banco (ex.: seed ou após restart)
+    let tentativas = 0;
+    while (
+      (await this.manifestacaoRepo.buscarPorProtocolo(manifestacao.protocolo)) !== null &&
+      tentativas < 1000
+    ) {
+      tentativas++;
+      manifestacao = Manifestacao.criar({
+        id: randomUUID(),
+        resposta,
+        unidade,
+        protocoloService: this.protocoloService,
+        slaCalculator: this.slaCalculator,
+        criadoEm: resposta.dataHora,
+      });
+    }
 
     await this.respostaRepo.salvar(resposta);
     await this.manifestacaoRepo.salvar(manifestacao);
