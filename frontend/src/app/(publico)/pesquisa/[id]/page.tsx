@@ -308,15 +308,19 @@ function PesquisaPublicaContent() {
                     htmlFor="comment"
                     id="q"
                   >
-                    <span>
-                      {nota > 0
-                        ? nota <= 3
-                          ? `${PROMPTS.low} *`
-                          : PROMPTS.high
-                        : 'Quer contar mais?'}
-                    </span>
-                    {nota > 0 && nota <= 3 && (
-                      <span className="cedro-required-badge">Campo obrigatório</span>
+                    {nota > 0 ? (
+                      nota <= 3 ? (
+                        <>
+                          {PROMPTS.low}{' '}
+                          <span className="cedro-required-star" aria-hidden="true">
+                            *
+                          </span>
+                        </>
+                      ) : (
+                        PROMPTS.high
+                      )
+                    ) : (
+                      'Quer contar mais?'
                     )}
                   </label>
                   <textarea

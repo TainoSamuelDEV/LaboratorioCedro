@@ -404,26 +404,11 @@ main h1 {
 
 .cedro-label-q.cedro-label-error {
   color: #CA2E24;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
 }
 
-.cedro-required-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: #FEF2F2;
+.cedro-required-star {
   color: #CA2E24;
-  border: 1px solid #FECACA;
+  font-weight: 800;
 }
 
 .cedro-textarea.cedro-input-error,
