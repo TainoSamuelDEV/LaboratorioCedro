@@ -10,19 +10,19 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       >
         <svg
           className="absolute inset-0 h-full w-full"
-          viewBox="0 0 720 1080"
+          viewBox="0 0 960 1080"
           fill="none"
-          preserveAspectRatio="none"
+          preserveAspectRatio="xMaxYMid slice"
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Camada 1 (Externa - Verde Menta #79DDA9) */}
-          <ellipse cx="40" cy="580" rx="640" ry="740" fill="#79DDA9" />
+          <ellipse cx="-80" cy="600" rx="1000" ry="1120" fill="#79DDA9" />
           {/* Camada 2 (Intermediária - Verde Petróleo #049671) */}
-          <ellipse cx="-10" cy="480" rx="590" ry="750" fill="#049671" />
+          <ellipse cx="-140" cy="490" rx="940" ry="1100" fill="#049671" />
           {/* Camada 3 (Vibrante - Verde Esmeralda #00AE6F) */}
-          <ellipse cx="-40" cy="530" rx="480" ry="670" fill="#00AE6F" />
+          <ellipse cx="-180" cy="540" rx="810" ry="1020" fill="#00AE6F" />
           {/* Camada 4 (Interna - Verde Cedro Profundo #027053) */}
-          <ellipse cx="-140" cy="540" rx="450" ry="650" fill="#027053" />
+          <ellipse cx="-320" cy="550" rx="700" ry="980" fill="#027053" />
         </svg>
       </div>
 
