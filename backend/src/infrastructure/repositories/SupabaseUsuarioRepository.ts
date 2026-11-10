@@ -56,6 +56,7 @@ export class SupabaseUsuarioRepository implements IUsuarioRepository {
       .maybeSingle();
 
     if (error) {
+      if (error.code === '22P02') return null;
       throw new Error(`Erro ao buscar usuário por ID no Supabase: ${error.message}`);
     }
 

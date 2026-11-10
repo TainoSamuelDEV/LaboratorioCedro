@@ -163,6 +163,7 @@ export class SupabaseManifestacaoRepository implements IManifestacaoRepository {
       .maybeSingle();
 
     if (error) {
+      if (error.code === '22P02') return null;
       throw new Error(`Erro ao buscar manifestação por ID no Supabase: ${error.message}`);
     }
 

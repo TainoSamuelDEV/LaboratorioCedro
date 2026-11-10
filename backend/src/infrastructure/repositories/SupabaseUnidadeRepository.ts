@@ -29,6 +29,7 @@ export class SupabaseUnidadeRepository implements IUnidadeRepository {
       .maybeSingle();
 
     if (error) {
+      if (error.code === '22P02') return null;
       throw new Error(`Erro ao buscar unidade por ID no Supabase: ${error.message}`);
     }
 

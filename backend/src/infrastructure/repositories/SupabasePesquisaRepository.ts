@@ -31,6 +31,7 @@ export class SupabasePesquisaRepository implements IPesquisaRepository {
       .maybeSingle();
 
     if (error) {
+      if (error.code === '22P02') return null;
       throw new Error(`Erro ao buscar pesquisa por ID no Supabase: ${error.message}`);
     }
 
