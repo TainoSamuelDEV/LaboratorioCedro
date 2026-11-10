@@ -1,0 +1,152 @@
+import cors from 'cors';
+import express, { Express } from 'express';
+import { BcryptPasswordHasher } from '../application/services/BcryptPasswordHasher';
+import { IPasswordHasher } from '../application/services/IPasswordHasher';
+import { ITokenService } from '../application/services/ITokenService';
+import { JwtTokenService } from '../application/services/JwtTokenService';
+import { LoginUseCase } from '../application/use-cases/auth/LoginUseCase';
+import { ObterUsuarioLogadoUseCase } from '../application/use-cases/auth/ObterUsuarioLogadoUseCase';
+import { ListarManifestacoesUseCase } from '../application/use-cases/manifestacoes/ListarManifestacoesUseCase';
+import { ObterManifestacaoPorIdUseCase } from '../application/use-cases/manifestacoes/ObterManifestacaoPorIdUseCase';
+import { TratarManifestacaoUseCase } from '../application/use-cases/manifestacoes/TratarManifestacaoUseCase';
+import { CriarPesquisaUseCase } from '../application/use-cases/pesquisas/CriarPesquisaUseCase';
+import { ListarPesquisasUseCase } from '../application/use-cases/pesquisas/ListarPesquisasUseCase';
+import { ObterPesquisaPublicaUseCase } from '../application/use-cases/pesquisas/ObterPesquisaPublicaUseCase';
+import { ResponderPesquisaUseCase } from '../application/use-cases/pesquisas/ResponderPesquisaUseCase';
+import { AtualizarUnidadeUseCase } from '../application/use-cases/unidades/AtualizarUnidadeUseCase';
+import { CriarUnidadeUseCase } from '../application/use-cases/unidades/CriarUnidadeUseCase';
+import { ListarUnidadesUseCase } from '../application/use-cases/unidades/ListarUnidadesUseCase';
+import { CriarUsuarioUseCase } from '../application/use-cases/usuarios/CriarUsuarioUseCase';
+import { ListarUsuariosUseCase } from '../application/use-cases/usuarios/ListarUsuariosUseCase';
+import { IManifestacaoRepository } from '../domain/repositories/IManifestacaoRepository';
+import { IPesquisaRepository } from '../domain/repositories/IPesquisaRepository';
+import { IRespostaPesquisaRepository } from '../domain/repositories/IRespostaPesquisaRepository';
+import { IUnidadeRepository } from '../domain/repositories/IUnidadeRepository';
+import { IUsuarioRepository } from '../domain/repositories/IUsuarioRepository';
+import { ConsoleNotificador, INotificador } from '../domain/services/INotificador';
+import { IProtocoloService, ProtocoloService } from '../domain/services/IProtocoloService';
+import { ISLACalculator, PoliticaSlaPorNota } from '../domain/services/ISLACalculator';
+import { AuthController } from './controllers/AuthController';
+import { ManifestacaoController } from './controllers/ManifestacaoController';
+import { PesquisaController } from './controllers/PesquisaController';
+import { UnidadeController } from './controllers/UnidadeController';
+import { UsuarioController } from './controllers/UsuarioController';
+import { criarAuthMiddleware } from './middlewares/authMiddleware';
+import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware';
+import { criarAuthRouter } from './routes/auth.routes';
+import { criarManifestacaoRouter } from './routes/manifestacao.routes';
+import { criarPesquisaRouter, criarPublicPesquisaRouter } from './routes/pesquisa.routes';
+import { criarUnidadeRouter } from './routes/unidade.routes';
+import { criarUsuarioRouter } from './routes/usuario.routes';
+
+export interface AppDependencies {
+  usuarioRepo: IUsuarioRepository;
+  unidadeRepo: IUnidadeRepository;
+  pesquisaRepo: IPesquisaRepository;
+  respostaRepo: IRespostaPesquisaRepository;
+  manifestacaoRepo: IManifestacaoRepository;
+  notificador?: INotificador;
+  passwordHasher?: IPasswordHasher;
+  tokenService?: ITokenService;
+  protocoloService?: IProtocoloService;
+  slaCalculator?: ISLACalculator;
+}
+
+export function criarApp(deps: AppDependencies): Express {
+  const app = express();
+
+  app.use(cors());
+  app.use(express.json());
+
+  // Serviços
+  const passwordHasher = deps.passwordHasher ?? new BcryptPasswordHasher();
+  const tokenService = deps.tokenService ?? new JwtTokenService();
+  const notificador = deps.notificador ?? new ConsoleNotificador();
+  const protocoloService = deps.protocoloService ?? new ProtocoloService();
+  const slaCalculator = deps.slaCalculator ?? new PoliticaSlaPorNota();
+
+  // Casos de Uso - Auth & Usuários
+  const loginUseCase = new LoginUseCase(deps.usuarioRepo, passwordHasher, tokenService);
+  const obterUsuarioLogadoUseCase = new ObterUsuarioLogadoUseCase(deps.usuarioRepo);
+  const criarUsuarioUseCase = new CriarUsuarioUseCase(deps.usuarioRepo, passwordHasher);
+  const listarUsuariosUseCase = new ListarUsuariosUseCase(deps.usuarioRepo);
+
+  // Casos de Uso - Unidades
+  const criarUnidadeUseCase = new CriarUnidadeUseCase(deps.unidadeRepo, deps.usuarioRepo);
+  const atualizarUnidadeUseCase = new AtualizarUnidadeUseCase(deps.unidadeRepo, deps.usuarioRepo);
+  const listarUnidadesUseCase = new ListarUnidadesUseCase(deps.unidadeRepo);
+
+  // Casos de Uso - Pesquisas
+  const criarPesquisaUseCase = new CriarPesquisaUseCase(deps.pesquisaRepo, deps.usuarioRepo);
+  const listarPesquisasUseCase = new ListarPesquisasUseCase(deps.pesquisaRepo);
+  const obterPesquisaPublicaUseCase = new ObterPesquisaPublicaUseCase(deps.pesquisaRepo, deps.unidadeRepo);
+  const responderPesquisaUseCase = new ResponderPesquisaUseCase(
+    deps.pesquisaRepo,
+    deps.unidadeRepo,
+    deps.respostaRepo,
+    deps.manifestacaoRepo,
+    notificador,
+    protocoloService,
+    slaCalculator
+  );
+
+  // Casos de Uso - Manifestações
+  const obterManifestacaoPorIdUseCase = new ObterManifestacaoPorIdUseCase(
+    deps.manifestacaoRepo,
+    deps.usuarioRepo,
+    deps.unidadeRepo,
+    deps.respostaRepo
+  );
+  const listarManifestacoesUseCase = new ListarManifestacoesUseCase(
+    deps.manifestacaoRepo,
+    deps.usuarioRepo
+  );
+  const tratarManifestacaoUseCase = new TratarManifestacaoUseCase(
+    deps.manifestacaoRepo,
+    deps.usuarioRepo,
+    deps.unidadeRepo,
+    notificador
+  );
+
+  // Controllers
+  const authController = new AuthController(loginUseCase, obterUsuarioLogadoUseCase);
+  const usuarioController = new UsuarioController(criarUsuarioUseCase, listarUsuariosUseCase);
+  const unidadeController = new UnidadeController(
+    criarUnidadeUseCase,
+    atualizarUnidadeUseCase,
+    listarUnidadesUseCase
+  );
+  const pesquisaController = new PesquisaController(
+    criarPesquisaUseCase,
+    listarPesquisasUseCase,
+    obterPesquisaPublicaUseCase,
+    responderPesquisaUseCase
+  );
+  const manifestacaoController = new ManifestacaoController(
+    obterManifestacaoPorIdUseCase,
+    listarManifestacoesUseCase,
+    tratarManifestacaoUseCase
+  );
+
+  // Health Check
+  app.get('/api/health', (_req, res) => {
+    res.status(200).json({ status: 'ok', servico: 'Cedro NIT API (POO)', timestamp: new Date() });
+  });
+
+  // Mapeamento de Rotas Oficiais
+  app.use('/api/auth', criarAuthRouter(authController, tokenService));
+  app.use('/api/usuarios', criarUsuarioRouter(usuarioController, tokenService));
+  app.use('/api/unidades', criarUnidadeRouter(unidadeController, tokenService));
+  app.use('/api/pesquisas', criarPesquisaRouter(pesquisaController, tokenService));
+  app.use('/api/public/pesquisas', criarPublicPesquisaRouter(pesquisaController));
+  app.use('/api/manifestacoes', criarManifestacaoRouter(manifestacaoController, tokenService));
+
+  // Rota de Pendências (Tela 6)
+  const authMiddleware = criarAuthMiddleware(tokenService);
+  app.get('/api/pendencias', authMiddleware, manifestacaoController.listarPendencias);
+
+  // Middleware Global de Tratamento de Erros
+  app.use(errorHandlerMiddleware);
+
+  return app;
+}
