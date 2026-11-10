@@ -1,14 +1,13 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { authService, SignupPayload } from '../services/auth.service';
+import { authService } from '../services/auth.service';
 import { UsuarioDTO } from '../types/api';
 
 interface AuthContextType {
   usuario: UsuarioDTO | null;
   carregando: boolean;
   login: (email: string, senha: string) => Promise<void>;
-  signup: (payload: SignupPayload) => Promise<void>;
   logout: () => void;
   ehAdmin: boolean;
   ehOuvidoria: boolean;
@@ -47,11 +46,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUsuario(res.usuario);
   };
 
-  const signup = async (payload: SignupPayload) => {
-    const res = await authService.signup(payload);
-    setUsuario(res.usuario);
-  };
-
   const logout = () => {
     authService.logout();
     setUsuario(null);
@@ -67,7 +61,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         usuario,
         carregando,
         login,
-        signup,
         logout,
         ehAdmin,
         ehOuvidoria,

@@ -128,13 +128,7 @@ export function criarApp(deps: AppDependencies): Express {
   );
 
   // Controllers
-  const authController = new AuthController(
-    loginUseCase,
-    obterUsuarioLogadoUseCase,
-    deps.usuarioRepo,
-    passwordHasher,
-    deps.unidadeRepo
-  );
+  const authController = new AuthController(loginUseCase, obterUsuarioLogadoUseCase);
   const usuarioController = new UsuarioController(criarUsuarioUseCase, listarUsuariosUseCase);
   const unidadeController = new UnidadeController(
     criarUnidadeUseCase,

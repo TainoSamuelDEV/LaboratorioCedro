@@ -8,8 +8,6 @@ export function criarAuthRouter(authController: AuthController, tokenService: IT
   const authMiddleware = criarAuthMiddleware(tokenService);
 
   router.post('/login', authController.login);
-  router.post('/signup', authController.signup);
-  router.get('/unidades', authController.listarUnidadesPublicas);
   router.get('/me', authMiddleware, authController.me);
 
   return router;

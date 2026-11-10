@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { KeyRound } from 'lucide-react';
 import {
@@ -124,10 +123,6 @@ export default function LoginPage() {
           >
             {carregando ? 'Entrando…' : 'Entrar'}
           </button>
-
-          <Link href="/cadastro" className="cedro-btn-quiet">
-            Criar nova conta
-          </Link>
         </div>
       </form>
 
