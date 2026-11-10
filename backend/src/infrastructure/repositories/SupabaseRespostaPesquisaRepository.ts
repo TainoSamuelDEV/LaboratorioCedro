@@ -95,4 +95,31 @@ export class SupabaseRespostaPesquisaRepository implements IRespostaPesquisaRepo
         )
     );
   }
+
+  public async listarTodos(unidadeId?: string): Promise<RespostaPesquisa[]> {
+    let query = this.client.from('respostas_pesquisa').select('*').order('data_hora', { ascending: false });
+
+    if (unidadeId) {
+      query = query.eq('unidade_id', unidadeId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      throw new Error(`Erro ao listar todas as respostas no Supabase: ${error.message}`);
+    }
+
+    return (data || []).map(
+      (row) =>
+        new RespostaPesquisa(
+          row.id,
+          row.pesquisa_id,
+          row.unidade_id,
+          row.cliente_atendimento,
+          row.nota,
+          row.comentario,
+          new Date(row.data_hora)
+        )
+    );
+  }
 }

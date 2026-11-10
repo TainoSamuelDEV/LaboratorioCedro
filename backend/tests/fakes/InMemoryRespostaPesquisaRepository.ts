@@ -25,4 +25,11 @@ export class InMemoryRespostaPesquisaRepository implements IRespostaPesquisaRepo
   public async listarPorUnidade(unidadeId: string): Promise<RespostaPesquisa[]> {
     return this.itens.filter((r) => r.unidadeId === unidadeId);
   }
+
+  public async listarTodos(unidadeId?: string): Promise<RespostaPesquisa[]> {
+    if (unidadeId) {
+      return this.itens.filter((r) => r.unidadeId === unidadeId);
+    }
+    return [...this.itens];
+  }
 }

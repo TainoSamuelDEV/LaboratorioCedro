@@ -18,6 +18,8 @@ import { CriarUnidadeUseCase } from '../application/use-cases/unidades/CriarUnid
 import { ListarUnidadesUseCase } from '../application/use-cases/unidades/ListarUnidadesUseCase';
 import { CriarUsuarioUseCase } from '../application/use-cases/usuarios/CriarUsuarioUseCase';
 import { ListarUsuariosUseCase } from '../application/use-cases/usuarios/ListarUsuariosUseCase';
+import { ObterIndicadoresDashboardUseCase } from '../application/use-cases/dashboard/ObterIndicadoresDashboardUseCase';
+import { ExportarRelatorioUseCase } from '../application/use-cases/relatorios/ExportarRelatorioUseCase';
 import { IManifestacaoRepository } from '../domain/repositories/IManifestacaoRepository';
 import { IPesquisaRepository } from '../domain/repositories/IPesquisaRepository';
 import { IRespostaPesquisaRepository } from '../domain/repositories/IRespostaPesquisaRepository';
@@ -27,15 +29,19 @@ import { ConsoleNotificador, INotificador } from '../domain/services/INotificado
 import { IProtocoloService, ProtocoloService } from '../domain/services/IProtocoloService';
 import { ISLACalculator, PoliticaSlaPorNota } from '../domain/services/ISLACalculator';
 import { AuthController } from './controllers/AuthController';
+import { DashboardController } from './controllers/DashboardController';
 import { ManifestacaoController } from './controllers/ManifestacaoController';
 import { PesquisaController } from './controllers/PesquisaController';
+import { RelatorioController } from './controllers/RelatorioController';
 import { UnidadeController } from './controllers/UnidadeController';
 import { UsuarioController } from './controllers/UsuarioController';
 import { criarAuthMiddleware } from './middlewares/authMiddleware';
 import { errorHandlerMiddleware } from './middlewares/errorHandlerMiddleware';
 import { criarAuthRouter } from './routes/auth.routes';
+import { criarDashboardRouter } from './routes/dashboard.routes';
 import { criarManifestacaoRouter } from './routes/manifestacao.routes';
 import { criarPesquisaRouter, criarPublicPesquisaRouter } from './routes/pesquisa.routes';
+import { criarRelatorioRouter } from './routes/relatorio.routes';
 import { criarUnidadeRouter } from './routes/unidade.routes';
 import { criarUsuarioRouter } from './routes/usuario.routes';
 
@@ -108,6 +114,19 @@ export function criarApp(deps: AppDependencies): Express {
     notificador
   );
 
+  // Casos de Uso - Dashboard e Relatórios (Entrega 8)
+  const obterIndicadoresDashboardUseCase = new ObterIndicadoresDashboardUseCase(
+    deps.manifestacaoRepo,
+    deps.respostaRepo,
+    deps.unidadeRepo,
+    deps.usuarioRepo
+  );
+  const exportarRelatorioUseCase = new ExportarRelatorioUseCase(
+    deps.manifestacaoRepo,
+    deps.unidadeRepo,
+    deps.usuarioRepo
+  );
+
   // Controllers
   const authController = new AuthController(loginUseCase, obterUsuarioLogadoUseCase);
   const usuarioController = new UsuarioController(criarUsuarioUseCase, listarUsuariosUseCase);
@@ -127,6 +146,8 @@ export function criarApp(deps: AppDependencies): Express {
     listarManifestacoesUseCase,
     tratarManifestacaoUseCase
   );
+  const dashboardController = new DashboardController(obterIndicadoresDashboardUseCase);
+  const relatorioController = new RelatorioController(exportarRelatorioUseCase);
 
   // Health Check
   app.get('/api/health', (_req, res) => {
@@ -140,6 +161,8 @@ export function criarApp(deps: AppDependencies): Express {
   app.use('/api/pesquisas', criarPesquisaRouter(pesquisaController, tokenService));
   app.use('/api/public/pesquisas', criarPublicPesquisaRouter(pesquisaController));
   app.use('/api/manifestacoes', criarManifestacaoRouter(manifestacaoController, tokenService));
+  app.use('/api/dashboard', criarDashboardRouter(dashboardController, tokenService));
+  app.use('/api/relatorios', criarRelatorioRouter(relatorioController, tokenService));
 
   // Rota de Pendências (Tela 6)
   const authMiddleware = criarAuthMiddleware(tokenService);

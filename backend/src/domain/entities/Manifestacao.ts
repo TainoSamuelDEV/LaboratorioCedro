@@ -196,6 +196,27 @@ export class Manifestacao {
     );
   }
 
+  // --- Métodos de Consulta de Regra de Negócio (POO) ---
+
+  public isAtrasada(dataReferencia: Date = new Date()): boolean {
+    if (this._status === StatusManifestacao.CONCLUIDA) {
+      return false;
+    }
+    return this._prazoResposta.getTime() < dataReferencia.getTime();
+  }
+
+  public isPendente(dataReferencia: Date = new Date()): boolean {
+    if (this._status === StatusManifestacao.CONCLUIDA) {
+      return false;
+    }
+    return (
+      this._status === StatusManifestacao.NAO_RESPONDIDA ||
+      this._status === StatusManifestacao.ESCALONADA ||
+      this._status === StatusManifestacao.EM_TRATAMENTO ||
+      this.isAtrasada(dataReferencia)
+    );
+  }
+
   // --- Máquina de Estados e Métodos de Negócio Encapsulados ---
 
   private validarImutabilidadePosConclusao(): void {

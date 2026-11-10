@@ -17,8 +17,21 @@ class ApiClient {
     return localStorage.getItem('cedro_cx_token');
   }
 
+  private getBaseUrl(): string {
+    return (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/+$/, '');
+  }
+
+  private buildUrl(endpoint: string): string {
+    const base = this.getBaseUrl();
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    if (base.endsWith('/api') && cleanEndpoint.startsWith('/api/')) {
+      return `${base}${cleanEndpoint.slice(4)}`;
+    }
+    return `${base}${cleanEndpoint}`;
+  }
+
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
+    const url = this.buildUrl(endpoint);
     const token = this.getAuthToken();
 
     const headers: Record<string, string> = {
@@ -97,6 +110,41 @@ class ApiClient {
 
   public delete<T>(endpoint: string, headers?: Record<string, string>): Promise<T> {
     return this.request<T>(endpoint, { method: 'DELETE', headers });
+  }
+
+  public async downloadFile(endpoint: string, fallbackFilename: string = 'exportacao.csv'): Promise<void> {
+    const url = this.buildUrl(endpoint);
+    const token = this.getAuthToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, { headers });
+    if (!response.ok) {
+      throw new ApiError(response.status, 'Falha ao baixar o arquivo.');
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+
+    // Tentar obter nome do cabeçalho
+    const disposition = response.headers.get('content-disposition');
+    let filename = fallbackFilename;
+    if (disposition && disposition.includes('filename=')) {
+      const match = disposition.match(/filename="?([^";]+)"?/);
+      if (match && match[1]) {
+        filename = match[1];
+      }
+    }
+
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(downloadUrl);
   }
 }
 
