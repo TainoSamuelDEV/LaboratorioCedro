@@ -11,7 +11,6 @@ export default function ErrorPage({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Registra o erro no console do navegador para diagnóstico
     console.error('[ERRO_NEXT_APP]:', error);
   }, [error]);
 
@@ -22,18 +21,16 @@ export default function ErrorPage({
     : undefined;
 
   return (
-    <div className="min-h-screen bg-slate-50/60 flex items-center justify-center p-4">
-      <ErrorView
-        tipo="500"
-        codigo={500}
-        titulo="Ocorreu um Erro Inesperado"
-        descricao="Identificamos uma falha no carregamento deste módulo. Nenhuma informação foi corrompida. Você pode tentar recarregar ou retornar ao painel principal."
-        detalhesTecnicos={detalhes}
-        onReset={() => reset()}
-        showBack={true}
-        showHome={true}
-        homeHref="/dashboard"
-      />
-    </div>
+    <ErrorView
+      tipo="500"
+      codigo={500}
+      titulo="Algo não saiu como esperado."
+      descricao="Tivemos uma falha ao carregar esta página. Você pode tentar novamente ou voltar ao início."
+      detalhesTecnicos={detalhes}
+      onReset={() => reset()}
+      showBack={true}
+      showHome={true}
+      homeHref="/dashboard"
+    />
   );
 }

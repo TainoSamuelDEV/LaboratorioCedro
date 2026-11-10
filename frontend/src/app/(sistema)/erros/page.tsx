@@ -7,7 +7,7 @@ import { Button } from '../../../components/ui/Button';
 
 export default function ErrosPreviewPage() {
   const [tipoSelecionado, setTipoSelecionado] = useState<'404' | '403' | '500' | 'conexao'>('404');
-  const [comDetalhes, setComDetalhes] = useState(true);
+  const [comDetalhes, setComDetalhes] = useState(false);
 
   const exemploLogs = {
     '404': 'Error: Rota "/manifestacoes/protocolo-inexistente" não localizada.\nStack: at Page (src/app/manifestacoes/[id]/page.tsx:45:10)',
@@ -17,18 +17,18 @@ export default function ErrosPreviewPage() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-4xl mx-auto pb-12">
+    <div className="space-y-6 animate-rise max-w-4xl mx-auto pb-12">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-          Central de Telas de Erro do Sistema
+        <h1 className="text-2xl font-black text-[#075618] tracking-tight">
+          Telas de Erro do Sistema
         </h1>
-        <p className="text-xs text-slate-500 mt-1">
-          Demonstração dos layouts de erro personalizados com a identidade visual do Laboratório Cedro
+        <p className="text-xs text-[#5E5E5E] mt-1">
+          Visualização das páginas de erro alinhadas ao padrão editorial da tela de avaliação do Laboratório Cedro
         </p>
       </div>
 
       {/* Seletor de Tipo de Erro */}
-      <Card title="Selecione o Cenário de Erro para Visualização">
+      <Card title="Cenário de Erro">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">
             <Button
@@ -36,7 +36,7 @@ export default function ErrosPreviewPage() {
               size="sm"
               onClick={() => setTipoSelecionado('404')}
             >
-              Erro 404 (Não Encontrado)
+              404 (Não encontrado)
             </Button>
 
             <Button
@@ -44,7 +44,7 @@ export default function ErrosPreviewPage() {
               size="sm"
               onClick={() => setTipoSelecionado('403')}
             >
-              Erro 403 (Acesso Negado)
+              403 (Acesso restrito)
             </Button>
 
             <Button
@@ -52,7 +52,7 @@ export default function ErrosPreviewPage() {
               size="sm"
               onClick={() => setTipoSelecionado('500')}
             >
-              Erro 500 (Falha de Servidor)
+              500 (Falha no servidor)
             </Button>
 
             <Button
@@ -60,28 +60,29 @@ export default function ErrosPreviewPage() {
               size="sm"
               onClick={() => setTipoSelecionado('conexao')}
             >
-              Falha de Conexão (API Offline)
+              503 (Sem conexão)
             </Button>
           </div>
 
-          <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
+          <label className="flex items-center gap-2 text-xs text-[#323232] cursor-pointer select-none">
             <input
               type="checkbox"
               checked={comDetalhes}
               onChange={(e) => setComDetalhes(e.target.checked)}
-              className="rounded text-[var(--brand-primary)] focus:ring-[var(--brand-primary)]"
+              className="rounded accent-[#02A562]"
             />
-            <span>Simular log técnico detalhado</span>
+            <span>Exibir detalhes técnicos</span>
           </label>
         </div>
       </Card>
 
-      {/* Preview da Tela de Erro */}
-      <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-2 sm:p-6">
+      {/* Preview da Tela de Erro no mesmo padrão limpo da Avaliação */}
+      <div className="rounded-xl border border-[#E3E3E3] bg-white overflow-hidden shadow-cedro-card">
         <ErrorView
+          embedded
           tipo={tipoSelecionado}
           detalhesTecnicos={comDetalhes ? exemploLogs[tipoSelecionado] : undefined}
-          onReset={() => alert('Ação "Tentar Novamente" disparada!')}
+          onReset={tipoSelecionado === '500' || tipoSelecionado === 'conexao' ? () => {} : undefined}
           showBack={true}
           showHome={true}
         />

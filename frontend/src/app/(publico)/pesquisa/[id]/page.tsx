@@ -186,11 +186,25 @@ function PesquisaPublicaContent() {
         {carregando && <EvaluationPageSkeleton />}
 
         {!carregando && naoEncontrada && (
-          <div id="missing" className="cedro-eval-state">
+          <div id="missing" className="cedro-eval-state" aria-live="polite">
+            <div className="cedro-score" style={{ color: '#075618' }}>
+              <b>404</b>
+              <span>Pesquisa não encontrada</span>
+            </div>
+            <p className="cedro-eval-unit">Laboratório Cedro</p>
             <h1 className="cedro-eval-h1">Não encontramos esta pesquisa.</h1>
             <p className="cedro-eval-lead">
               Confira se o link está completo ou peça um novo link à unidade que atendeu você.
             </p>
+            <div className="cedro-actions">
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="cedro-btn-send"
+              >
+                Tentar novamente
+              </button>
+            </div>
           </div>
         )}
 

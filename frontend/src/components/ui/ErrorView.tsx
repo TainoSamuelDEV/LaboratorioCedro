@@ -3,21 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  RotateCcw,
-  ArrowLeft,
-  Home,
-  ChevronDown,
-  ChevronUp,
-  ShieldAlert,
-  ServerCrash,
-  FileQuestion,
-  WifiOff,
-  Copy,
-  Check,
-} from 'lucide-react';
-import { BrandLogo } from '../brand/BrandLogo';
-import { Button } from './Button';
 
 export interface ErrorViewProps {
   codigo?: string | number;
@@ -29,6 +14,7 @@ export interface ErrorViewProps {
   showBack?: boolean;
   showHome?: boolean;
   homeHref?: string;
+  embedded?: boolean;
   className?: string;
 }
 
@@ -42,6 +28,7 @@ export function ErrorView({
   showBack = true,
   showHome = true,
   homeHref = '/dashboard',
+  embedded = false,
   className = '',
 }: ErrorViewProps) {
   const router = useRouter();
@@ -51,48 +38,43 @@ export function ErrorView({
   const presets = {
     '404': {
       codigoPadrao: '404',
-      badgeTexto: 'Código 404 • Não Encontrado',
-      tituloPadrao: 'Página Não Encontrada',
+      rotulo: 'Página não encontrada',
+      tituloPadrao: 'Não encontramos esta página.',
       descricaoPadrao:
-        'O endereço solicitado não existe, foi movido ou a URL digitada possui algum caractere incorreto.',
-      icon: FileQuestion,
-      badgeColor: 'bg-emerald-50 text-[#075618] border-emerald-200',
+        'Confira se o endereço digitado está completo ou retorne para continuar navegando.',
+      toneColor: '#075618',
     },
     '403': {
       codigoPadrao: '403',
-      badgeTexto: 'Código 403 • Acesso Restrito',
-      tituloPadrao: 'Acesso Não Autorizado',
+      rotulo: 'Acesso restrito',
+      tituloPadrao: 'Você não tem permissão para acessar esta área.',
       descricaoPadrao:
-        'Seu perfil atual de usuário não possui as permissões necessárias para acessar este módulo ou unidade.',
-      icon: ShieldAlert,
-      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+        'Seu perfil atual não possui privilégios para visualizar este módulo ou unidade.',
+      toneColor: '#A85F00',
     },
     '500': {
       codigoPadrao: '500',
-      badgeTexto: 'Código 500 • Erro Interno',
-      tituloPadrao: 'Falha no Servidor',
+      rotulo: 'Falha no servidor',
+      tituloPadrao: 'Algo não saiu como esperado.',
       descricaoPadrao:
-        'Ocorreu uma instabilidade inesperada ao processar sua solicitação. O incidente foi registrado para auditoria.',
-      icon: ServerCrash,
-      badgeColor: 'bg-rose-50 text-[#CA2E24] border-rose-300',
+        'Tivemos uma instabilidade ao processar sua solicitação. Tente novamente em instantes.',
+      toneColor: '#CA2E24',
     },
     conexao: {
-      codigoPadrao: 'ERR_CONEXAO',
-      badgeTexto: 'Comunicação • Falha de Conexão',
-      tituloPadrao: 'Serviço Temporariamente Indisponível',
+      codigoPadrao: '503',
+      rotulo: 'Sem comunicação com o servidor',
+      tituloPadrao: 'Serviço temporariamente indisponível.',
       descricaoPadrao:
-        'Não foi possível estabelecer contato com a API da Plataforma Cedro. Verifique sua conexão de rede.',
-      icon: WifiOff,
-      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+        'Não foi possível conectar à API da plataforma. Confira sua conexão e tente novamente.',
+      toneColor: '#E65100',
     },
     generico: {
-      codigoPadrao: 'ERRO',
-      badgeTexto: 'Falha Operacional',
-      tituloPadrao: 'Ocorreu um Erro no Sistema',
+      codigoPadrao: 'Erro',
+      rotulo: 'Falha operacional',
+      tituloPadrao: 'Não foi possível concluir esta ação.',
       descricaoPadrao:
-        'Não foi possível concluir esta operação. Tente novamente ou retorne à página inicial do sistema.',
-      icon: ServerCrash,
-      badgeColor: 'bg-[#F3F3F3] text-[#323232] border-[#E3E3E3]',
+        'Tente novamente ou volte para a página anterior.',
+      toneColor: '#075618',
     },
   };
 
@@ -100,7 +82,6 @@ export function ErrorView({
   const codigoExibido = codigo !== undefined ? String(codigo) : preset.codigoPadrao;
   const tituloExibido = titulo || preset.tituloPadrao;
   const descricaoExibida = descricao || preset.descricaoPadrao;
-  const IconComponent = preset.icon;
 
   const copiarDetalhes = () => {
     if (!detalhesTecnicos) return;
@@ -111,108 +92,92 @@ export function ErrorView({
 
   return (
     <div
-      className={`min-h-[80vh] flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-rise ${className}`}
+      className={`${embedded ? 'w-full bg-white rounded-xl' : 'cedro-eval-page'} ${className}`}
     >
-      <div className="w-full max-w-lg bg-white rounded-xl border border-[#E3E3E3] p-8 sm:p-10 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] relative overflow-hidden">
-        {/* Logotipo Oficial Laboratório Cedro */}
-        <div className="flex justify-center mb-8">
-          <BrandLogo size="lg" showSubtitle className="items-center" />
-        </div>
+      <main
+        className="cedro-eval-main"
+        style={{ '--tone-x': preset.toneColor, '--tone': preset.toneColor } as React.CSSProperties}
+      >
+        <header className="cedro-eval-brand">
+          <img
+            src="/logo-cedro-completa.svg"
+            alt="Laboratório Cedro"
+            className="cedro-eval-logo"
+          />
+        </header>
 
-        {/* Ícone de Destaque e Badge do Código */}
-        <div className="flex flex-col items-center gap-3 mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-[#F3F3F3] border border-[#E3E3E3] flex items-center justify-center text-[#075618]">
-            <IconComponent className="w-7 h-7 stroke-[1.8]" />
+        <section aria-live="polite">
+          <div className="cedro-score">
+            <b>{codigoExibido}</b>
+            <span>{preset.rotulo}</span>
           </div>
 
-          <div
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold border ${preset.badgeColor}`}
-          >
-            <span>{codigoExibido}</span>
-            <span className="opacity-40">•</span>
-            <span>{preset.badgeTexto.split('•')[1]?.trim() || 'Erro'}</span>
-          </div>
-        </div>
+          <p className="cedro-eval-unit">Laboratório Cedro</p>
 
-        {/* Título e Descrição */}
-        <h1 className="text-2xl sm:text-3xl font-black text-[#075618] tracking-tight">
-          {tituloExibido}
-        </h1>
-        <p className="text-sm text-[#323232] mt-2.5 leading-relaxed max-w-md mx-auto">
-          {descricaoExibida}
-        </p>
+          <h1 className="cedro-eval-h1">{tituloExibido}</h1>
 
-        {/* Botões de Ação Rápida */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mt-8">
-          {onReset && (
-            <Button variant="primary" onClick={onReset} className="w-full sm:w-auto">
-              <RotateCcw className="w-4 h-4 mr-1.5" />
-              Tentar Novamente
-            </Button>
-          )}
+          <p className="cedro-eval-lead !mb-0">{descricaoExibida}</p>
 
-          {showBack && (
-            <Button
-              variant="outline"
-              onClick={() => router.back()}
-              className="w-full sm:w-auto"
-            >
-              <ArrowLeft className="w-4 h-4 mr-1.5" />
-              Voltar à Página Anterior
-            </Button>
-          )}
+          <div className="cedro-actions">
+            {onReset && (
+              <button
+                type="button"
+                onClick={onReset}
+                className="cedro-btn-send"
+              >
+                Tentar novamente
+              </button>
+            )}
 
-          {showHome && (
-            <Link href={homeHref} className="w-full sm:w-auto">
-              <Button variant="secondary" className="w-full">
-                <Home className="w-4 h-4 mr-1.5" />
-                Ir para o Início
-              </Button>
-            </Link>
-          )}
-        </div>
+            {showHome && !onReset && (
+              <Link href={homeHref} className="cedro-btn-send inline-flex items-center no-underline">
+                Ir para o início
+              </Link>
+            )}
 
-        {/* Accordion de Detalhes Técnicos (Opcional) */}
-        {detalhesTecnicos && (
-          <div className="mt-8 pt-5 border-t border-[#E3E3E3] text-left">
-            <button
-              type="button"
-              onClick={() => setDetalhesAbertos(!detalhesAbertos)}
-              className="w-full flex items-center justify-between text-xs font-bold text-[#5E5E5E] hover:text-[#171717] transition-colors py-1 cursor-pointer"
-            >
-              <span>Detalhes técnicos do erro</span>
-              {detalhesAbertos ? (
-                <ChevronUp className="w-4 h-4" />
-              ) : (
-                <ChevronDown className="w-4 h-4" />
-              )}
-            </button>
+            {showBack && (
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="cedro-btn-quiet"
+              >
+                Voltar à página anterior
+              </button>
+            )}
 
-            {detalhesAbertos && (
-              <div className="mt-3 relative rounded-lg bg-[#171717] text-slate-200 p-3.5 text-[11px] font-mono leading-relaxed overflow-x-auto max-h-48">
-                <button
-                  type="button"
-                  onClick={copiarDetalhes}
-                  className="absolute top-2.5 right-2.5 p-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 transition-colors cursor-pointer"
-                  title="Copiar log"
-                >
-                  {copiado ? (
-                    <Check className="w-3.5 h-3.5 text-[#93CBA0]" />
-                  ) : (
-                    <Copy className="w-3.5 h-3.5" />
-                  )}
-                </button>
-                <pre className="pr-8 whitespace-pre-wrap break-all">{detalhesTecnicos}</pre>
-              </div>
+            {showHome && onReset && (
+              <Link href={homeHref} className="cedro-btn-quiet no-underline">
+                Ir para o início
+              </Link>
             )}
           </div>
-        )}
-      </div>
 
-      {/* Rodapé institucional discreto */}
-      <div className="mt-6 text-center text-xs text-[#999999]">
-        Plataforma de Experiência do Cliente Laboratório Cedro • Suporte Técnico Interno
-      </div>
+          {detalhesTecnicos && (
+            <div className="mt-10 pt-6 border-t border-[#E3E3E3] max-w-[54ch]">
+              <button
+                type="button"
+                onClick={() => setDetalhesAbertos(!detalhesAbertos)}
+                className="cedro-btn-quiet !py-0 !text-sm !text-[#5E5E5E] hover:!text-[#171717]"
+              >
+                {detalhesAbertos ? 'Ocultar detalhes técnicos' : 'Ver detalhes técnicos'}
+              </button>
+
+              {detalhesAbertos && (
+                <div className="mt-3 relative rounded-[10px] bg-[#F3F3F3] border border-[#E3E3E3] p-4 text-xs font-mono text-[#323232] leading-relaxed overflow-x-auto">
+                  <button
+                    type="button"
+                    onClick={copiarDetalhes}
+                    className="float-right ml-3 px-2.5 py-1 rounded bg-white border border-[#E3E3E3] text-[11px] font-sans font-bold text-[#171717] hover:border-[#075618] cursor-pointer"
+                  >
+                    {copiado ? 'Copiado' : 'Copiar'}
+                  </button>
+                  <pre className="whitespace-pre-wrap break-all m-0">{detalhesTecnicos}</pre>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   );
 }

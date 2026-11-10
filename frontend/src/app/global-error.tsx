@@ -17,12 +17,12 @@ export default function GlobalError({
 
   return (
     <html lang="pt-BR">
-      <body className="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex items-center justify-center p-4">
+      <body className="bg-white antialiased min-h-screen m-0">
         <ErrorView
           tipo="500"
-          codigo="FALHA_CRÍTICA"
-          titulo="Falha Geral do Sistema"
-          descricao="Ocorreu um erro no carregamento da estrutura base da aplicação. Clique abaixo para tentar restabelecer a conexão."
+          codigo={500}
+          titulo="Não foi possível carregar o sistema."
+          descricao="Ocorreu uma falha na estrutura principal da aplicação. Tente recarregar a página."
           detalhesTecnicos={detalhes}
           onReset={() => reset()}
           showBack={false}
