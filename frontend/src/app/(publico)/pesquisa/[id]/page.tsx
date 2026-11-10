@@ -124,10 +124,10 @@ function PesquisaPublicaContent() {
     // Regra UC01 (docs/05-diagramas-uml-casos-de-uso.md): Comentário obrigatório para notas 1 a 3
     if (nota <= 3 && !commentTrim) {
       setErroComentario(true);
-      setStatusErro(true);
-      setStatusMsg('Para notas de 1 a 3, o comentário é obrigatório.');
-      commentRef.current?.focus();
+      setStatusErro(false);
+      setStatusMsg('');
       commentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      commentRef.current?.focus({ preventScroll: true });
       return;
     }
 
