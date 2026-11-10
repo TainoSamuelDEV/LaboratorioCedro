@@ -391,8 +391,8 @@ export function Sidebar() {
       <aside
         className={`hidden lg:flex cedro-sidebar ${recolhido ? 'is-collapsed' : ''}`}
       >
-        {/* Marca: logo completa expandida / símbolo oficial quando recolhida */}
-        <div className="flex items-center justify-center">
+        {/* Marca: logo completa alinhada à esquerda quando expandida / símbolo centralizado quando recolhida */}
+        <div className="flex items-center justify-start">
           <Link
             href="/dashboard"
             className="cedro-sidebar-logo-wrap"
