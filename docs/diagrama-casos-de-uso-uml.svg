@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 980" width="100%" height="100%" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <!-- Seta sólida para associação ou generalização -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#334155"/>
+    </marker>
+    <!-- Seta aberta para <<include>> e <<extend>> (Padrão UML) -->
+    <marker id="open-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#0f766e" stroke-width="1.8"/>
+    </marker>
+    <marker id="open-arrow-ext" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#b45309" stroke-width="1.8"/>
+    </marker>
+    <!-- Boneco Palito Padrão UML (Actor) -->
+    <g id="uml-actor">
+      <circle cx="0" cy="-28" r="11" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/>
+      <line x1="0" y1="-17" x2="0" y2="12" stroke="#1e293b" stroke-width="2.5"/>
+      <line x1="-18" y1="-6" x2="18" y2="-6" stroke="#1e293b" stroke-width="2.5"/>
+      <line x1="0" y1="12" x2="-15" y2="36" stroke="#1e293b" stroke-width="2.5"/>
+      <line x1="0" y1="12" x2="15" y2="36" stroke="#1e293b" stroke-width="2.5"/>
+    </g>
+    <!-- Boneco Palito Ator Sistema -->
+    <g id="uml-system-actor">
+      <circle cx="0" cy="-28" r="11" fill="#ecfdf5" stroke="#047857" stroke-width="2.5"/>
+      <line x1="0" y1="-17" x2="0" y2="12" stroke="#047857" stroke-width="2.5"/>
+      <line x1="-18" y1="-6" x2="18" y2="-6" stroke="#047857" stroke-width="2.5"/>
+      <line x1="0" y1="12" x2="-15" y2="36" stroke="#047857" stroke-width="2.5"/>
+      <line x1="0" y1="12" x2="15" y2="36" stroke="#047857" stroke-width="2.5"/>
+    </g>
+  </defs>
+
+  <!-- Fundo -->
+  <rect width="1300" height="980" fill="#f8fafc"/>
+
+  <!-- Cabeçalho do Diagrama -->
+  <text x="650" y="34" font-size="20" font-weight="bold" fill="#0f172a" text-anchor="middle">
+    DIAGRAMA DE CASOS DE USO (PADRÃO UML 2.5) — PLATAFORMA DE EXPERIÊNCIA DO CLIENTE (CEDRO / NIT)
+  </text>
+  <text x="650" y="56" font-size="13" fill="#475569" text-anchor="middle">
+    Atores Humanos (Esquerda) • Fronteira do Sistema (Centro) • Ator Sistema Autônomo (Direita)
+  </text>
+
+  <!-- FRONTEIRA DO SISTEMA (System Boundary) -->
+  <rect x="240" y="75" width="810" height="845" rx="8" ry="8" fill="#ffffff" stroke="#1e293b" stroke-width="2.5"/>
+  <rect x="240" y="75" width="810" height="36" rx="8" ry="8" fill="#0f172a"/>
+  <text x="645" y="98" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">
+    «system» Plataforma de Experiência do Cliente (Cedro / NIT)
+  </text>
+
+  <!-- ==================== ATORES PRIMÁRIOS (ESQUERDA) ==================== -->
+  <!-- 1. Cliente / Respondente -->
+  <g transform="translate(105, 165)">
+    <use href="#uml-actor"/>
+    <text x="0" y="56" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Cliente /</text>
+    <text x="0" y="72" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Respondente</text>
+    <text x="0" y="88" font-size="11" fill="#64748b" text-anchor="middle">(Link / QR Code)</text>
+  </g>
+
+  <!-- 2. Coordenador da Unidade -->
+  <g transform="translate(105, 390)">
+    <use href="#uml-actor"/>
+    <text x="0" y="56" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Coordenador</text>
+    <text x="0" y="72" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">da Unidade</text>
+    <text x="0" y="88" font-size="11" fill="#64748b" text-anchor="middle">(Escopo: Unidade)</text>
+  </g>
+
+  <!-- 3. Operador / Ouvidoria -->
+  <g transform="translate(105, 625)">
+    <use href="#uml-actor"/>
+    <text x="0" y="56" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Operador /</text>
+    <text x="0" y="72" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Ouvidoria</text>
+    <text x="0" y="88" font-size="11" fill="#64748b" text-anchor="middle">(Gestão do Fluxo)</text>
+  </g>
+
+  <!-- 4. Administrador -->
+  <g transform="translate(105, 830)">
+    <use href="#uml-actor"/>
+    <text x="0" y="56" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Administrador</text>
+    <text x="0" y="72" font-size="11" fill="#64748b" text-anchor="middle">(Configuração Global)</text>
+  </g>
+
+  <!-- ==================== ATOR SISTEMA (DIREITA) ==================== -->
+  <g transform="translate(1185, 455)">
+    <rect x="-95" y="-65" width="190" height="175" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" stroke-dasharray="5,4"/>
+    <text x="0" y="-45" font-size="11" font-weight="bold" fill="#047857" text-anchor="middle">«actor» «system»</text>
+    <use href="#uml-system-actor" transform="translate(0, 5)"/>
+    <text x="0" y="60" font-size="14" font-weight="bold" fill="#065f46" text-anchor="middle">Sistema (Cedro / NIT)</text>
+    <text x="0" y="77" font-size="11" fill="#047857" text-anchor="middle">(Motor Automático de</text>
+    <text x="0" y="92" font-size="11" fill="#047857" text-anchor="middle">Regras, SLA e Auditoria)</text>
+  </g>
+
+  <!-- ==================== CASOS DE USO (ELIPSES UML) ==================== -->
+
+  <!-- UC01: Responder Pesquisa -->
+  <g transform="translate(420, 165)">
+    <ellipse cx="0" cy="0" rx="135" ry="34" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+    <text x="0" y="-5" font-size="12" font-weight="bold" fill="#1e3a8a" text-anchor="middle">UC01: Responder Pesquisa</text>
+    <text x="0" y="12" font-size="11" fill="#1e40af" text-anchor="middle">(Nota 1–5 + Comentário)</text>
+  </g>
+
+  <!-- UC02: Criar Manifestação e Protocolo Automaticamente -->
+  <g transform="translate(835, 165)">
+    <ellipse cx="0" cy="0" rx="150" ry="34" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+    <text x="0" y="-5" font-size="12" font-weight="bold" fill="#065f46" text-anchor="middle">UC02: Criar Manifestação e</text>
+    <text x="0" y="12" font-size="11" fill="#047857" text-anchor="middle">Gerar Protocolo Único</text>
+  </g>
+
+  <!-- UC03: Calcular Prioridade e Prazo (SLA) por Nota -->
+  <g transform="translate(835, 265)">
+    <ellipse cx="0" cy="0" rx="150" ry="32" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#065f46" text-anchor="middle">UC03: Definir Prioridade e</text>
+    <text x="0" y="12" font-size="11" fill="#047857" text-anchor="middle">Calcular Prazo SLA (24h/48h/72h)</text>
+  </g>
+
+  <!-- UC04: Vincular Unidade e Notificar -->
+  <g transform="translate(835, 360)">
+    <ellipse cx="0" cy="0" rx="150" ry="32" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#065f46" text-anchor="middle">UC04: Vincular à Unidade</text>
+    <text x="0" y="12" font-size="11" fill="#047857" text-anchor="middle">Responsável e Notificar</text>
+  </g>
+
+  <!-- UC05: Autenticar Usuário Interno -->
+  <g transform="translate(420, 280)">
+    <ellipse cx="0" cy="0" rx="130" ry="28" fill="#f8fafc" stroke="#334155" stroke-width="1.8"/>
+    <text x="0" y="-3" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">UC05: Autenticar e Validar</text>
+    <text x="0" y="12" font-size="11" fill="#475569" text-anchor="middle">Escopo de Perfil/Unidade</text>
+  </g>
+
+  <!-- UC06: Consultar e Filtrar Manifestações / Pendências -->
+  <g transform="translate(420, 380)">
+    <ellipse cx="0" cy="0" rx="140" ry="32" fill="#f8fafc" stroke="#334155" stroke-width="1.8"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">UC06: Consultar Manifestações</text>
+    <text x="0" y="12" font-size="11" fill="#475569" text-anchor="middle">e Fila de Pendências (Filtros)</text>
+  </g>
+
+  <!-- UC07: Iniciar Tratamento e Registrar Resposta da Unidade -->
+  <g transform="translate(420, 480)">
+    <ellipse cx="0" cy="0" rx="145" ry="34" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#1e3a8a" text-anchor="middle">UC07: Analisar e Registrar</text>
+    <text x="0" y="12" font-size="11" fill="#1e40af" text-anchor="middle">Resposta da Unidade</text>
+  </g>
+
+  <!-- UC08: Monitorar Prazo e Escalonar Caso -->
+  <g transform="translate(835, 470)">
+    <ellipse cx="0" cy="0" rx="150" ry="34" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">UC08: Controlar Prazo e</text>
+    <text x="0" y="12" font-size="11" fill="#b45309" text-anchor="middle">Escalonar Manifestação</text>
+  </g>
+
+  <!-- UC09: Validar Retorno e Concluir Manifestação -->
+  <g transform="translate(420, 600)">
+    <ellipse cx="0" cy="0" rx="145" ry="34" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#1e3a8a" text-anchor="middle">UC09: Validar Resposta e</text>
+    <text x="0" y="12" font-size="11" fill="#1e40af" text-anchor="middle">Concluir Manifestação</text>
+  </g>
+
+  <!-- UC10: Solicitar Complemento à Unidade (Extend) -->
+  <g transform="translate(420, 710)">
+    <ellipse cx="0" cy="0" rx="145" ry="32" fill="#fffbeb" stroke="#d97706" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#92400e" text-anchor="middle">UC10: Solicitar Complemento</text>
+    <text x="0" y="12" font-size="11" fill="#b45309" text-anchor="middle">à Unidade (Resposta Rasa)</text>
+  </g>
+
+  <!-- UC11: Registrar Histórico Imutável (Auditoria) -->
+  <g transform="translate(835, 600)">
+    <ellipse cx="0" cy="0" rx="150" ry="34" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#065f46" text-anchor="middle">UC11: Gravar Interação no</text>
+    <text x="0" y="12" font-size="11" fill="#047857" text-anchor="middle">Histórico Imutável (Auditoria)</text>
+  </g>
+
+  <!-- UC12: Visualizar Dashboard e Exportar Relatórios -->
+  <g transform="translate(835, 735)">
+    <ellipse cx="0" cy="0" rx="150" ry="34" fill="#f8fafc" stroke="#334155" stroke-width="1.8"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">UC12: Atualizar e Consultar</text>
+    <text x="0" y="12" font-size="11" fill="#475569" text-anchor="middle">Dashboard e Relatórios</text>
+  </g>
+
+  <!-- UC13: Gerenciar Unidades, Usuários, Pesquisas e Regras -->
+  <g transform="translate(420, 830)">
+    <ellipse cx="0" cy="0" rx="150" ry="34" fill="#f8fafc" stroke="#334155" stroke-width="1.8"/>
+    <text x="0" y="-4" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">UC13: Gerenciar Unidades,</text>
+    <text x="0" y="12" font-size="11" fill="#475569" text-anchor="middle">Usuários, Pesquisas e Prazos</text>
+  </g>
+
+  <!-- ==================== ASSOCIAÇÕES ATORES HUMANOS -> CASOS DE USO ==================== -->
+  <!-- Cliente -> UC01 -->
+  <line x1="145" y1="165" x2="285" y2="165" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Coordenador -> UC05, UC06, UC07 -->
+  <line x1="145" y1="380" x2="290" y2="285" stroke="#334155" stroke-width="1.6"/>
+  <line x1="145" y1="390" x2="280" y2="380" stroke="#334155" stroke-width="1.8"/>
+  <line x1="145" y1="400" x2="275" y2="475" stroke="#1d4ed8" stroke-width="2"/>
+
+  <!-- Operador / Ouvidoria -> UC05, UC06, UC08, UC09, UC10, UC12 -->
+  <line x1="145" y1="610" x2="285" y2="390" stroke="#334155" stroke-width="1.6"/>
+  <line x1="145" y1="620" x2="690" y2="480" stroke="#b45309" stroke-width="1.6"/>
+  <line x1="145" y1="625" x2="275" y2="600" stroke="#1d4ed8" stroke-width="2"/>
+  <line x1="145" y1="635" x2="275" y2="705" stroke="#b45309" stroke-width="1.8"/>
+  <line x1="145" y1="645" x2="685" y2="735" stroke="#334155" stroke-width="1.6"/>
+
+  <!-- Administrador -> UC05, UC12, UC13 -->
+  <line x1="145" y1="830" x2="270" y2="830" stroke="#1e293b" stroke-width="2"/>
+  <line x1="145" y1="815" x2="685" y2="745" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- ==================== ASSOCIAÇÕES ATOR SISTEMA -> CASOS DE USO ==================== -->
+  <!-- Sistema -> UC02, UC03, UC04, UC08, UC11, UC12 -->
+  <line x1="1090" y1="420" x2="985" y2="170" stroke="#047857" stroke-width="2"/>
+  <line x1="1090" y1="435" x2="985" y2="265" stroke="#047857" stroke-width="2"/>
+  <line x1="1090" y1="450" x2="985" y2="360" stroke="#047857" stroke-width="2"/>
+  <line x1="1090" y1="465" x2="985" y2="470" stroke="#047857" stroke-width="2"/>
+  <line x1="1090" y1="485" x2="985" y2="595" stroke="#047857" stroke-width="2"/>
+  <line x1="1090" y1="505" x2="985" y2="730" stroke="#047857" stroke-width="2"/>
+
+  <!-- ==================== RELAÇÕES <<include>> e <<extend>> (PADRÃO UML) ==================== -->
+  <!-- UC01 <<include>> UC02 -->
+  <line x1="555" y1="165" x2="680" y2="165" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow)"/>
+  <text x="618" y="156" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">«include»</text>
+
+  <!-- UC02 <<include>> UC03 -->
+  <line x1="835" y1="199" x2="835" y2="230" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow)"/>
+  <text x="875" y="219" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">«include»</text>
+
+  <!-- UC02 <<include>> UC04 -->
+  <path d="M 710 185 Q 650 270 700 350" fill="none" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow)"/>
+  <text x="645" y="270" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">«include»</text>
+
+  <!-- UC07 <<include>> UC11 (Registrar Resposta inclui gravar histórico) -->
+  <line x1="555" y1="495" x2="705" y2="580" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow)"/>
+  <text x="640" y="530" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">«include»</text>
+
+  <!-- UC09 <<include>> UC11 (Concluir inclui gravar histórico) -->
+  <line x1="565" y1="600" x2="680" y2="600" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow)"/>
+  <text x="622" y="592" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">«include»</text>
+
+  <!-- UC08 <<include>> UC11 (Escalonar inclui gravar histórico) -->
+  <line x1="835" y1="504" x2="835" y2="562" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow)"/>
+  <text x="875" y="538" font-size="11" font-weight="bold" fill="#0f766e" text-anchor="middle">«include»</text>
+
+  <!-- UC10 <<extend>> UC09 (Solicitar Complemento estende Validar/Concluir quando resposta incompleta) -->
+  <line x1="420" y1="678" x2="420" y2="638" stroke="#b45309" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow-ext)"/>
+  <text x="485" y="662" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">«extend» (se incompleta)</text>
+
+  <!-- UC08 <<extend>> UC06 (Escalonar estende Acompanhamento quando prazo vence ou caso crítico) -->
+  <line x1="690" y1="460" x2="555" y2="395" stroke="#b45309" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#open-arrow-ext)"/>
+  <text x="630" y="418" font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">«extend» (atraso/crítico)</text>
+
+  <!-- Legenda Padrão UML -->
+  <rect x="255" y="875" width="780" height="34" rx="5" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="275" y="896" font-size="11" font-weight="bold" fill="#334155">Legenda UML:</text>
+  <line x1="365" y1="892" x2="405" y2="892" stroke="#1e293b" stroke-width="2"/>
+  <text x="412" y="896" font-size="11" fill="#334155">Associação Ator-UC</text>
+  <line x1="535" y1="892" x2="580" y2="892" stroke="#0f766e" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#open-arrow)"/>
+  <text x="588" y="896" font-size="11" fill="#0f766e">«include» (Obrigatório)</text>
+  <line x1="735" y1="892" x2="780" y2="892" stroke="#b45309" stroke-width="1.8" stroke-dasharray="5,3" marker-end="url(#open-arrow-ext)"/>
+  <text x="788" y="896" font-size="11" fill="#b45309">«extend» (Condicional)</text>
+  <circle cx="935" cy="892" r="6" fill="#ecfdf5" stroke="#047857" stroke-width="2"/>
+  <text x="947" y="896" font-size="11" fill="#047857">Ator Sistema</text>
+</svg>
