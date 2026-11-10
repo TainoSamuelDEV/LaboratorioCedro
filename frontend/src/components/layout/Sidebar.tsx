@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
-import { manifestacaoService } from '../../services/manifestacao.service';
 import { PerfilUsuario } from '../../types/api';
 import {
   Drawer,
@@ -190,7 +189,6 @@ export function Sidebar() {
 
   const [recolhido, setRecolhido] = useState(false);
   const [drawerMobileAberto, setDrawerMobileAberto] = useState(false);
-  const [totalPendencias, setTotalPendencias] = useState<number>(0);
 
   // Persiste estado de recolhimento do menu lateral no localStorage
   useEffect(() => {
@@ -214,27 +212,6 @@ export function Sidebar() {
       return proximo;
     });
   };
-
-  // Atualiza contador de pendências abertas
-  useEffect(() => {
-    if (!usuario) return;
-    let ativo = true;
-
-    manifestacaoService
-      .listarPendencias()
-      .then((lista) => {
-        if (ativo && Array.isArray(lista)) {
-          setTotalPendencias(lista.length);
-        }
-      })
-      .catch(() => {
-        // falha silenciosa no badge
-      });
-
-    return () => {
-      ativo = false;
-    };
-  }, [usuario, pathname]);
 
   // Fecha o Drawer mobile automaticamente ao navegar
   useEffect(() => {
@@ -286,18 +263,6 @@ export function Sidebar() {
           </Link>
 
           <div className="flex items-center gap-2">
-            {totalPendencias > 0 && (
-              <Link
-                href="/pendencias"
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FFF1F2] border border-[#FDA4AF] text-[#CA2E24] text-xs font-black no-underline"
-              >
-                <span>{totalPendencias}</span>
-                <span className="hidden sm:inline">
-                  {totalPendencias === 1 ? 'pendência' : 'pendências'}
-                </span>
-              </Link>
-            )}
-
             <button
               type="button"
               onClick={() => setDrawerMobileAberto(true)}
@@ -353,9 +318,6 @@ export function Sidebar() {
                   >
                     {item.icon}
                     <span className="cedro-nav-label">{item.label}</span>
-                    {item.id === 'pendencias' && totalPendencias > 0 && (
-                      <em className="cedro-nav-badge">{totalPendencias}</em>
-                    )}
                   </Link>
                 );
               })}
@@ -454,9 +416,6 @@ export function Sidebar() {
               >
                 {item.icon}
                 <span className="cedro-nav-label">{item.label}</span>
-                {item.id === 'pendencias' && totalPendencias > 0 && (
-                  <em className="cedro-nav-badge">{totalPendencias}</em>
-                )}
               </Link>
             );
           })}
