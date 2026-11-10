@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  /* Design Tokens de Marca (Cedro / NIT) - Pronto para receber Brandbook */
+  --brand-primary: #0d5c54;
+  --brand-primary-hover: #0a4741;
+  --brand-primary-light: #e8f4f2;
+  --brand-primary-foreground: #ffffff;
+
+  --brand-secondary: #1e3a5f;
+  --brand-secondary-hover: #162c47;
+  --brand-accent: #0284c7;
+
+  /* Superfícies Neutras de Alto Nível (Clean / Minimalist Lab) */
+  --bg-canvas: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-subtle: #f1f5f9;
+
+  /* Bordas Refinadas (Linhas sutis de precisão) */
+  --border-subtle: #e2e8f0;
+  --border-default: #cbd5e1;
+  --border-strong: #94a3b8;
+
+  /* Tipografia e Contraste */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  /* Status Operacionais do Domínio POO */
+  --status-nova: #64748b;
+  --status-nao-respondida: #d97706;
+  --status-em-tratamento: #2563eb;
+  --status-escalonada: #9333ea;
+  --status-respondida: #0d9488;
+  --status-concluida: #16a34a;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Suporte a números tabulares em protocolos e dados de SLA */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbar refinada */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
