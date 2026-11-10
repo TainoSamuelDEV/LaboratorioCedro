@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 interface DrawerContextValue {
@@ -166,22 +167,24 @@ export function DrawerContent({
 
   const directionPositionClasses = {
     bottom:
-      'inset-x-0 bottom-0 mt-16 max-h-[92dvh] w-full sm:max-w-xl sm:mx-auto rounded-t-[16px] border-t border-x border-[#E3E3E3]',
-    left: 'inset-y-0 left-0 h-full w-[86vw] max-w-[300px] rounded-r-[16px] border-r border-[#E3E3E3]',
+      'max-sm:inset-x-0 max-sm:bottom-0 max-sm:mt-16 max-sm:rounded-t-[20px] max-sm:border-t max-sm:border-x sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[20px] sm:border max-h-[90dvh] w-full sm:max-w-lg border-[#E3E3E3]',
+    left: 'inset-y-0 left-0 h-full w-[86vw] max-w-[300px] rounded-r-[20px] border-r border-[#E3E3E3]',
     right:
-      'inset-y-0 right-0 h-full w-full max-w-md rounded-l-[16px] border-l border-[#E3E3E3]',
+      'inset-y-0 right-0 h-full w-full max-w-md rounded-l-[20px] border-l border-[#E3E3E3]',
   };
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex">
-      {/* Overlay estilo shadcn/ui drawer */}
+      {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-[1px] transition-opacity"
+        className="fixed inset-0 bg-black/45 backdrop-blur-[2px] transition-opacity"
         onClick={() => onOpenChange(false)}
         aria-hidden="true"
       />
 
-      {/* Drawer Surface */}
+      {/* Drawer / Dialog Surface */}
       <div
         role="dialog"
         aria-modal="true"
@@ -190,15 +193,15 @@ export function DrawerContent({
             ? { transform: `translateY(${dragOffset}px)`, transition: 'none' }
             : undefined
         }
-        className={`fixed z-50 flex flex-col bg-white shadow-[0_14px_30px_rgba(0,0,0,0.16)] transition-transform duration-200 ease-out ${directionPositionClasses[direction]} ${className}`}
+        className={`fixed z-50 flex flex-col bg-white shadow-[0_20px_50px_rgba(0,0,0,0.18)] transition-transform duration-200 ease-out ${directionPositionClasses[direction]} ${className}`}
       >
-        {/* Handle bar superior (padrão shadcn/ui base drawer) */}
+        {/* Handle bar superior exibida apenas em telas mobile (bottom sheet) */}
         {direction === 'bottom' && (
           <div
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            className="w-full pt-3.5 pb-1.5 cursor-grab active:cursor-grabbing touch-none select-none flex justify-center"
+            className="sm:hidden w-full pt-3.5 pb-1.5 cursor-grab active:cursor-grabbing touch-none select-none flex justify-center"
           >
             <div className="h-1.5 w-[56px] shrink-0 rounded-full bg-[#D4D4D4]" />
           </div>
@@ -208,7 +211,7 @@ export function DrawerContent({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            aria-label="Fechar gaveta"
+            aria-label="Fechar"
             className="absolute right-4 top-4 p-1.5 rounded-lg text-[#999999] hover:text-[#171717] hover:bg-[#F3F3F3] transition-colors cursor-pointer z-10"
           >
             <X className="w-4 h-4" />
@@ -217,7 +220,8 @@ export function DrawerContent({
 
         <div className="flex-1 overflow-y-auto">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -229,7 +233,7 @@ export function DrawerHeader({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col gap-1 px-6 pt-3 pb-4 border-b border-[#E3E3E3]/80 text-left ${className}`}>
+    <div className={`flex flex-col gap-1 px-6 pt-5 pb-4 border-b border-[#E3E3E3]/80 text-left ${className}`}>
       {children}
     </div>
   );
