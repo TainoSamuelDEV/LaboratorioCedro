@@ -16,6 +16,7 @@ import {
   Timer,
 } from 'lucide-react';
 import { Card } from '../../../components/ui/Card';
+import { DashboardSkeleton } from '../../../components/ui/Skeleton';
 import { useAuth } from '../../../contexts/AuthContext';
 import { dashboardService } from '../../../services/dashboard.service';
 import { pesquisaService } from '../../../services/pesquisa.service';
@@ -51,7 +52,11 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Grid Superior: Métricas de Status e SLA */}
+      {carregando ? (
+        <DashboardSkeleton />
+      ) : (
+        <>
+          {/* Grid Superior: Métricas de Status e SLA */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-l-4 border-l-blue-600">
           <div className="flex items-center justify-between">
@@ -330,6 +335,8 @@ export default function DashboardPage() {
           )}
         </Card>
       </div>
+        </>
+      )}
     </div>
   );
 }

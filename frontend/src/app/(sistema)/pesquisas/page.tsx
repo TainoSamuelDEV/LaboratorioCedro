@@ -8,6 +8,7 @@ import { Card } from '../../../components/ui/Card';
 import { Input } from '../../../components/ui/Input';
 import { Modal } from '../../../components/ui/Modal';
 import { Select } from '../../../components/ui/Select';
+import { TableSkeleton } from '../../../components/ui/Skeleton';
 import { useAuth } from '../../../contexts/AuthContext';
 import { pesquisaService } from '../../../services/pesquisa.service';
 import { unidadeService } from '../../../services/unidade.service';
@@ -103,7 +104,7 @@ export default function PesquisasPage() {
 
       <Card>
         {carregando ? (
-          <div className="text-center py-8 text-xs text-slate-500">Carregando pesquisas...</div>
+          <TableSkeleton rows={4} columns={5} />
         ) : pesquisas.length === 0 ? (
           <div className="text-center py-12">
             <QrCode className="w-12 h-12 text-slate-300 mx-auto mb-3" />

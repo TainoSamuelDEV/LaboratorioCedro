@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header } from '../../components/layout/Header';
 import { Sidebar } from '../../components/layout/Sidebar';
+import { AppShellSkeleton } from '../../components/ui/Skeleton';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function SistemaLayout({ children }: { children: React.ReactNode }) {
@@ -17,14 +18,7 @@ export default function SistemaLayout({ children }: { children: React.ReactNode 
   }, [usuario, carregando, router]);
 
   if (carregando) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-[var(--bg-canvas)]">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[var(--brand-primary)] border-t-transparent" />
-          <span className="text-xs text-slate-500">Verificando credenciais...</span>
-        </div>
-      </div>
-    );
+    return <AppShellSkeleton />;
   }
 
   if (!usuario) {

@@ -7,6 +7,7 @@ import { Card } from '../../../components/ui/Card';
 import { Input } from '../../../components/ui/Input';
 import { Modal } from '../../../components/ui/Modal';
 import { Select } from '../../../components/ui/Select';
+import { TableSkeleton } from '../../../components/ui/Skeleton';
 import { useAuth } from '../../../contexts/AuthContext';
 import { apiClient } from '../../../services/api-client';
 import { unidadeService } from '../../../services/unidade.service';
@@ -125,7 +126,7 @@ export default function UsuariosPage() {
 
       <Card>
         {carregando ? (
-          <div className="text-center py-8 text-xs text-slate-500">Carregando usuários...</div>
+          <TableSkeleton rows={4} columns={5} />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">

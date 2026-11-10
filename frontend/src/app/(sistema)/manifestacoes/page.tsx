@@ -8,6 +8,7 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
+import { TableSkeleton } from '../../../components/ui/Skeleton';
 import { useAuth } from '../../../contexts/AuthContext';
 import { manifestacaoService } from '../../../services/manifestacao.service';
 import { unidadeService } from '../../../services/unidade.service';
@@ -146,7 +147,7 @@ export default function ManifestacoesPage() {
       {/* Tabela de Manifestações */}
       <Card>
         {carregando ? (
-          <div className="text-center py-8 text-xs text-slate-500">Filtrando manifestações...</div>
+          <TableSkeleton rows={6} columns={6} />
         ) : manifestacoes.length === 0 ? (
           <div className="text-center py-12">
             <MessageSquareWarning className="w-12 h-12 text-slate-300 mx-auto mb-3" />

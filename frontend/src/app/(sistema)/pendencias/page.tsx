@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ClockAlert, ArrowRight, AlertTriangle } from 'lucide-react';
 import { PrioridadeBadge, StatusBadge } from '../../../components/ui/Badge';
 import { Card } from '../../../components/ui/Card';
+import { TableSkeleton } from '../../../components/ui/Skeleton';
 import { manifestacaoService } from '../../../services/manifestacao.service';
 import { ManifestacaoDTO } from '../../../types/api';
 
@@ -40,7 +41,7 @@ export default function PendenciasPage() {
 
       <Card>
         {carregando ? (
-          <div className="text-center py-8 text-xs text-slate-500">Carregando fila de pendências...</div>
+          <TableSkeleton rows={5} columns={6} />
         ) : pendencias.length === 0 ? (
           <div className="text-center py-12">
             <ClockAlert className="w-12 h-12 text-emerald-400 mx-auto mb-3" />

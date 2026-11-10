@@ -21,6 +21,7 @@ import { Button } from '../../../../components/ui/Button';
 import { Card } from '../../../../components/ui/Card';
 import { Modal } from '../../../../components/ui/Modal';
 import { Select } from '../../../../components/ui/Select';
+import { DetalheManifestacaoSkeleton } from '../../../../components/ui/Skeleton';
 import { useAuth } from '../../../../contexts/AuthContext';
 import { manifestacaoService } from '../../../../services/manifestacao.service';
 import { unidadeService } from '../../../../services/unidade.service';
@@ -161,11 +162,7 @@ function DetalheManifestacaoContent() {
   };
 
   if (carregando) {
-    return (
-      <div className="flex h-64 items-center justify-center text-xs text-slate-500">
-        Carregando detalhes do protocolo...
-      </div>
-    );
+    return <DetalheManifestacaoSkeleton />;
   }
 
   if (erro || !manifestacao) {
@@ -527,13 +524,7 @@ function DetalheManifestacaoContent() {
 
 export default function DetalheManifestacaoPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="flex h-64 items-center justify-center text-xs text-slate-500">
-          Carregando detalhes do protocolo...
-        </div>
-      }
-    >
+    <Suspense fallback={<DetalheManifestacaoSkeleton />}>
       <DetalheManifestacaoContent />
     </Suspense>
   );

@@ -6,6 +6,7 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/Card';
 import { Input } from '../../../components/ui/Input';
 import { Modal } from '../../../components/ui/Modal';
+import { TableSkeleton } from '../../../components/ui/Skeleton';
 import { useAuth } from '../../../contexts/AuthContext';
 import { unidadeService } from '../../../services/unidade.service';
 import { UnidadeDTO } from '../../../types/api';
@@ -84,7 +85,7 @@ export default function UnidadesPage() {
 
       <Card>
         {carregando ? (
-          <div className="text-center py-8 text-xs text-slate-500">Carregando unidades...</div>
+          <TableSkeleton rows={4} columns={5} />
         ) : unidades.length === 0 ? (
           <div className="text-center py-12">
             <Building2 className="w-12 h-12 text-slate-300 mx-auto mb-3" />

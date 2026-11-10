@@ -2,6 +2,7 @@
 
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { EvaluationPageSkeleton } from '../../../../components/ui/Skeleton';
 import { pesquisaService } from '../../../../services/pesquisa.service';
 import { PesquisaPublicaDTO, RespostaComManifestacaoDTO } from '../../../../types/api';
 
@@ -226,11 +227,7 @@ function PesquisaPublicaContent() {
       </header>
 
       <form id="form" noValidate onSubmit={handleSubmit}>
-        {carregando && (
-          <div id="loading" className="cedro-eval-state" aria-live="polite">
-            Carregando pesquisa…
-          </div>
-        )}
+        {carregando && <EvaluationPageSkeleton />}
 
         {!carregando && naoEncontrada && (
           <div id="missing" className="cedro-eval-state">
@@ -413,9 +410,7 @@ export default function PesquisaPublicaPage() {
     <Suspense
       fallback={
         <main className="cedro-eval-main">
-          <div className="cedro-eval-state" aria-live="polite">
-            Carregando pesquisa…
-          </div>
+          <EvaluationPageSkeleton />
         </main>
       }
     >
