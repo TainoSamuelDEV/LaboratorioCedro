@@ -46,6 +46,7 @@ function PesquisaPublicaContent() {
   // Estado de conclusão
   const [sucesso, setSucesso] = useState<RespostaComManifestacaoDTO | null>(null);
   const doneHeadingRef = useRef<HTMLHeadingElement>(null);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (!pesquisaId) {
@@ -103,11 +104,19 @@ function PesquisaPublicaContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!nota) {
-      setStatusMsg('Escolha uma nota para enviar.');
+      setStatusMsg('Escolha uma nota de 1 a 5 para enviar.');
       return;
     }
     if (!unidadeId) {
       setStatusMsg('Selecione a unidade de atendimento.');
+      return;
+    }
+
+    const commentTrim = comentario.trim();
+    // Regra UC01 (docs/05-diagramas-uml-casos-de-uso.md): Comentário obrigatório para notas 1 a 3
+    if (nota <= 3 && !commentTrim) {
+      setStatusMsg('Para notas de 1 a 3, o comentário é obrigatório.');
+      commentRef.current?.focus();
       return;
     }
 
@@ -116,13 +125,12 @@ function PesquisaPublicaContent() {
 
     try {
       const ticketTrim = senhaAtendimento.trim();
-      const commentTrim = comentario.trim();
 
       const res = await pesquisaService.responderPublica(pesquisaId, {
         unidadeId,
-        clienteAtendimento: ticketTrim || 'Atendimento não informado',
+        clienteAtendimento: ticketTrim,
         nota,
-        comentario: commentTrim || 'Sem comentário adicional.',
+        comentario: commentTrim,
       });
 
       setSucesso(res);
@@ -319,19 +327,32 @@ function PesquisaPublicaContent() {
                   <label className="cedro-label-q" htmlFor="comment" id="q">
                     {nota > 0
                       ? nota <= 3
-                        ? PROMPTS.low
+                        ? `${PROMPTS.low} *`
                         : PROMPTS.high
                       : 'Quer contar mais?'}
                   </label>
                   <textarea
+                    ref={commentRef}
                     id="comment"
                     className="cedro-textarea"
                     maxLength={500}
-                    placeholder="Escreva aqui, se quiser"
+                    required={nota > 0 && nota <= 3}
+                    placeholder={
+                      nota > 0 && nota <= 3
+                        ? 'Conte pra gente o que aconteceu (obrigatório)'
+                        : 'Escreva aqui, se quiser'
+                    }
                     value={comentario}
-                    onChange={(e) => setComentario(e.target.value)}
+                    onChange={(e) => {
+                      setComentario(e.target.value);
+                      if (statusMsg) setStatusMsg('');
+                    }}
                   />
-                  <p className="cedro-hint">Opcional. Até 500 caracteres.</p>
+                  <p className="cedro-hint">
+                    {nota > 0 && nota <= 3
+                      ? 'Obrigatório para notas de 1 a 3. Até 500 caracteres.'
+                      : 'Opcional. Até 500 caracteres.'}
+                  </p>
 
                   <label className="cedro-label-q cedro-label-q2" htmlFor="ticket">
                     Senha de atendimento

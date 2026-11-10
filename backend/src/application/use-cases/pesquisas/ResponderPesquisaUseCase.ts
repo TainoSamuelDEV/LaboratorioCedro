@@ -30,6 +30,10 @@ export class ResponderPesquisaUseCase {
 
     pesquisa.validarRecebimentoResposta();
 
+    if (!input.unidadeId || !input.unidadeId.trim()) {
+      throw new RegraNegocioError('A seleção da unidade de atendimento é obrigatória.');
+    }
+
     const unidade = await this.unidadeRepo.buscarPorId(input.unidadeId);
     if (!unidade) {
       throw new ObjetoNaoEncontradoError('Unidade selecionada não encontrada.');
@@ -39,23 +43,13 @@ export class ResponderPesquisaUseCase {
       throw new RegraNegocioError('A unidade selecionada está desativada para recebimento de avaliações.');
     }
 
-    const clienteIdentificacao =
-      input.clienteAtendimento && input.clienteAtendimento.trim()
-        ? input.clienteAtendimento.trim()
-        : 'Atendimento não informado';
-
-    const comentarioFinal =
-      input.comentario && input.comentario.trim()
-        ? input.comentario.trim()
-        : 'Sem comentário adicional.';
-
     const resposta = new RespostaPesquisa(
       randomUUID(),
       pesquisa.id,
       unidade.id,
-      clienteIdentificacao,
+      input.clienteAtendimento,
       input.nota,
-      comentarioFinal,
+      input.comentario,
       new Date()
     );
 
@@ -68,7 +62,7 @@ export class ResponderPesquisaUseCase {
       criadoEm: resposta.dataHora,
     });
 
-    // Garante que o protocolo gerado não colida com protocolos já persistidos no banco (ex.: seed ou após restart)
+    // Garante que o protocolo gerado não colida com protocolos já persistidos no banco
     let tentativas = 0;
     while (
       (await this.manifestacaoRepo.buscarPorProtocolo(manifestacao.protocolo)) !== null &&

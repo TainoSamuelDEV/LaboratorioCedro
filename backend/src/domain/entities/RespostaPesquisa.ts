@@ -20,22 +20,28 @@ export class RespostaPesquisa {
       throw new RegraNegocioError('O ID da pesquisa vinculada é obrigatório.');
     }
     if (!unidadeId || !unidadeId.trim()) {
-      throw new RegraNegocioError('O ID da unidade avaliada é obrigatório.');
+      throw new RegraNegocioError('A unidade de atendimento é obrigatória.');
     }
     if (!Number.isInteger(nota) || nota < 1 || nota > 5) {
-      throw new RegraNegocioError('A nota de avaliação deve ser um número inteiro entre 1 e 5.');
+      throw new RegraNegocioError('A nota de avaliação é obrigatória e deve ser um número inteiro entre 1 e 5.');
     }
 
-    // Campos opcionais conforme modelo oficial de avaliação e schema.sql
+    // Regra UC01 (docs/05-diagramas-uml-casos-de-uso.md):
+    // Comentário é OBRIGATÓRIO para notas de 1 a 3 e OPCIONAL para notas 4 e 5.
+    const comentarioLimpo = comentario ? comentario.trim() : '';
+    if (nota <= 3 && !comentarioLimpo) {
+      throw new RegraNegocioError(
+        'O comentário é obrigatório para avaliações com nota de 1 a 3.'
+      );
+    }
+
+    this.comentario = comentarioLimpo;
+
+    // Regra UC01 / Seção 9 (LGPD): Identificação do cliente/atendimento é OPCIONAL
     this.clienteAtendimento =
       clienteAtendimento && clienteAtendimento.trim()
         ? clienteAtendimento.trim()
-        : 'Atendimento não informado';
-
-    this.comentario =
-      comentario && comentario.trim()
-        ? comentario.trim()
-        : 'Sem comentário adicional.';
+        : 'Não informado';
   }
 
   public exigePrioridadeAlta(): boolean {

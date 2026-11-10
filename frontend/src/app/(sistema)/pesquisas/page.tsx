@@ -202,8 +202,7 @@ export default function PesquisasPage() {
             onChange={(e) => setTitulo(e.target.value)}
           />
           <Input
-            label="Descrição / Orientação ao Paciente"
-            required
+            label="Descrição / Orientação ao Paciente (Opcional)"
             placeholder="Ex: Sua opinião nos ajuda a aprimorar nossos serviços de diagnóstico."
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}

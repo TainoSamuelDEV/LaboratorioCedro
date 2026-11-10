@@ -71,4 +71,28 @@ describe('Dominio POO: Entidades Pesquisa e RespostaPesquisa', () => {
       new RespostaPesquisa('r', 'p', 'u', 'Cli', 3.5, 'Comentário');
     }).toThrow(RegraNegocioError);
   });
+
+  it('deve exigir comentario para notas de 1 a 3 e permitir comentario opcional para notas 4 e 5 (UC01)', () => {
+    // Notas 1, 2 e 3 exigem comentário obrigatório
+    expect(() => {
+      new RespostaPesquisa('r-1', 'p-1', 'u-1', '', 1, '');
+    }).toThrow(RegraNegocioError);
+
+    expect(() => {
+      new RespostaPesquisa('r-2', 'p-1', 'u-1', '', 2, '   ');
+    }).toThrow(RegraNegocioError);
+
+    expect(() => {
+      new RespostaPesquisa('r-3', 'p-1', 'u-1', '', 3, '');
+    }).toThrow(RegraNegocioError);
+
+    // Notas 4 e 5 permitem comentário opcional e identificação opcional (LGPD)
+    const r4 = new RespostaPesquisa('r-4', 'p-1', 'u-1', '', 4, '');
+    expect(r4.nota).toBe(4);
+    expect(r4.clienteAtendimento).toBe('Não informado');
+    expect(r4.comentario).toBe('');
+
+    const r5 = new RespostaPesquisa('r-5', 'p-1', 'u-1', null, 5, null);
+    expect(r5.nota).toBe(5);
+  });
 });

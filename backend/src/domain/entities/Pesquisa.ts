@@ -2,10 +2,12 @@ import { CanalPesquisa } from '../enums';
 import { RegraNegocioError } from '../errors/DomainErrors';
 
 export class Pesquisa {
+  private _descricao: string;
+
   constructor(
     public readonly id: string,
     private _titulo: string,
-    private _descricao: string,
+    descricao: string | null | undefined,
     private _periodo: string,
     public readonly canal: CanalPesquisa,
     private _ativa: boolean = true,
@@ -18,15 +20,15 @@ export class Pesquisa {
     if (!_titulo || !_titulo.trim()) {
       throw new RegraNegocioError('O título da pesquisa é obrigatório.');
     }
-    if (!_descricao || !_descricao.trim()) {
-      throw new RegraNegocioError('A descrição da pesquisa é obrigatória.');
-    }
     if (!_periodo || !_periodo.trim()) {
       throw new RegraNegocioError('O período da pesquisa é obrigatório.');
     }
     if (!canal) {
       throw new RegraNegocioError('O canal da pesquisa é obrigatório.');
     }
+
+    // Descrição é opcional conforme schema.sql (descricao TEXT nullable)
+    this._descricao = descricao ? descricao.trim() : '';
   }
 
   get titulo(): string {
@@ -55,22 +57,21 @@ export class Pesquisa {
 
   public validarRecebimentoResposta(): void {
     if (!this._ativa) {
-      throw new RegraNegocioError('Não é possível enviar resposta para uma pesquisa desativada ou encerrada.');
+      throw new RegraNegocioError(
+        'Não é possível enviar resposta para uma pesquisa desativada ou encerrada.'
+      );
     }
   }
 
-  public atualizarDados(titulo: string, descricao: string, periodo: string): void {
+  public atualizarDados(titulo: string, descricao: string | null | undefined, periodo: string): void {
     if (!titulo || !titulo.trim()) {
       throw new RegraNegocioError('O título da pesquisa não pode ser vazio.');
-    }
-    if (!descricao || !descricao.trim()) {
-      throw new RegraNegocioError('A descrição da pesquisa não pode ser vazia.');
     }
     if (!periodo || !periodo.trim()) {
       throw new RegraNegocioError('O período da pesquisa não pode ser vazio.');
     }
     this._titulo = titulo.trim();
-    this._descricao = descricao.trim();
+    this._descricao = descricao ? descricao.trim() : '';
     this._periodo = periodo.trim();
   }
 }
