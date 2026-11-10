@@ -36,6 +36,8 @@ function PesquisaPublicaContent() {
   const [naoEncontrada, setNaoEncontrada] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
+  const [erroComentario, setErroComentario] = useState(false);
+  const [statusErro, setStatusErro] = useState(false);
 
   // Campos da avaliação seguindo o modelo oficial do Laboratório Cedro
   const [unidadeId, setUnidadeId] = useState('');
@@ -99,15 +101,21 @@ function PesquisaPublicaContent() {
   const selecionarNota = (n: number) => {
     setNota(n);
     setStatusMsg('');
+    setStatusErro(false);
+    if (n >= 4) {
+      setErroComentario(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!nota) {
+      setStatusErro(true);
       setStatusMsg('Escolha uma nota de 1 a 5 para enviar.');
       return;
     }
     if (!unidadeId) {
+      setStatusErro(true);
       setStatusMsg('Selecione a unidade de atendimento.');
       return;
     }
@@ -115,11 +123,16 @@ function PesquisaPublicaContent() {
     const commentTrim = comentario.trim();
     // Regra UC01 (docs/05-diagramas-uml-casos-de-uso.md): Comentário obrigatório para notas 1 a 3
     if (nota <= 3 && !commentTrim) {
+      setErroComentario(true);
+      setStatusErro(true);
       setStatusMsg('Para notas de 1 a 3, o comentário é obrigatório.');
       commentRef.current?.focus();
+      commentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
+    setErroComentario(false);
+    setStatusErro(false);
     setEnviando(true);
     setStatusMsg('Enviando sua avaliação…');
 
@@ -135,10 +148,12 @@ function PesquisaPublicaContent() {
 
       setSucesso(res);
       setStatusMsg('');
+      setStatusErro(false);
       setTimeout(() => {
         doneHeadingRef.current?.focus();
       }, 50);
     } catch (err: any) {
+      setStatusErro(true);
       setStatusMsg(err?.message || 'Não foi possível enviar sua avaliação. Tente novamente.');
     } finally {
       setEnviando(false);
@@ -150,6 +165,8 @@ function PesquisaPublicaContent() {
     setComentario('');
     setSenhaAtendimento('');
     setStatusMsg('');
+    setErroComentario(false);
+    setStatusErro(false);
     setSucesso(null);
   };
 
@@ -286,19 +303,30 @@ function PesquisaPublicaContent() {
             <div className={`cedro-more ${nota > 0 ? 'open' : ''}`} id="more">
               <div>
                 <div className="cedro-more-inner">
-                  <label className="cedro-label-q" htmlFor="comment" id="q">
-                    {nota > 0
-                      ? nota <= 3
-                        ? `${PROMPTS.low} *`
-                        : PROMPTS.high
-                      : 'Quer contar mais?'}
+                  <label
+                    className={`cedro-label-q ${erroComentario ? 'cedro-label-error' : ''}`}
+                    htmlFor="comment"
+                    id="q"
+                  >
+                    <span>
+                      {nota > 0
+                        ? nota <= 3
+                          ? `${PROMPTS.low} *`
+                          : PROMPTS.high
+                        : 'Quer contar mais?'}
+                    </span>
+                    {nota > 0 && nota <= 3 && (
+                      <span className="cedro-required-badge">Campo obrigatório</span>
+                    )}
                   </label>
                   <textarea
                     ref={commentRef}
                     id="comment"
-                    className="cedro-textarea"
+                    className={`cedro-textarea ${erroComentario ? 'cedro-input-error' : ''}`}
                     maxLength={500}
                     required={nota > 0 && nota <= 3}
+                    aria-invalid={erroComentario}
+                    aria-describedby={erroComentario ? 'comment-error' : 'comment-hint'}
                     placeholder={
                       nota > 0 && nota <= 3
                         ? 'Conte pra gente o que aconteceu (obrigatório)'
@@ -307,14 +335,41 @@ function PesquisaPublicaContent() {
                     value={comentario}
                     onChange={(e) => {
                       setComentario(e.target.value);
-                      if (statusMsg) setStatusMsg('');
+                      if (erroComentario && e.target.value.trim()) {
+                        setErroComentario(false);
+                      }
+                      if (statusMsg) {
+                        setStatusMsg('');
+                        setStatusErro(false);
+                      }
                     }}
                   />
-                  <p className="cedro-hint">
-                    {nota > 0 && nota <= 3
-                      ? 'Obrigatório para notas de 1 a 3. Até 500 caracteres.'
-                      : 'Opcional. Até 500 caracteres.'}
-                  </p>
+                  {erroComentario ? (
+                    <p className="cedro-field-error" id="comment-error" role="alert">
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                      </svg>
+                      <span>Para notas de 1 a 3, o comentário é obrigatório.</span>
+                    </p>
+                  ) : (
+                    <p className="cedro-hint" id="comment-hint">
+                      {nota > 0 && nota <= 3
+                        ? 'Obrigatório para notas de 1 a 3. Até 500 caracteres.'
+                        : 'Opcional. Até 500 caracteres.'}
+                    </p>
+                  )}
 
                   <label className="cedro-label-q cedro-label-q2" htmlFor="ticket">
                     Senha de atendimento
@@ -347,9 +402,32 @@ function PesquisaPublicaContent() {
               >
                 {enviando ? 'Enviando…' : 'Enviar avaliação'}
               </button>
-              <span className="cedro-status" id="status" role="status">
-                {statusMsg}
-              </span>
+              {statusMsg && (
+                <span
+                  className={`cedro-status ${statusErro ? 'cedro-status-error' : ''}`}
+                  id="status"
+                  role={statusErro ? 'alert' : 'status'}
+                >
+                  {statusErro && (
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                  )}
+                  {statusMsg}
+                </span>
+              )}
             </div>
           </div>
         )}

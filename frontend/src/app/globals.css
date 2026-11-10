@@ -396,6 +396,71 @@ main h1 {
   box-shadow: inset 0 0 0 1.5px var(--tone), 0 0 0 1px var(--tone);
 }
 
+@keyframes cedro-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.cedro-label-q.cedro-label-error {
+  color: #CA2E24;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cedro-required-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #FEF2F2;
+  color: #CA2E24;
+  border: 1px solid #FECACA;
+}
+
+.cedro-textarea.cedro-input-error,
+.cedro-textarea.cedro-input-error:focus,
+.cedro-textarea.cedro-input-error:focus-visible {
+  outline: none !important;
+  background: #FFF8F7 !important;
+  border-color: #CA2E24 !important;
+  box-shadow: inset 0 0 0 1.5px #CA2E24, 0 0 0 4px rgba(202, 46, 36, 0.16) !important;
+  animation: cedro-shake 0.36s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.cedro-textarea.cedro-input-error::placeholder {
+  color: #B44840;
+  font-weight: 500;
+}
+
+.cedro-field-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #FEF2F2;
+  border: 1.5px solid #FCA5A5;
+  color: #B91C1C;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.cedro-field-error svg {
+  flex-shrink: 0;
+  color: #CA2E24;
+}
+
 .cedro-ticket-input {
   display: block;
   box-sizing: border-box;
@@ -518,6 +583,21 @@ main h1 {
 .cedro-status {
   font-size: 0.95rem;
   color: var(--muted);
+}
+
+.cedro-status.cedro-status-error {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #FEF2F2;
+  border: 1.5px solid #FCA5A5;
+  color: #B91C1C;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.35;
+  box-shadow: 0 2px 8px rgba(202, 46, 36, 0.08);
 }
 
 .cedro-done h2 {
