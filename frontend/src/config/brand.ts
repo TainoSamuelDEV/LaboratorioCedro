@@ -10,6 +10,8 @@ export const BRAND_CONFIG = {
   assets: {
     logoText: 'CEDRO',
     logoBadge: 'INDECX',
+    logoIcon: '/logo-cedro.svg',
+    logoCompleta: '/logo-cedro-completa.svg',
   },
 } as const;
 

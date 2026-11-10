@@ -21,7 +21,8 @@ export function Header() {
         <span className="text-xs font-bold uppercase tracking-wider text-[#999999]">
           Ambiente de Operação:
         </span>
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold bg-[#e6f6ef] text-[#075618]">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold bg-[#e6f6ef] text-[#075618]">
+          <img src="/logo-cedro.svg" alt="Cedro" className="w-4 h-4 block flex-shrink-0" />
           Plataforma INDECX • Cedro
         </span>
       </div>

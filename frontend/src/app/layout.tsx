@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: `${BRAND_CONFIG.name} — ${BRAND_CONFIG.subtitle}`,
   description:
     'Plataforma oficial de Gestão de Experiência do Cliente e Ouvidoria Integrada ao Back-end POO.',
+  icons: {
+    icon: BRAND_CONFIG.assets.logoIcon,
+    shortcut: BRAND_CONFIG.assets.logoIcon,
+    apple: BRAND_CONFIG.assets.logoIcon,
+  },
 };
 
 export const viewport: Viewport = {
