@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Painel | Experiência do Cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F3F3;--ink:#171717;--body:#323232;--mut:#666;--forest:#075618;--em:#02A562;--emh:#23823D;--or:#F29222;--red:#CA2E24;--bd:#E9E9E9;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--body);font:400 15px/1.5 Lato,Helvetica,Arial,sans-serif}
+a{color:var(--forest);font-weight:700}
+:focus-visible{outline:3px solid var(--em);outline-offset:2px}
+.app{display:grid;grid-template-columns:auto 1fr;min-height:100dvh}
+aside{background:#fff;border:1px solid var(--bd);border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.08);margin:16px 0 16px 16px;padding:20px 12px 12px;display:flex;flex-direction:column;gap:28px;position:sticky;top:16px;height:calc(100dvh - 32px);align-self:start;width:248px;transition:width .25s cubic-bezier(.3,.7,.2,1)}
+.col aside{width:72px}
+.brand{display:flex;align-items:center}
+.lg{display:block;height:48px;width:138px;overflow:hidden;transition:width .25s cubic-bezier(.3,.7,.2,1)}
+.lg svg{display:block;height:48px;width:auto}
+.col .lg{width:48px}
+nav{display:flex;flex-direction:column;gap:4px;flex:1}
+.sp{flex:1}
+nav a,.tg{position:relative;display:flex;align-items:center;gap:14px;width:100%;height:48px;padding:0 13px;border-radius:12px;color:var(--body);text-decoration:none;font:700 15px/1 Lato,sans-serif;background:none;border:0;cursor:pointer;transition:background-color .15s ease-in-out}
+nav a:hover,.tg:hover{background:var(--bg)}
+nav a.on,nav a.on:hover{background:#255521;color:#fff}
+nav a.on svg{color:#93CBA0}
+nav svg,.tg svg{flex:none;width:22px;height:22px}
+.lb{white-space:nowrap;overflow:hidden;max-width:170px;transition:max-width .25s,opacity .2s}
+.col .lb{max-width:0;opacity:0}
+nav em{margin-left:auto;font-style:normal;font-size:12px;font-weight:900;background:var(--red);color:#fff;border-radius:99px;padding:2px 8px}
+.col nav em{position:absolute;top:8px;right:8px;width:10px;height:10px;padding:0;font-size:0;border:2px solid #fff;box-sizing:content-box}
+.tg svg{transition:transform .25s}
+.bt{display:flex;flex-direction:column;gap:8px}
+.me{display:flex;align-items:center;gap:10px;height:48px;padding:6px;background:var(--bg);border-radius:99px}
+.col .me{gap:0}
+.av{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:50%;background:var(--forest);color:#fff;font-size:13px;font-weight:900}
+.me strong{display:block;font-size:14px;color:var(--ink);line-height:1.2}
+.me small{display:block;font-size:12px;color:var(--mut);line-height:1.2}
+.col .tg svg{transform:rotate(180deg)}
+.col nav a:hover::after,.col nav a:focus-visible::after,.col .tg:hover::after,.col .tg:focus-visible::after{content:attr(data-tip);position:absolute;left:calc(100% + 14px);top:50%;transform:translateY(-50%);background:#171717;color:#fff;font-size:13px;padding:6px 10px;border-radius:8px;white-space:nowrap;z-index:30;pointer-events:none}
+main{padding:32px clamp(16px,4vw,40px) 56px;max-width:1200px;width:100%}
+h1{font:900 clamp(1.75rem,3vw,2.25rem)/1.1 Lato,sans-serif;color:var(--forest);letter-spacing:-.02em;margin:0}
+h2{font:700 1.1rem/1.2 Lato,sans-serif;color:var(--ink);margin:0 0 14px}
+.sub{color:var(--mut);margin:6px 0 28px}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.card{background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:-10px 15px 30px rgba(0,0,0,.04);padding:20px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px}
+.kpi b{display:block;font:900 2.5rem/1 Lato,sans-serif;color:var(--forest);margin:8px 0 4px}
+.kpi small{color:var(--mut)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start}
+.stack{display:grid;gap:16px}
+.bar{display:grid;grid-template-columns:96px 1fr 44px;align-items:center;gap:12px;margin:12px 0}
+.bar.n{grid-template-columns:28px 1fr 44px}
+.trk{height:10px;background:#EEE;border-radius:5px;overflow:hidden}
+.trk i{display:block;height:100%;border-radius:5px}
+.bar span:last-child{text-align:right;font-weight:700}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);padding:10px 12px;white-space:nowrap}
+td{padding:14px 12px;border-top:1px solid #EEE;vertical-align:middle}
+tbody tr:hover td{background:#FAFAFA}
+td.tx{max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nt{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font-weight:900;font-size:14px}
+.nt.big{width:64px;height:64px;font-size:30px}
+.bd{display:inline-block;padding:3px 10px;border:1px solid;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+.s-nova{background:#ECFDF5;color:var(--forest);border-color:#A7F3D0}
+.s-nao{background:#FFFBEB;color:#92400E;border-color:#FDE68A}
+.s-trat{background:#F0F9FF;color:#075985;border-color:#BAE6FD}
+.s-esc{background:#FFF1F2;color:var(--red);border-color:#FDA4AF;font-weight:900;animation:pu 1.6s ease-in-out infinite}
+.s-resp{background:#F0FDFA;color:#115E59;border-color:#99F6E4}
+.s-conc{background:#255521;color:#fff;border-color:#255521}
+@keyframes pu{50%{opacity:.55}}
+.fl{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1.5px solid #E3E3E3;border-radius:8px;padding:0 12px;height:44px}
+textarea{width:100%;height:auto;min-height:110px;padding:12px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#999}
+.btn{font:700 .875rem Lato,sans-serif;text-transform:uppercase;letter-spacing:.02em;border:0;border-radius:8px;min-height:48px;padding:12px 24px;cursor:pointer;color:#fff;background:var(--em);box-shadow:0 1px 2px rgba(0,0,0,.08);transition:background-color .15s ease-in-out}
+.btn:hover{background:var(--emh)}
+.btn.f{background:var(--forest)}
+.btn.f:hover{background:var(--or)}
+.btn.o{background:#fff;color:var(--em);border:1px solid var(--em);border-radius:99px;box-shadow:none}
+.btn.o:hover{background:var(--em);color:#fff}
+.btn.s{min-height:36px;padding:6px 16px;font-size:.75rem}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tl{list-style:none;margin:0 0 0 6px;padding:0;border-left:2px solid #E3E3E3}
+.tl li{position:relative;padding:0 0 18px 20px}
+.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--em);border:2px solid #fff}
+.tl small{color:var(--mut);display:block}
+.back{display:inline-block;margin-bottom:16px;text-decoration:none}
+.k{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.foot{color:var(--mut);font-size:13px;margin-top:20px}
+@media (max-width:860px){
+.app{display:block}
+aside,.col aside{position:fixed;left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;height:auto;margin:0;padding:6px;flex-direction:row;gap:0;z-index:20}
+.brand,.bt,.sp{display:none}
+nav{flex-direction:row;gap:2px}
+nav a{justify-content:center;padding:0;height:52px;gap:0}
+.lb{max-width:0;opacity:0}
+nav em{position:absolute;top:10px;right:calc(50% - 20px);width:10px;height:10px;padding:0;font-size:0;border:2px solid #fff;box-sizing:content-box}
+nav a::after{display:none!important}
+main{padding-bottom:112px}
+.g2,.g3{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand"><a href="#dashboard" class="lg" aria-label="Cedro, ir para o Dashboard"><svg viewBox="0 0 277 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cedro">
+<ellipse cx="45.14" cy="52" rx="45.14" ry="44" fill="#79DDA9"/>
+<ellipse cx="47.42" cy="44.57" rx="45.14" ry="44.57" fill="#049671"/>
+<ellipse cx="54.85" cy="47.42" rx="41.14" ry="39.42" fill="#00AE6F"/>
+<circle cx="48.22" cy="47.95" r="38.78" fill="#027053"/>
+<path d="M27.78 52.94C27.22 53.14 26.60 53.88 26.52 54.44C26.39 55.30 26.78 56.20 27.45 56.61L27.83 56.84L35.34 56.90C39.47 56.94 42.85 56.98 42.86 56.99C42.87 57.01 43.00 57.13 43.16 57.27L43.45 57.52L43.49 60.87L43.52 64.22L43.39 64.30C43.32 64.35 42.92 64.39 42.51 64.41C39.88 64.48 34.98 65.12 34.47 65.45L34.17 65.65L34.21 66.09L34.25 66.54L34.55 66.68L34.85 66.82L35.94 66.65C40.24 66.01 44.84 65.71 49.27 65.79C54.08 65.88 57.06 66.12 60.47 66.68C61.10 66.78 61.80 66.89 62.02 66.93L62.42 67L62.66 66.78C62.95 66.51 62.97 65.86 62.68 65.60C62.56 65.50 62.28 65.39 62.05 65.36C61.81 65.32 61.05 65.20 60.35 65.09C58.71 64.82 57.68 64.70 55.41 64.52L53.57 64.37V61.11V57.85L53.77 57.50C53.89 57.31 54.06 57.11 54.17 57.05C54.27 57.00 57.71 56.93 61.80 56.90L69.25 56.84L69.63 56.63C69.84 56.51 70.14 56.21 70.30 55.96L70.58 55.50L70.57 54.83L70.56 54.16L70.27 53.72C70.11 53.48 69.82 53.18 69.62 53.06L69.25 52.83L62.05 52.80C57.35 52.77 54.56 52.81 54.01 52.89C52.03 53.20 50.43 54.58 49.71 56.59L49.53 57.08L49.48 60.63L49.43 64.18H48.54H47.65L47.60 60.57L47.55 56.96L47.21 56.12L46.87 55.28L46.07 54.48C45.15 53.56 44.28 53.09 43.14 52.90C42.66 52.82 39.65 52.78 35.28 52.78L28.19 52.79L27.78 52.94Z" fill="white"/>
+<path d="M20.99 47.28C20.76 47.40 20.44 47.69 20.28 47.92L20 48.35L20.04 49.06L20.09 49.77L20.58 50.23L21.07 50.69L21.97 50.77C22.46 50.81 34.78 50.83 49.35 50.81L75.84 50.77L76.17 50.52C76.35 50.38 76.61 50.12 76.75 49.94L77 49.61V48.97C77 48.18 76.67 47.58 76.09 47.28L75.67 47.07H48.54H21.41L20.99 47.28Z" fill="white"/>
+<path d="M37.47 35.29C36.30 35.91 36.17 37.71 37.24 38.48L37.64 38.76L48.30 38.79L58.96 38.83L59.41 38.62C60.04 38.34 60.40 37.72 60.40 36.95C60.40 36.19 60.11 35.66 59.50 35.31L59.04 35.06L48.46 35.07L37.88 35.07L37.47 35.29Z" fill="white"/>
+<path d="M45.27 29.14C44.30 29.67 43.86 30.81 44.29 31.65C44.39 31.84 44.67 32.16 44.90 32.37L45.34 32.76H48.33H51.33L51.78 32.45C52.36 32.06 52.60 31.58 52.60 30.84V30.24L52.33 29.84C52.18 29.62 51.86 29.34 51.63 29.22L51.21 29L48.36 29.00C46.51 29.00 45.43 29.05 45.27 29.14Z" fill="white"/>
+<path d="M30.60 41.36C30.39 41.48 30.10 41.76 29.95 41.97L29.68 42.36V42.93C29.68 43.66 29.95 44.19 30.52 44.58L30.97 44.89L48.48 44.89L65.98 44.88L66.45 44.61C67.64 43.93 67.68 42.19 66.53 41.40L66.13 41.13L48.55 41.13L30.98 41.13L30.60 41.36Z" fill="white"/>
+<path d="M127.72 39.00C127.48 39.31 127.25 39.56 127.01 39.75C126.79 39.93 126.46 40.02 126.03 40.02C125.62 40.02 125.22 39.89 124.83 39.64C124.43 39.37 123.97 39.08 123.42 38.76C122.88 38.42 122.23 38.13 121.47 37.88C120.73 37.60 119.81 37.47 118.70 37.47C117.29 37.47 116.05 37.74 114.99 38.28C113.93 38.81 113.04 39.56 112.32 40.56C111.62 41.56 111.10 42.77 110.76 44.20C110.41 45.60 110.24 47.20 110.24 48.99C110.24 50.84 110.42 52.50 110.79 53.95C111.18 55.40 111.73 56.62 112.45 57.62C113.17 58.59 114.03 59.34 115.06 59.86C116.08 60.36 117.23 60.61 118.51 60.61C119.79 60.61 120.82 60.45 121.60 60.13C122.40 59.79 123.08 59.43 123.62 59.04C124.16 58.64 124.63 58.27 125.02 57.96C125.43 57.62 125.89 57.45 126.39 57.45C127.04 57.45 127.53 57.71 127.85 58.23L130.17 61.29C129.28 62.37 128.31 63.29 127.27 64.04C126.23 64.76 125.14 65.35 124.01 65.81C122.90 66.24 121.75 66.54 120.56 66.72C119.39 66.90 118.21 67 117.04 67C114.98 67 113.04 66.60 111.21 65.81C109.39 64.99 107.79 63.81 106.42 62.27C105.06 60.73 103.97 58.85 103.17 56.63C102.39 54.39 102 51.84 102 48.99C102 46.43 102.34 44.06 103.04 41.89C103.75 39.69 104.80 37.80 106.16 36.21C107.53 34.60 109.23 33.35 111.24 32.44C113.26 31.53 115.59 31.08 118.21 31.08C120.71 31.08 122.89 31.50 124.76 32.34C126.65 33.18 128.34 34.38 129.84 35.94L127.72 39.00Z" fill="#027053"/>
+<path d="M156.16 45.05C156.16 43.96 156.01 42.94 155.71 41.99C155.43 41.01 154.99 40.16 154.41 39.44C153.82 38.71 153.07 38.15 152.16 37.74C151.27 37.31 150.23 37.09 149.03 37.09C146.71 37.09 144.87 37.79 143.53 39.17C142.20 40.55 141.36 42.51 140.99 45.05H156.16ZM140.82 50.11C140.95 51.90 141.26 53.45 141.74 54.76C142.21 56.05 142.84 57.13 143.63 57.99C144.41 58.83 145.33 59.46 146.39 59.89C147.48 60.30 148.67 60.51 149.98 60.51C151.28 60.51 152.40 60.35 153.33 60.03C154.29 59.71 155.11 59.36 155.81 58.98C156.52 58.59 157.14 58.24 157.66 57.92C158.20 57.61 158.73 57.45 159.23 57.45C159.90 57.45 160.40 57.71 160.72 58.23L163.04 61.29C162.15 62.37 161.15 63.29 160.04 64.04C158.93 64.76 157.77 65.35 156.55 65.81C155.36 66.24 154.13 66.54 152.87 66.72C151.64 66.90 150.43 67 149.26 67C146.94 67 144.78 66.60 142.78 65.81C140.78 64.99 139.04 63.80 137.57 62.24C136.09 60.65 134.93 58.70 134.08 56.39C133.24 54.06 132.81 51.37 132.81 48.31C132.81 45.93 133.18 43.70 133.92 41.61C134.66 39.51 135.71 37.68 137.08 36.14C138.47 34.58 140.15 33.35 142.13 32.44C144.12 31.53 146.37 31.08 148.87 31.08C150.97 31.08 152.92 31.43 154.70 32.13C156.48 32.84 158.01 33.87 159.29 35.23C160.57 36.56 161.57 38.22 162.29 40.19C163.02 42.13 163.39 44.37 163.39 46.88C163.39 48.15 163.26 49.01 163.00 49.46C162.74 49.89 162.24 50.11 161.50 50.11H140.82Z" fill="#027053"/>
+<path d="M190.40 40.53C189.49 39.37 188.49 38.56 187.41 38.08C186.34 37.60 185.19 37.37 183.96 37.37C182.74 37.37 181.64 37.60 180.67 38.08C179.69 38.56 178.85 39.28 178.16 40.25C177.46 41.21 176.93 42.43 176.56 43.92C176.19 45.40 176.01 47.14 176.01 49.16C176.01 51.20 176.16 52.93 176.46 54.36C176.79 55.76 177.25 56.92 177.83 57.82C178.42 58.70 179.14 59.35 179.98 59.76C180.83 60.14 181.77 60.34 182.82 60.34C184.49 60.34 185.91 59.97 187.08 59.25C188.25 58.52 189.36 57.49 190.40 56.16V40.53ZM198.45 16V66.49H193.53C192.47 66.49 191.79 65.98 191.51 64.96L190.83 61.59C189.48 63.20 187.93 64.50 186.17 65.50C184.43 66.50 182.40 67 180.08 67C178.26 67 176.58 66.60 175.06 65.81C173.54 65.01 172.23 63.87 171.12 62.37C170.04 60.86 169.19 58.99 168.58 56.77C168.00 54.55 167.70 52.01 167.70 49.16C167.70 46.57 168.04 44.17 168.71 41.95C169.39 39.73 170.35 37.81 171.61 36.18C172.87 34.55 174.38 33.28 176.14 32.37C177.90 31.44 179.87 30.98 182.07 30.98C183.93 30.98 185.53 31.28 186.85 31.90C188.18 32.51 189.36 33.33 190.40 34.38V16H198.45Z" fill="#027053"/>
+<path d="M213.97 37.67C215.02 35.59 216.25 33.96 217.69 32.78C219.12 31.58 220.81 30.98 222.77 30.98C224.31 30.98 225.55 31.33 226.48 32.03L225.96 38.32C225.85 38.73 225.69 39.02 225.47 39.20C225.28 39.36 225.00 39.44 224.66 39.44C224.33 39.44 223.84 39.38 223.19 39.27C222.56 39.16 221.94 39.10 221.34 39.10C220.44 39.10 219.65 39.24 218.96 39.51C218.26 39.78 217.63 40.18 217.07 40.70C216.53 41.19 216.04 41.81 215.60 42.53C215.19 43.26 214.80 44.08 214.43 45.01V66.49H206.39V31.62H211.11C211.93 31.62 212.51 31.78 212.83 32.10C213.16 32.39 213.38 32.94 213.49 33.73L213.97 37.67Z" fill="#027053"/>
+<path d="M244.52 31.08C246.99 31.08 249.24 31.50 251.26 32.34C253.30 33.18 255.04 34.37 256.47 35.91C257.92 37.45 259.04 39.33 259.82 41.55C260.60 43.77 261 46.25 261 48.99C261 51.75 260.60 54.24 259.82 56.46C259.04 58.68 257.92 60.57 256.47 62.14C255.04 63.70 253.30 64.90 251.26 65.74C249.24 66.58 246.99 67 244.52 67C242.02 67 239.75 66.58 237.71 65.74C235.67 64.90 233.92 63.70 232.47 62.14C231.03 60.57 229.92 58.68 229.11 56.46C228.33 54.24 227.94 51.75 227.94 48.99C227.94 46.25 228.33 43.77 229.11 41.55C229.92 39.33 231.03 37.45 232.47 35.91C233.92 34.37 235.67 33.18 237.71 32.34C239.75 31.50 242.02 31.08 244.52 31.08ZM244.52 60.54C247.3 60.54 249.35 59.57 250.67 57.62C252.02 55.67 252.69 52.82 252.69 49.06C252.69 45.29 252.02 42.43 250.67 40.46C249.35 38.49 247.3 37.50 244.52 37.50C241.69 37.50 239.60 38.50 238.23 40.49C236.88 42.46 236.21 45.32 236.21 49.06C236.21 52.79 236.88 55.65 238.23 57.62C239.60 59.57 241.69 60.54 244.52 60.54Z" fill="#027053"/>
+<path d="M266.86 33.84C267.05 33.84 267.21 33.83 267.32 33.80C267.45 33.77 267.54 33.72 267.60 33.66C267.67 33.59 267.72 33.52 267.75 33.42C267.77 33.33 267.79 33.23 267.79 33.11C267.79 33.00 267.78 32.90 267.75 32.81C267.73 32.73 267.69 32.65 267.63 32.60C267.57 32.54 267.49 32.50 267.38 32.47C267.27 32.44 267.14 32.43 266.97 32.43H266.38V33.84H266.86ZM266.97 31.54C267.65 31.54 268.15 31.66 268.47 31.91C268.79 32.15 268.95 32.50 268.95 32.96C268.95 33.29 268.87 33.57 268.70 33.82C268.53 34.06 268.27 34.24 267.91 34.35C267.99 34.40 268.06 34.46 268.12 34.54C268.17 34.61 268.23 34.69 268.28 34.78L269.28 36.47H268.15C267.98 36.47 267.87 36.41 267.80 36.29L267.01 34.84C266.97 34.79 266.93 34.75 266.88 34.73C266.84 34.70 266.77 34.68 266.68 34.68H266.38V36.47H265.2V31.54H266.97ZM266.99 37.42C267.30 37.42 267.60 37.38 267.89 37.30C268.17 37.22 268.44 37.11 268.68 36.96C268.93 36.81 269.16 36.64 269.36 36.43C269.56 36.23 269.74 36.00 269.88 35.75C270.02 35.49 270.13 35.22 270.21 34.93C270.29 34.64 270.33 34.34 270.33 34.02C270.33 33.70 270.29 33.39 270.21 33.10C270.13 32.81 270.02 32.53 269.88 32.28C269.74 32.02 269.56 31.79 269.36 31.59C269.16 31.38 268.93 31.20 268.68 31.05C268.44 30.90 268.17 30.79 267.89 30.71C267.60 30.63 267.30 30.59 266.99 30.59C266.68 30.59 266.38 30.63 266.10 30.71C265.82 30.79 265.55 30.90 265.31 31.05C265.06 31.20 264.84 31.38 264.63 31.59C264.44 31.79 264.27 32.02 264.12 32.28C263.98 32.53 263.87 32.81 263.79 33.10C263.72 33.39 263.68 33.70 263.68 34.02C263.68 34.50 263.76 34.94 263.93 35.36C264.10 35.77 264.34 36.13 264.63 36.44C264.93 36.74 265.28 36.98 265.69 37.16C266.09 37.34 266.52 37.42 266.99 37.42ZM266.99 29.95C267.36 29.95 267.72 30.00 268.07 30.10C268.42 30.20 268.74 30.33 269.04 30.51C269.34 30.69 269.61 30.90 269.86 31.15C270.11 31.39 270.32 31.67 270.50 31.97C270.67 32.27 270.81 32.59 270.90 32.94C271.00 33.29 271.05 33.64 271.05 34.02C271.05 34.39 271.00 34.75 270.90 35.10C270.81 35.44 270.67 35.76 270.50 36.06C270.32 36.36 270.11 36.63 269.86 36.88C269.61 37.13 269.34 37.34 269.04 37.52C268.74 37.69 268.42 37.83 268.07 37.93C267.72 38.02 267.36 38.07 266.99 38.07C266.61 38.07 266.26 38.02 265.91 37.93C265.57 37.83 265.24 37.69 264.94 37.52C264.65 37.34 264.37 37.13 264.12 36.88C263.88 36.63 263.67 36.36 263.49 36.06C263.31 35.76 263.18 35.44 263.08 35.10C262.98 34.75 262.94 34.39 262.94 34.02C262.94 33.64 262.98 33.29 263.08 32.94C263.18 32.59 263.31 32.27 263.49 31.97C263.67 31.67 263.88 31.39 264.12 31.15C264.37 30.90 264.65 30.69 264.94 30.51C265.24 30.33 265.57 30.20 265.91 30.10C266.26 30.00 266.61 29.95 266.99 29.95Z" fill="#027053"/>
+</svg></a></div>
+  <nav id="nav" aria-label="Principal"></nav>
+  <div class="bt"><button class="tg" id="tg" type="button" aria-expanded="true" aria-label="Recolher menu" data-tip="Recolher menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/></svg><span class="lb">Recolher menu</span></button>
+  <div class="me" title="Ana Souza, Administrador"><span class="av">AS</span><div class="lb"><strong>Ana Souza</strong><small>Administrador</small></div></div></div>
+</aside>
+<main id="main"></main>
+</div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const U=["Centro","Shopping","Cohama","Renascença","Turu"];
+const NC={1:"#CA2E24",2:"#E65100",3:"#F29222",4:"#93CBA0",5:"#02A562"},W={1:"Ruim",2:"Abaixo do esperado",3:"Regular",4:"Muito bom",5:"Excelente"};
+const ST={nova:"Nova",nao:"Não respondida",trat:"Em tratamento",esc:"Escalonada",resp:"Respondida",conc:"Concluída"};
+const ID=["3f2a9c1e-7b4d-4e8a-9a51-2c6d8e0f1a47","b81d5e07-2a3c-4f69-8d14-9e7a6c3b5f02","c4e1a7b3-5d92-4a06-b7f8-1e3c9d2a6b58","d90b3f62-8c17-4d5e-a2b4-6f1e0c7a9d83","e57a2c84-1b6f-4938-8d0a-3b9c5e1f7a26"];
+// Dados fictícios de demonstração: [protocolo, horas atrás, unidade, nota, comentário, senha, status]
+const D=[[1042,3,0,5,"Atendimento rápido e equipe muito atenciosa.","A045","nova"],[1041,6,1,1,"Esperei mais de uma hora e ninguém explicou o motivo da demora.","B112","nova"],[1040,20,2,2,"O resultado atrasou e não consegui falar com ninguém por telefone.","C078","trat"],[1039,30,0,4,"Tudo certo, só o estacionamento estava lotado.","","resp"],[1038,40,3,1,"Fui atendido de forma grosseira na recepção.","D203","esc"],[1037,60,4,3,"Atendimento regular, a espera foi longa.","E019","nao"],[1036,75,1,5,"Coleta sem dor e com muita educação.","B090","conc"],[1035,96,2,2,"Cobraram um exame que não fiz.","C051","trat"],[1034,120,0,5,"Excelente, voltarei sempre.","","conc"],[1033,130,3,4,"Bom atendimento, ambiente limpo.","D180","resp"],[1032,150,4,1,"Perdi minha vez na fila e não resolveram.","E002","esc"],[1031,170,1,3,"","B044","nao"]]
+.map(([id,h,u,n,t,s,st])=>{const x={id,h,u,n,t,s,st,hist:[{h,w:"Cliente",x:"Resposta recebida pelo link da pesquisa."}]};
+if(st!="nova"&&st!="nao")x.hist.push({h:h-1,w:"Unidade "+U[u],x:"Tratativa iniciada."});
+if(st=="esc")x.hist.push({h:Math.max(h-2,0),w:"Sistema",x:"Escalonada para a gerência."});
+if(st=="resp"||st=="conc")x.hist.push({h:Math.max(h-3,0),w:"Unidade "+U[u],x:"Resposta enviada ao cliente."});
+if(st=="conc")x.hist.push({h:Math.max(h-4,0),w:"Unidade "+U[u],x:"Manifestação concluída."});
+return x});
+const open=i=>["nova","nao","trat","esc"].includes(i.st),late=i=>open(i)&&i.h>48;
+const ago=h=>h<1?"agora":h<24?Math.round(h)+" h":Math.floor(h/24)+" d";
+const ic=p=>`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const NAV=[["dashboard","Dashboard",'<path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/>'],["pesquisas","Pesquisas",'<path d="M9 4h6v3H9zM7 5H5v16h14V5h-2M9 12h6M9 16h4"/>'],["manifestacoes","Manifestações",'<path d="M4 5h16v11H9l-5 4z"/>'],["pendencias","Pendências",'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'],["unidades","Unidades",'<path d="M12 21s7-6 7-11a7 7 0 10-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>'],["usuarios","Usuários",'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'],["relatorios","Relatórios",'<path d="M4 20V4M4 20h16M8 16v-5M13 16V8M18 16v-3"/>']];
+const OR=["dashboard","pesquisas","manifestacoes","pendencias","relatorios","unidades","usuarios"];NAV.sort((a,b)=>OR.indexOf(a[0])-OR.indexOf(b[0]));
+const bd=s=>`<span class="bd s-${s}">${ST[s]}</span>`;
+const nt=n=>`<span class="nt" style="background:${NC[n]};color:${n==3||n==4?"#171717":"#fff"}">${n}</span>`;
+const head=(t,s)=>`<h1>${t}</h1><p class="sub">${s}</p>`;
+const THEAD="<thead><tr><th>Protocolo</th><th>Unidade</th><th>Nota</th><th>Comentário</th><th>Senha</th><th>Status</th><th>Há</th></tr></thead>";
+const rows=l=>l.map(i=>`<tr><td><a href="#manifestacao-${i.id}">#${i.id}</a></td><td>${U[i.u]}</td><td>${nt(i.n)}</td><td class="tx">${esc(i.t||"Sem comentário")}</td><td>${i.s||"-"}</td><td>${bd(i.st)}</td><td>${ago(i.h)}</td></tr>`).join("");
+const none='<tr><td colspan="7">Nenhuma manifestação encontrada.</td></tr>';
+const tbl=l=>`<div class="card wrap"><table>${THEAD}<tbody id="tb">${rows(l)||none}</tbody></table></div>`;
+
+function dash(){
+const n=D.length,avg=D.reduce((a,i)=>a+i.n,0)/n,sat=Math.round(D.filter(i=>i.n>=4).length/n*100);
+const dist=[5,4,3,2,1].map(k=>{const c=D.filter(i=>i.n==k).length;return `<div class="bar n"><span>${nt(k)}</span><div class="trk"><i style="width:${c/n*100}%;background:${NC[k]}"></i></div><span>${c}</span></div>`}).join("");
+const byU=U.map((u,k)=>{const l=D.filter(i=>i.u==k);if(!l.length)return"";const a=l.reduce((s,i)=>s+i.n,0)/l.length;return `<div class="bar"><span>${u}</span><div class="trk"><i style="width:${a/5*100}%;background:var(--em)"></i></div><span>${a.toFixed(1)}</span></div>`}).join("");
+return head("Dashboard","Visão geral das respostas das pesquisas de todas as unidades.")+
+`<div class="kpis"><div class="card kpi"><span class="k">Respostas</span><b>${n}</b><small>no período</small></div>
+<div class="card kpi"><span class="k">Nota média</span><b>${avg.toFixed(1)}</b><small>de 5</small></div>
+<div class="card kpi"><span class="k">Satisfeitos</span><b>${sat}%</b><small>notas 4 e 5</small></div>
+<div class="card kpi"><span class="k">Pendências</span><b>${D.filter(open).length}</b><small>${D.filter(late).length} atrasadas</small></div></div>
+<div class="g2"><div class="card"><h2>Distribuição das notas</h2>${dist}</div><div class="card"><h2>Nota média por unidade</h2>${byU}</div></div>
+<div class="hd" style="margin:24px 0 12px"><h2 style="margin:0">Manifestações recentes</h2><a href="#manifestacoes">Ver todas</a></div>${tbl(D.slice(0,5))}
+<p class="foot">Protótipo com dados fictícios.</p>`}
+
+function pesq(){return head("Pesquisas","Cada unidade tem um link único, usado no QR Code afixado no local.")+
+`<div class="card wrap"><table><thead><tr><th>Pesquisa</th><th>Unidade</th><th>Link</th><th>Respostas</th><th></th></tr></thead><tbody>${U.map((u,k)=>`<tr><td><a href="#pesquisa-${ID[k]}">Satisfação no atendimento</a></td><td>${u}</td><td>/pesquisa/${ID[k].slice(0,8)}…</td><td>${D.filter(i=>i.u==k).length}</td><td><button class="btn o s" data-copy="${k}">Copiar link</button></td></tr>`).join("")}</tbody></table></div>`}
+
+function manif(){return head("Manifestações","Todas as respostas recebidas. Filtre por unidade, nota ou status.")+
+`<div class="fl"><input id="q" type="search" placeholder="Buscar por protocolo, senha ou texto" aria-label="Buscar" style="flex:1;min-width:220px">
+<select id="fs" aria-label="Status"><option value="">Todos os status</option>${Object.entries(ST).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+<select id="fu" aria-label="Unidade"><option value="">Todas as unidades</option>${U.map((u,k)=>`<option value="${k}">${u}</option>`).join("")}</select>
+<select id="fn" aria-label="Nota"><option value="">Todas as notas</option>${[5,4,3,2,1].map(k=>`<option value="${k}">Nota ${k}</option>`).join("")}</select></div>
+${tbl(D)}<p class="foot" id="ct"></p>`}
+function fill(){const q=$("#q").value.toLowerCase(),fs=$("#fs").value,fu=$("#fu").value,fn=$("#fn").value;
+const l=D.filter(i=>(!q||(i.id+" "+i.s+" "+i.t).toLowerCase().includes(q))&&(!fs||i.st==fs)&&(fu===""||i.u==fu)&&(!fn||i.n==fn));
+$("#tb").innerHTML=rows(l)||none;$("#ct").textContent=l.length+" de "+D.length+" manifestações";}
+
+function pdet(id){const k=ID.indexOf(id);if(k<0)return head("Pesquisa não encontrada",'<a href="#pesquisas">Voltar para a lista</a>');
+const l=D.filter(i=>i.u==k),n=l.length,avg=n?l.reduce((a,i)=>a+i.n,0)/n:0,sat=n?Math.round(l.filter(i=>i.n>=4).length/n*100):0;
+const dist=[5,4,3,2,1].map(v=>{const c=l.filter(i=>i.n==v).length;return `<div class="bar n"><span>${nt(v)}</span><div class="trk"><i style="width:${n?c/n*100:0}%;background:${NC[v]}"></i></div><span>${c}</span></div>`}).join("");
+return `<a class="back" href="#pesquisas">← Voltar para a lista</a>
+<div class="hd"><div><h1>Satisfação no atendimento</h1><p class="sub">Unidade ${U[k]}</p></div><button class="btn o s" data-copy="${k}">Copiar link</button></div>
+<div class="kpis"><div class="card kpi"><span class="k">Respostas</span><b>${n}</b><small>nesta pesquisa</small></div>
+<div class="card kpi"><span class="k">Nota média</span><b>${n?avg.toFixed(1):"-"}</b><small>de 5</small></div>
+<div class="card kpi"><span class="k">Satisfeitos</span><b>${sat}%</b><small>notas 4 e 5</small></div>
+<div class="card kpi"><span class="k">Pendências</span><b>${l.filter(open).length}</b><small>${l.filter(late).length} atrasadas</small></div></div>
+<div class="g2"><div class="card"><h2>Distribuição das notas</h2>${dist}</div><div class="card"><h2>Link da pesquisa</h2><p style="margin:0;word-break:break-all">/pesquisa/${ID[k]}</p><p class="foot">Use este link no QR Code da unidade.</p></div></div>
+<h2>Respostas</h2>${tbl(l)}`}
+
+let tab="nao";
+function pend(){const f={nao:i=>i.st=="nao",late,esc:i=>i.st=="esc"},T=[["nao","Não respondidas"],["late","Atrasadas"],["esc","Escalonadas"]];
+return head("Pendências","O que precisa de ação agora. O prazo de resposta é de 48 horas.")+
+`<div class="tabs">${T.map(([k,v])=>`<button class="btn o s${tab==k?"":""}" data-tab="${k}" ${tab==k?'style="background:var(--em);color:#fff"':""}>${v} (${D.filter(f[k]).length})</button>`).join("")}</div>${tbl(D.filter(f[tab]))}`}
+
+function det(id){const i=D.find(x=>x.id==id);if(!i)return head("Manifestação não encontrada",'<a href="#manifestacoes">Voltar para a lista</a>');
+return `<a class="back" href="#manifestacoes">← Voltar para a lista</a>
+<div class="hd"><div><h1>Manifestação #${i.id}</h1><p class="sub"><a href="#pesquisa-${ID[i.u]}">Unidade ${U[i.u]}</a> · recebida há ${ago(i.h)}</p></div>${bd(i.st)}</div>
+<div class="g3"><div class="stack"><div class="card"><div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><span class="nt big" style="background:${NC[i.n]};color:${i.n==3||i.n==4?"#171717":"#fff"}">${i.n}</span><div><h2 style="margin:0">${W[i.n]}</h2><span class="k">Senha de atendimento: ${i.s||"não informada"}</span></div></div>
+<p style="margin:0">${esc(i.t||"O cliente não deixou comentário.")}</p></div>
+${i.st=="conc"?'<div class="card">Manifestação concluída. O histórico não pode mais ser alterado.</div>':`<div class="card"><h2>Registrar tratativa</h2><textarea id="tx" placeholder="Descreva a tratativa ou a resposta enviada ao cliente" aria-label="Tratativa"></textarea>
+<div class="acts"><button class="btn" data-act="resp">Registrar resposta</button><button class="btn f" data-act="esc">Escalonar</button><button class="btn o" data-act="conc">Concluir</button></div></div>`}</div>
+<div class="card"><h2>Histórico</h2><ul class="tl">${i.hist.map(e=>`<li><b>${esc(e.w)}</b> ${esc(e.x)}<small>há ${ago(e.h)}</small></li>`).join("")}</ul><p class="foot" style="margin:0">O histórico é imutável: novas ações entram sempre no fim.</p></div></div>`}
+
+function act(i,a){const t=$("#tx").value.trim();
+if(a=="resp"&&!t){$("#tx").focus();return}
+const m={resp:["resp","Resposta registrada: "+t],esc:["esc","Escalonada para a gerência."+(t?" Motivo: "+t:"")],conc:["conc","Manifestação concluída."+(t?" "+t:"")]}[a];
+i.st=m[0];i.hist.push({h:0,w:"Você",x:m[1]});go();}
+
+function go(){const h=location.hash.slice(1)||"dashboard",d=h.startsWith("manifestacao-"),p=h.startsWith("pesquisa-"),k=d?"manifestacoes":p?"pesquisas":h,m=$("#main");
+const V={dashboard:dash,pesquisas:pesq,manifestacoes:manif,pendencias:pend};
+const nome=(NAV.find(x=>x[0]==k)||[0,"Tela"])[1];
+m.innerHTML=d?det(h.slice(13)):p?pdet(h.slice(9)):V[k]?V[k]():head(nome,"Tela prevista na arquitetura, ainda não prototipada.");
+$("#nav").innerHTML=NAV.map(([id,l,p])=>`${id=="unidades"?'<span class="sp"></span>':""}<a href="#${id}" data-tip="${l}" class="${id==k?"on":""}" ${id==k?'aria-current="page"':""}>${ic(p)}<span class="lb">${l}</span>${id=="pendencias"&&D.filter(open).length?`<em>${D.filter(open).length}</em>`:""}</a>`).join("");
+if(k=="manifestacoes"&&!d){["#q","#fs","#fu","#fn"].forEach(s=>$(s).addEventListener("input",fill));fill();}
+if(!d)window.scrollTo(0,0);}
+$("#main").addEventListener("click",e=>{
+const b=e.target.closest("button");if(!b)return;
+if(b.dataset.tab){tab=b.dataset.tab;go();}
+if(b.dataset.act)act(D.find(x=>x.id==location.hash.slice(14)),b.dataset.act);
+if(b.dataset.copy){const u=location.origin+"/pesquisa/"+ID[b.dataset.copy];try{navigator.clipboard.writeText(u)}catch(_){}const t=b.textContent;b.textContent="Copiado";setTimeout(()=>b.textContent=t,1500);}});
+const tg=$("#tg"),ap=$(".app");
+const sc=c=>{ap.classList.toggle("col",c);const t=c?"Expandir menu":"Recolher menu";tg.setAttribute("aria-expanded",String(!c));tg.setAttribute("aria-label",t);tg.dataset.tip=t;tg.querySelector(".lb").textContent=t;try{localStorage.setItem("menu",c?"1":"0")}catch(_){}};
+tg.addEventListener("click",()=>sc(!ap.classList.contains("col")));
+try{if(localStorage.getItem("menu")=="1")sc(true)}catch(_){}
+addEventListener("hashchange",go);go();
+</script>
+</body>
+</html>

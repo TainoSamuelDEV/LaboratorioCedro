@@ -250,48 +250,39 @@ export function DetalheManifestacaoSkeleton() {
 }
 
 /**
- * Skeleton da Estrutura Principal da Aplicação (Sidebar + Header + Área de Conteúdo)
+ * Skeleton da Estrutura Principal da Aplicação (Sidebar Flutuante + Área de Conteúdo)
  */
 export function AppShellSkeleton() {
   return (
-    <div className="flex h-screen w-full bg-[var(--bg-canvas)] overflow-hidden" aria-busy="true">
-      {/* Sidebar Skeleton */}
-      <aside className="w-64 bg-white border-r border-[#E3E3E3] flex flex-col justify-between h-screen p-5 flex-shrink-0">
-        <div className="space-y-6">
-          <div className="pb-4 border-b border-[#E3E3E3] space-y-2">
-            <Skeleton className="h-8 w-36" />
-            <Skeleton className="h-3 w-48" />
-          </div>
-          <div className="space-y-2.5">
-            <Skeleton className="h-3 w-28 mb-3" />
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <Skeleton key={item} className="h-9 w-full rounded-lg" />
-            ))}
-          </div>
+    <div className="cedro-admin-shell" aria-busy="true">
+      {/* Sidebar Flutuante Skeleton (Desktop) */}
+      <aside className="hidden lg:flex cedro-sidebar">
+        <Skeleton className="h-12 w-36 rounded-xl" />
+
+        <div className="flex flex-col gap-1.5 flex-1">
+          {[1, 2, 3, 4, 5].map((item) => (
+            <Skeleton key={item} className="h-12 w-full rounded-xl" />
+          ))}
+          <div className="flex-1" />
+          {[6, 7].map((item) => (
+            <Skeleton key={item} className="h-12 w-full rounded-xl" />
+          ))}
         </div>
-        <div className="pt-4 border-t border-[#E3E3E3] flex items-center justify-between">
-          <div className="space-y-1.5">
-            <Skeleton className="h-3.5 w-28" />
-            <Skeleton className="h-3 w-20" />
-          </div>
-          <Skeleton className="h-7 w-7 rounded-lg" />
+
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-12 w-full rounded-xl" />
+          <Skeleton className="h-12 w-full rounded-full" />
         </div>
       </aside>
 
       {/* Main Content Skeleton */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-16 bg-white border-b border-[#E3E3E3] px-8 flex items-center justify-between">
-          <Skeleton className="h-5 w-56 rounded-md" />
-          <Skeleton className="h-5 w-28 rounded-md" />
-        </header>
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8 space-y-6">
-          <div className="space-y-2">
-            <Skeleton className="h-7 w-72" />
-            <Skeleton className="h-4 w-96" />
-          </div>
-          <DashboardSkeleton />
-        </main>
-      </div>
+      <main className="cedro-admin-main space-y-6">
+        <div className="space-y-2 mb-7">
+          <Skeleton className="h-9 w-56 rounded-lg" />
+          <Skeleton className="h-4 w-80 rounded" />
+        </div>
+        <DashboardSkeleton />
+      </main>
     </div>
   );
 }
