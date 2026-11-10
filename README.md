@@ -41,13 +41,19 @@ Toda a engenharia de base foi documentada antes da construção da API:
 ## 4. Roteiro de Construção do MVP (Seção 14)
 
 - [x] **Fase 0 & 1:** Planejamento Arquitetural, Modelagem POO, Schema SQL e Contratos da API
-- [ ] **Entrega 1:** Autenticação, usuários, perfis polimórficos e unidades
-- [ ] **Entrega 2:** Cadastro da pesquisa e geração do link/formulário de resposta
-- [ ] **Entrega 3:** Registro de nota 1 a 5 e comentário
-- [ ] **Entrega 4:** Criação automática e encaminhamento da manifestação
-- [ ] **Entrega 5:** Tela e rotas de manifestações com filtros e detalhe
-- [ ] **Entrega 6:** Resposta da unidade e alteração encapsulada de status
-- [ ] **Entrega 7:** Pendências, escalonamento e conclusão pela Ouvidoria
-- [ ] **Entrega 8:** Dashboard gerencial e relatórios
-- [ ] **Entrega 9:** Notificações polimórficas e trilha de auditoria imutável
+- [x] **Back-end POO Completo (Entregas 1 a 7 & 9):**
+  - [x] **Entrega 1:** Autenticação JWT, usuários, perfis polimórficos e unidades
+  - [x] **Entrega 2:** Cadastro da pesquisa e rota pública de avaliação
+  - [x] **Entrega 3:** Registro de nota 1 a 5 e comentário
+  - [x] **Entrega 4:** Criação automática de protocolo CED-YYYY-XXXXXX e prioridade por SLA detrator
+  - [x] **Entrega 5:** Endpoints de manifestações com os 10 filtros da Seção 10 e detalhe dos 14 campos da Seção 9
+  - [x] **Entrega 6:** Início de tratamento e resposta da unidade
+  - [x] **Entrega 7:** Fila de pendências, solicitação de complemento, escalonamento e conclusão
+  - [x] **Entrega 9:** Notificações polimórficas (INotificador) e auditoria imutável (Interações)
+  - [x] **Infraestrutura:** Repositórios Supabase / PostgreSQL implementados em `backend/src/infrastructure/`
+- [ ] **Front-end Next.js (App Router):**
+  - [ ] **Telas 1, 7 e 8:** Login, Gestão de Unidades e Usuários (Entrega 1)
+  - [ ] **Telas 3 e Rota Pública:** Gestão de Pesquisas e Formulário do QR Code `/pesquisa/[id]` (Entrega 2)
+  - [ ] **Telas 4, 5 e 6:** Lista com Filtros, Detalhe/Tratativa e Fila de Pendências (Entregas 5, 6 e 7)
+  - [ ] **Telas 2 e 9:** Dashboard Gerencial com 10 Indicadores e Relatórios (Entrega 8)
 
