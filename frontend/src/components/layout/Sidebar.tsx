@@ -12,6 +12,8 @@ import {
   Users,
   LogOut,
   ChevronRight,
+  FileText,
+  AlertOctagon,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { BrandLogo } from '../brand/BrandLogo';
@@ -29,8 +31,10 @@ const navItems: NavItem[] = [
   { label: 'Pesquisas', href: '/pesquisas', icon: ClipboardList, ouvidoriaOrAdmin: true },
   { label: 'Manifestações', href: '/manifestacoes', icon: MessageSquareWarning },
   { label: 'Pendências SLA', href: '/pendencias', icon: ClockAlert },
+  { label: 'Relatórios CSV', href: '/relatorios', icon: FileText, ouvidoriaOrAdmin: true },
   { label: 'Unidades', href: '/unidades', icon: Building2, ouvidoriaOrAdmin: true },
   { label: 'Usuários', href: '/usuarios', icon: Users, adminOnly: true },
+  { label: 'Telas de Erro', href: '/erros', icon: AlertOctagon, adminOnly: true },
 ];
 
 export function Sidebar() {
