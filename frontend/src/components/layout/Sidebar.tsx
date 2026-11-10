@@ -392,14 +392,14 @@ export function Sidebar() {
         className={`hidden lg:flex cedro-sidebar ${recolhido ? 'is-collapsed' : ''}`}
       >
         {/* Marca: logo completa expandida / símbolo oficial quando recolhida */}
-        <div className="flex items-center">
+        <div className="flex items-center justify-center">
           <Link
             href="/dashboard"
             className="cedro-sidebar-logo-wrap"
             aria-label="Cedro, ir para o Dashboard"
           >
             <img
-              src={recolhido ? '/logo-cedro.svg' : '/logo-cedro-completa.svg'}
+              src={recolhido ? '/logo-cedro.svg?v=2' : '/logo-cedro-completa.svg?v=2'}
               alt="Laboratório Cedro"
               className={recolhido ? 'cedro-logo-icon' : 'cedro-logo-full'}
             />
