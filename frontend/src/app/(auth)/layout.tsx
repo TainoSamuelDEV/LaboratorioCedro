@@ -15,14 +15,42 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           preserveAspectRatio="xMaxYMid slice"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Camada 1 (Externa - Verde Menta #79DDA9) */}
-          <ellipse cx="-80" cy="600" rx="1000" ry="1120" fill="#79DDA9" />
+          {/* Camada 1 (Externa - Verde Menta #79DDA9) — avança por último até o limite final */}
+          <ellipse
+            className="cedro-login-arc cedro-login-arc-4"
+            cx="-80"
+            cy="600"
+            rx="1000"
+            ry="1120"
+            fill="#79DDA9"
+          />
           {/* Camada 2 (Intermediária - Verde Petróleo #049671) */}
-          <ellipse cx="-140" cy="490" rx="940" ry="1100" fill="#049671" />
+          <ellipse
+            className="cedro-login-arc cedro-login-arc-3"
+            cx="-140"
+            cy="490"
+            rx="940"
+            ry="1100"
+            fill="#049671"
+          />
           {/* Camada 3 (Vibrante - Verde Esmeralda #00AE6F) */}
-          <ellipse cx="-180" cy="540" rx="810" ry="1020" fill="#00AE6F" />
-          {/* Camada 4 (Interna - Verde Cedro Profundo #027053) */}
-          <ellipse cx="-320" cy="550" rx="700" ry="980" fill="#027053" />
+          <ellipse
+            className="cedro-login-arc cedro-login-arc-2"
+            cx="-180"
+            cy="540"
+            rx="810"
+            ry="1020"
+            fill="#00AE6F"
+          />
+          {/* Camada 4 (Interna - Verde Cedro Profundo #027053) — inicia o movimento na esquerda */}
+          <ellipse
+            className="cedro-login-arc cedro-login-arc-1"
+            cx="-320"
+            cy="550"
+            rx="700"
+            ry="980"
+            fill="#027053"
+          />
         </svg>
       </div>
 

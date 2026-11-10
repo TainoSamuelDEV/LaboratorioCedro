@@ -158,6 +158,57 @@ main h1 {
   animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
+/* Animação de entrada em camadas dos arcos da tela de Login (da esquerda para a direita) */
+@keyframes cedro-arc-slide-in {
+  from {
+    transform: translate3d(var(--arc-start, -920px), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.cedro-login-arc {
+  will-change: transform;
+  animation-name: cedro-arc-slide-in;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+/* Camada 4 (Interna #027053, borda direita em x=380): sai primeiro da borda esquerda */
+.cedro-login-arc-1 {
+  --arc-start: -400px;
+  animation-duration: 0.42s;
+  animation-delay: 0s;
+}
+
+/* Camada 3 (#00AE6F, borda direita em x=630): avança ultrapassando a Camada 4 */
+.cedro-login-arc-2 {
+  --arc-start: -650px;
+  animation-duration: 0.48s;
+  animation-delay: 0.06s;
+}
+
+/* Camada 2 (#049671, borda direita em x=800): avança ultrapassando a Camada 3 */
+.cedro-login-arc-3 {
+  --arc-start: -820px;
+  animation-duration: 0.54s;
+  animation-delay: 0.12s;
+}
+
+/* Camada 1 (Externa #79DDA9, borda direita em x=920): avança ultrapassando todas até o final */
+.cedro-login-arc-4 {
+  --arc-start: -940px;
+  animation-duration: 0.6s;
+  animation-delay: 0.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cedro-login-arc {
+    animation: none !important;
+  }
+}
+
 /* =========================================================
  * ESTILOS DA PÁGINA PÚBLICA DE AVALIAÇÃO (MODELO OFICIAL)
  * ========================================================= */
