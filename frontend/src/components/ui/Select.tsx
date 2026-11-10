@@ -26,14 +26,14 @@ export function Select({
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label htmlFor={selectId} className="text-xs font-medium text-slate-700">
+        <label htmlFor={selectId} className="text-xs font-bold text-[#171717]">
           {label}
         </label>
       )}
       <select
         id={selectId}
-        className={`px-3 py-2 text-sm rounded-lg border bg-white text-slate-900 transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]/20 focus:border-[var(--brand-primary)] disabled:bg-slate-50 disabled:text-slate-500 cursor-pointer ${
-          error ? 'border-rose-400 focus:border-rose-500' : 'border-slate-300'
+        className={`px-3.5 py-2.5 text-sm rounded-lg border bg-white text-[#171717] transition-colors focus:outline-none focus:ring-2 focus:ring-[#02A562]/25 focus:border-[#02A562] disabled:bg-[#F3F3F3] disabled:text-[#999999] cursor-pointer ${
+          error ? 'border-[#CA2E24] focus:border-[#CA2E24]' : 'border-[#E3E3E3]'
         } ${className}`}
         {...props}
       >
@@ -48,7 +48,7 @@ export function Select({
           </option>
         ))}
       </select>
-      {error && <span className="text-xs text-rose-600">{error}</span>}
+      {error && <span className="text-xs font-semibold text-[#CA2E24]">{error}</span>}
     </div>
   );
 }

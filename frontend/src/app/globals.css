@@ -1,52 +1,563 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-lato), "Lato", "Helvetica", "Arial", sans-serif;
+
+  --color-cedro-dark: #255521;
+  --color-cedro-forest: #075618;
+  --color-cedro-emerald: #02A562;
+  --color-cedro-hover: #23823D;
+  --color-cedro-theme: #008F66;
+  --color-cedro-mint: #93CBA0;
+  --color-cedro-orange: #F29222;
+  --color-cedro-danger: #CA2E24;
+  --color-cedro-bg: #F3F3F3;
+  --color-cedro-surface: #FFFFFF;
+  --color-cedro-border: #E3E3E3;
+  --color-cedro-text-dark: #171717;
+  --color-cedro-text-body: #323232;
+  --color-cedro-text-muted: #999999;
+
+  --shadow-cedro-card: -10px 15px 30px rgba(0, 0, 0, 0.04);
+  --shadow-cedro-modal: 0 14px 30px rgba(0, 0, 0, 0.1);
+  --shadow-cedro-dropdown: 0 1px 4px rgba(0, 0, 0, 0.16);
+}
+
 :root {
-  /* Design Tokens de Marca (Cedro / NIT) - Pronto para receber Brandbook */
-  --brand-primary: #0d5c54;
-  --brand-primary-hover: #0a4741;
-  --brand-primary-light: #e8f4f2;
+  /* =========================================================
+   * TOKENS OFICIAIS DO BRAND BOOK — LABORATÓRIO CEDRO
+   * ========================================================= */
+  --cedro-dark: #255521;        /* Logo vetorial, header corporativo, status Concluída */
+  --cedro-forest: #075618;      /* Títulos principais (h1, h2), ênfase institucional */
+  --cedro-emerald: #02A562;     /* Botões de submissão, seleção, estados ativos */
+  --cedro-green-hover: #23823D; /* Hover de botões primários e cards interativos */
+  --cedro-theme: #008F66;       /* Meta theme-color, links, ações secundárias */
+  --cedro-mint: #93CBA0;        /* Bordas decorativas, acentos suaves */
+  --cedro-orange: #F29222;      /* Botões de chamado urgente, pendências atrasadas */
+  --cedro-danger: #CA2E24;      /* Mensagens de validação, status Escalonada, nota 1 */
+  --cedro-bg: #F3F3F3;          /* Fundo clínico oficial do sistema */
+  --cedro-surface: #FFFFFF;     /* Superfície dos cards, modais e tabelas */
+  --cedro-border: #E3E3E3;      /* Bordas e divisórias neutras */
+  --cedro-text-dark: #171717;   /* Texto de alta ênfase (labels, títulos de card) */
+  --cedro-text-body: #323232;   /* Texto de corpo (parágrafos, comentários) */
+  --cedro-text-muted: #999999;  /* Placeholders, datas, protocolos secundários */
+
+  /* Mapeamento Semântico Global do Sistema */
+  --brand-primary: #02A562;
+  --brand-primary-hover: #23823D;
+  --brand-primary-light: #e6f6ef;
   --brand-primary-foreground: #ffffff;
 
-  --brand-secondary: #1e3a5f;
-  --brand-secondary-hover: #162c47;
-  --brand-accent: #0284c7;
+  --brand-secondary: #075618;
+  --brand-secondary-hover: #255521;
+  --brand-accent: #008F66;
 
-  /* Superfícies Neutras de Alto Nível (Clean / Minimalist Lab) */
-  --bg-canvas: #f8fafc;
-  --bg-surface: #ffffff;
-  --bg-surface-elevated: #ffffff;
-  --bg-subtle: #f1f5f9;
+  /* Superfícies Clínicas Oficiais */
+  --bg-canvas: #F3F3F3;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-subtle: #EAEAEA;
 
-  /* Bordas Refinadas (Linhas sutis de precisão) */
-  --border-subtle: #e2e8f0;
-  --border-default: #cbd5e1;
-  --border-strong: #94a3b8;
+  /* Bordas e Divisórias */
+  --border-subtle: #E3E3E3;
+  --border-default: #D4D4D4;
+  --border-strong: #999999;
 
   /* Tipografia e Contraste */
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-primary: #171717;
+  --text-body: #323232;
+  --text-secondary: #5E5E5E;
+  --text-muted: #999999;
+
+  /* Tokens da Escala de Avaliação do Cliente (1 a 5) — Modelo Oficial */
+  --logo: #027053;
+  --ink: #171717;
+  --body-ink: #323232;
+  --forest: #075618;
+  --muted: #5E5E5E;
+  --ph: #999999;
+  --line: #E3E3E3;
+  --field: #FFFFFF;
+
+  --t1: #CA2E24;
+  --t2: #E65100;
+  --t3: #F29222;
+  --t4: #93CBA0;
+  --t5: #02A562;
+
+  --x1: #CA2E24;
+  --x2: #E65100;
+  --x3: #A85F00;
+  --x4: #23823D;
+  --x5: #02A562;
+
+  --on1: #ffffff;
+  --on2: #ffffff;
+  --on3: #171717;
+  --on4: #171717;
+  --on5: #ffffff;
+
+  --tone: var(--ink);
+  --tone-x: var(--ink);
+  --on: #ffffff;
+  --display: var(--font-lato), "Lato", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: var(--font-lato), "Lato", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Status Operacionais do Domínio POO */
-  --status-nova: #64748b;
+  --status-nova: #075618;
   --status-nao-respondida: #d97706;
-  --status-em-tratamento: #2563eb;
-  --status-escalonada: #9333ea;
-  --status-respondida: #0d9488;
-  --status-concluida: #16a34a;
+  --status-em-tratamento: #0284c7;
+  --status-escalonada: #CA2E24;
+  --status-respondida: #008F66;
+  --status-concluida: #255521;
+}
+
+::selection {
+  background-color: #02A562;
+  color: #FFFFFF;
 }
 
 body {
   background-color: var(--bg-canvas);
-  color: var(--text-primary);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  color: var(--text-body);
+  font-family: var(--font-lato), "Lato", system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Títulos Principais Institucionais (Brand Book Seção 4: Lato 900 #075618) */
+main h1 {
+  color: var(--cedro-forest);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* Sombra oficial de cards do Brand Book Cedro */
+.shadow-cedro-card {
+  box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.04);
 }
 
 /* Suporte a números tabulares em protocolos e dados de SLA */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/* Animação oficial do Brand Book / Modelo de Avaliação */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* =========================================================
+ * ESTILOS DA PÁGINA PÚBLICA DE AVALIAÇÃO (MODELO OFICIAL)
+ * ========================================================= */
+.cedro-eval-page {
+  min-height: 100dvh;
+  width: 100%;
+  background: #FFFFFF;
+  color: var(--body-ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.55;
+  display: flex;
+  align-items: center;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.cedro-eval-main {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 24px 56px;
+}
+
+.cedro-eval-brand {
+  margin: 0 0 56px;
+}
+
+.cedro-eval-logo {
+  display: block;
+  height: 38px;
+  width: auto;
+}
+
+.cedro-eval-logo .wm {
+  fill: var(--logo);
+}
+
+.cedro-eval-h1 {
+  font-family: var(--display);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  color: var(--forest);
+  font-size: clamp(2.25rem, 6vw, 3rem);
+  margin: 0 0 14px;
+  text-wrap: balance;
+  animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.cedro-eval-lead {
+  color: var(--muted);
+  margin: 0 0 12px;
+  max-width: 44ch;
+}
+
+.cedro-eval-how {
+  color: var(--muted);
+  margin: 0 0 44px;
+}
+
+.cedro-eval-unit {
+  margin: 0 0 22px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cedro-eval-state {
+  color: var(--muted);
+}
+
+/* Trilha contínua que acende até a nota escolhida (1 a 5) */
+.cedro-scale {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.cedro-rail,
+.cedro-fill {
+  position: absolute;
+  top: 28px;
+  height: 4px;
+  left: 10%;
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+
+.cedro-rail {
+  width: 80%;
+  background: var(--line);
+}
+
+.cedro-fill {
+  width: 0;
+  background: var(--tone);
+  transition: width 0.35s cubic-bezier(0.3, 0.7, 0.2, 1), background-color 0.25s;
+}
+
+.cedro-opt {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cedro-opt input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.cedro-dot {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1;
+  background: #FFFFFF;
+  color: var(--muted);
+  border: 2px solid #BDBDBD;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    transform 0.25s cubic-bezier(0.3, 0.8, 0.3, 1.3);
+}
+
+.cedro-opt:hover .cedro-dot {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.cedro-opt.lit .cedro-dot {
+  background: var(--tone);
+  border-color: var(--tone);
+  color: var(--on);
+}
+
+.cedro-opt.on .cedro-dot {
+  transform: scale(1.18);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--tone) 22%, transparent);
+}
+
+.cedro-opt input:focus-visible + .cedro-dot {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.cedro-verdict {
+  margin: 40px 0 0;
+  min-height: 1.2em;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--muted);
+  transition: color 0.25s;
+}
+
+.cedro-verdict.set {
+  color: var(--tone-x);
+}
+
+/* Gaveta expansível de comentário e senha de atendimento */
+.cedro-more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.cedro-more.open {
+  grid-template-rows: 1fr;
+}
+
+.cedro-more > div {
+  overflow: hidden;
+}
+
+.cedro-more-inner {
+  padding-top: 32px;
+}
+
+.cedro-label-q {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+.cedro-label-q2 {
+  margin-top: 28px;
+}
+
+.cedro-textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  padding: 14px 16px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--field);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+}
+
+.cedro-textarea::placeholder {
+  color: var(--ph);
+}
+
+.cedro-textarea:focus-visible {
+  outline: 3px solid var(--tone);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+.cedro-ticket-input {
+  width: 100%;
+  max-width: 260px;
+  padding: 14px 16px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--field);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+}
+
+.cedro-ticket-input::placeholder {
+  color: var(--ph);
+}
+
+.cedro-ticket-input:focus-visible {
+  outline: 3px solid var(--tone);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+.cedro-unit-select {
+  width: 100%;
+  max-width: 360px;
+  padding: 10px 14px;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--field);
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+}
+
+.cedro-unit-select:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+.cedro-hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
+.cedro-actions {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cedro-btn-send {
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: 0;
+  border-radius: 8px;
+  min-height: 48px;
+  padding: 12px 28px;
+  background: #02A562;
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition:
+    background-color 0.15s ease-in-out,
+    opacity 0.2s,
+    transform 0.15s;
+}
+
+.cedro-btn-send:hover:not(:disabled) {
+  background: #23823D;
+  transform: translateY(-1px);
+}
+
+.cedro-btn-send:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.cedro-btn-send:focus-visible {
+  outline: 3px solid var(--tone);
+  outline-offset: 3px;
+}
+
+.cedro-btn-quiet {
+  font: inherit;
+  background: none;
+  color: var(--ink);
+  padding: 12px 0;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.cedro-btn-quiet:hover:not(:disabled) {
+  background: none;
+  transform: none;
+  color: var(--forest);
+}
+
+.cedro-status {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.cedro-done h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  color: var(--forest);
+  font-size: clamp(2.2rem, 7vw, 3.6rem);
+  margin: 0 0 14px;
+}
+
+.cedro-done p {
+  color: var(--muted);
+  margin: 0 0 28px;
+  max-width: 44ch;
+}
+
+.cedro-score {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--tone-x);
+}
+
+.cedro-score b {
+  font-size: 5.5rem;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.cedro-score span {
+  font-size: 1.4rem;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cedro-eval-page *,
+  .cedro-eval-page *::before,
+  .cedro-eval-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .cedro-dot {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+  .cedro-rail,
+  .cedro-fill {
+    top: 24px;
+  }
 }
 
 /* Scrollbar refinada */

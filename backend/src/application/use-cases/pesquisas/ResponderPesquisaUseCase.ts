@@ -39,13 +39,23 @@ export class ResponderPesquisaUseCase {
       throw new RegraNegocioError('A unidade selecionada está desativada para recebimento de avaliações.');
     }
 
+    const clienteIdentificacao =
+      input.clienteAtendimento && input.clienteAtendimento.trim()
+        ? input.clienteAtendimento.trim()
+        : 'Atendimento não informado';
+
+    const comentarioFinal =
+      input.comentario && input.comentario.trim()
+        ? input.comentario.trim()
+        : 'Sem comentário adicional.';
+
     const resposta = new RespostaPesquisa(
       randomUUID(),
       pesquisa.id,
       unidade.id,
-      input.clienteAtendimento,
+      clienteIdentificacao,
       input.nota,
-      input.comentario,
+      comentarioFinal,
       new Date()
     );
 

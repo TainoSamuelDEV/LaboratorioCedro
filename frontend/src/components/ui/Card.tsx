@@ -11,18 +11,18 @@ interface CardProps {
 export function Card({ children, className = '', title, subtitle, action }: CardProps) {
   return (
     <div
-      className={`bg-white rounded-xl border border-[var(--border-subtle)] shadow-xs transition-shadow ${className}`}
+      className={`bg-white rounded-xl border border-[#E3E3E3] shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] transition-shadow ${className}`}
     >
       {(title || action) && (
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border-subtle)]">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#E3E3E3]">
           <div>
             {typeof title === 'string' ? (
-              <h3 className="text-sm font-semibold text-[var(--text-primary)]">{title}</h3>
+              <h3 className="text-base font-bold text-[#171717]">{title}</h3>
             ) : (
               title
             )}
             {subtitle && (
-              <p className="text-xs text-[var(--text-secondary)] mt-0.5">{subtitle}</p>
+              <p className="text-xs text-[#5E5E5E] mt-0.5">{subtitle}</p>
             )}
           </div>
           {action && <div>{action}</div>}

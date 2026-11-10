@@ -48,7 +48,6 @@ export function ErrorView({
   const [detalhesAbertos, setDetalhesAbertos] = useState(false);
   const [copiado, setCopiado] = useState(false);
 
-  // Configurações padrão por tipo de erro
   const presets = {
     '404': {
       codigoPadrao: '404',
@@ -57,7 +56,7 @@ export function ErrorView({
       descricaoPadrao:
         'O endereço solicitado não existe, foi movido ou a URL digitada possui algum caractere incorreto.',
       icon: FileQuestion,
-      badgeColor: 'bg-slate-100 text-slate-700 border-slate-200/80',
+      badgeColor: 'bg-emerald-50 text-[#075618] border-emerald-200',
     },
     '403': {
       codigoPadrao: '403',
@@ -66,7 +65,7 @@ export function ErrorView({
       descricaoPadrao:
         'Seu perfil atual de usuário não possui as permissões necessárias para acessar este módulo ou unidade.',
       icon: ShieldAlert,
-      badgeColor: 'bg-amber-50 text-amber-700 border-amber-200/70',
+      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     '500': {
       codigoPadrao: '500',
@@ -75,7 +74,7 @@ export function ErrorView({
       descricaoPadrao:
         'Ocorreu uma instabilidade inesperada ao processar sua solicitação. O incidente foi registrado para auditoria.',
       icon: ServerCrash,
-      badgeColor: 'bg-rose-50 text-rose-700 border-rose-200/70',
+      badgeColor: 'bg-rose-50 text-[#CA2E24] border-rose-300',
     },
     conexao: {
       codigoPadrao: 'ERR_CONEXAO',
@@ -84,7 +83,7 @@ export function ErrorView({
       descricaoPadrao:
         'Não foi possível estabelecer contato com a API da Plataforma Cedro. Verifique sua conexão de rede.',
       icon: WifiOff,
-      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200/80',
+      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     generico: {
       codigoPadrao: 'ERRO',
@@ -93,7 +92,7 @@ export function ErrorView({
       descricaoPadrao:
         'Não foi possível concluir esta operação. Tente novamente ou retorne à página inicial do sistema.',
       icon: ServerCrash,
-      badgeColor: 'bg-slate-100 text-slate-700 border-slate-200/80',
+      badgeColor: 'bg-[#F3F3F3] text-[#323232] border-[#E3E3E3]',
     },
   };
 
@@ -112,25 +111,22 @@ export function ErrorView({
 
   return (
     <div
-      className={`min-h-[80vh] flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-fade-in ${className}`}
+      className={`min-h-[80vh] flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-rise ${className}`}
     >
-      <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200/80 p-8 sm:p-10 shadow-sm relative overflow-hidden">
-        {/* Marca d'água sutil decorativa de fundo */}
-        <div className="absolute -top-16 -right-16 w-48 h-48 bg-slate-50 rounded-full blur-2xl pointer-events-none -z-10" />
-
-        {/* Logo da Empresa (Área modular pronta para o Brandbook oficial) */}
+      <div className="w-full max-w-lg bg-white rounded-xl border border-[#E3E3E3] p-8 sm:p-10 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] relative overflow-hidden">
+        {/* Logotipo Oficial Laboratório Cedro */}
         <div className="flex justify-center mb-8">
-          <BrandLogo size="lg" showSubtitle />
+          <BrandLogo size="lg" showSubtitle className="items-center" />
         </div>
 
         {/* Ícone de Destaque e Badge do Código */}
         <div className="flex flex-col items-center gap-3 mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200/90 flex items-center justify-center text-slate-700 shadow-2xs">
+          <div className="w-14 h-14 rounded-2xl bg-[#F3F3F3] border border-[#E3E3E3] flex items-center justify-center text-[#075618]">
             <IconComponent className="w-7 h-7 stroke-[1.8]" />
           </div>
 
           <div
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold border ${preset.badgeColor}`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold border ${preset.badgeColor}`}
           >
             <span>{codigoExibido}</span>
             <span className="opacity-40">•</span>
@@ -139,10 +135,10 @@ export function ErrorView({
         </div>
 
         {/* Título e Descrição */}
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-black text-[#075618] tracking-tight">
           {tituloExibido}
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-2.5 leading-relaxed max-w-md mx-auto">
+        <p className="text-sm text-[#323232] mt-2.5 leading-relaxed max-w-md mx-auto">
           {descricaoExibida}
         </p>
 
@@ -178,11 +174,11 @@ export function ErrorView({
 
         {/* Accordion de Detalhes Técnicos (Opcional) */}
         {detalhesTecnicos && (
-          <div className="mt-8 pt-5 border-t border-slate-100 text-left">
+          <div className="mt-8 pt-5 border-t border-[#E3E3E3] text-left">
             <button
               type="button"
               onClick={() => setDetalhesAbertos(!detalhesAbertos)}
-              className="w-full flex items-center justify-between text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors py-1 cursor-pointer"
+              className="w-full flex items-center justify-between text-xs font-bold text-[#5E5E5E] hover:text-[#171717] transition-colors py-1 cursor-pointer"
             >
               <span>Detalhes técnicos do erro</span>
               {detalhesAbertos ? (
@@ -193,14 +189,18 @@ export function ErrorView({
             </button>
 
             {detalhesAbertos && (
-              <div className="mt-3 relative rounded-lg bg-slate-900 text-slate-200 p-3.5 text-[11px] font-mono leading-relaxed overflow-x-auto max-h-48">
+              <div className="mt-3 relative rounded-lg bg-[#171717] text-slate-200 p-3.5 text-[11px] font-mono leading-relaxed overflow-x-auto max-h-48">
                 <button
                   type="button"
                   onClick={copiarDetalhes}
-                  className="absolute top-2.5 right-2.5 p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                  className="absolute top-2.5 right-2.5 p-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 transition-colors cursor-pointer"
                   title="Copiar log"
                 >
-                  {copiado ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiado ? (
+                    <Check className="w-3.5 h-3.5 text-[#93CBA0]" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
                 </button>
                 <pre className="pr-8 whitespace-pre-wrap break-all">{detalhesTecnicos}</pre>
               </div>
@@ -210,8 +210,8 @@ export function ErrorView({
       </div>
 
       {/* Rodapé institucional discreto */}
-      <div className="mt-6 text-center text-[11px] text-slate-400">
-        Plataforma de Experiência do Cliente Cedro / NIT • Suporte Técnico Interno
+      <div className="mt-6 text-center text-xs text-[#999999]">
+        Plataforma de Experiência do Cliente Laboratório Cedro • Suporte Técnico Interno
       </div>
     </div>
   );
