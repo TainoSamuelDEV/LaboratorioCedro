@@ -41,7 +41,7 @@ Toda a engenharia de base foi documentada antes da construção da API:
 ## 4. Roteiro de Construção do MVP (Seção 14)
 
 - [x] **Fase 0 & 1:** Planejamento Arquitetural, Modelagem POO, Schema SQL e Contratos da API
-- [x] **Back-end POO Completo (Entregas 1 a 7 & 9):**
+- [x] **Back-end POO Completo (Entregas 1 a 9):**
   - [x] **Entrega 1:** Autenticação JWT, usuários, perfis polimórficos e unidades
   - [x] **Entrega 2:** Cadastro da pesquisa e rota pública de avaliação
   - [x] **Entrega 3:** Registro de nota 1 a 5 e comentário
@@ -49,11 +49,16 @@ Toda a engenharia de base foi documentada antes da construção da API:
   - [x] **Entrega 5:** Endpoints de manifestações com os 10 filtros da Seção 10 e detalhe dos 14 campos da Seção 9
   - [x] **Entrega 6:** Início de tratamento e resposta da unidade
   - [x] **Entrega 7:** Fila de pendências, solicitação de complemento, escalonamento e conclusão
+  - [x] **Entrega 8:** Dashboard com os 10 indicadores gerenciais da Seção 11 e exportação CSV/JSON
   - [x] **Entrega 9:** Notificações polimórficas (INotificador) e auditoria imutável (Interações)
   - [x] **Infraestrutura:** Repositórios Supabase / PostgreSQL implementados em `backend/src/infrastructure/`
-- [ ] **Front-end Next.js (App Router):**
-  - [ ] **Telas 1, 7 e 8:** Login, Gestão de Unidades e Usuários (Entrega 1)
-  - [ ] **Telas 3 e Rota Pública:** Gestão de Pesquisas e Formulário do QR Code `/pesquisa/[id]` (Entrega 2)
-  - [ ] **Telas 4, 5 e 6:** Lista com Filtros, Detalhe/Tratativa e Fila de Pendências (Entregas 5, 6 e 7)
-  - [ ] **Telas 2 e 9:** Dashboard Gerencial com 10 Indicadores e Relatórios (Entrega 8)
+- [x] **Front-end Next.js (App Router) — Esqueleto Profissional com Design Tokens para Brandbook:**
+  - [x] **Telas 1, 7 e 8:** Login com atalhos de teste, Gestão de Unidades e Usuários com RBAC (Entrega 1)
+  - [x] **Telas 3 e Rota Pública:** Gestão de Pesquisas e Formulário do QR Code `/pesquisa/[id]` (Entrega 2 e 3)
+  - [x] **Telas 4, 5 e 6:** Lista com Filtros, Detalhe/Tratativa com os 14 campos, Histórico de Auditoria e Fila de Pendências (Entregas 5, 6 e 7)
+  - [x] **Telas 2 e 9:** Dashboard Gerencial com os 10 Indicadores e Relatórios com download CSV/JSON (Entrega 8)
+- [x] **DevOps & Deploy:**
+  - [x] **Dockerfiles:** Multi-stage build standalone para Front-end e Back-end
+  - [x] **Docker Compose:** Orquestração completa local e compatível com Coolify (PaaS VPS)
+  - [x] **GitHub Actions:** Pipeline de CI contínuo com Vitest, Typecheck e Build na branch `prod`
 
