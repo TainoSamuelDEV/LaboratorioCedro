@@ -85,7 +85,7 @@ export default function SignupPage() {
         />
       </header>
 
-      <p className="cedro-eval-unit">Plataforma INDECX</p>
+      <p className="cedro-eval-unit">Laboratório Cedro — Experiência & Ouvidoria</p>
 
       <h1 className="cedro-eval-h1 !text-[clamp(2rem,4.5vw,2.6rem)]">
         Crie sua conta.

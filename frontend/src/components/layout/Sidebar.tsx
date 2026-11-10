@@ -225,7 +225,7 @@ export function Sidebar() {
               {BRAND_CONFIG.name}
             </span>
             <span className="truncate text-[11px] font-medium text-[#5E5E5E]">
-              Plataforma {BRAND_CONFIG.assets.logoBadge}
+              Experiência & Ouvidoria
             </span>
           </div>
           <ChevronsUpDown className="ml-auto size-4 text-[#999999] group-hover:text-[#171717] shrink-0" />

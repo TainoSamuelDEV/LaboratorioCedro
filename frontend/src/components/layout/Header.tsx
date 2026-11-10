@@ -59,7 +59,7 @@ export function Header() {
                 href="/dashboard"
                 className="text-[#5E5E5E] hover:text-[#075618] transition-colors font-medium"
               >
-                Plataforma INDECX
+                Laboratório Cedro
               </Link>
             </li>
             <li className="hidden md:inline-flex items-center text-[#999999]">

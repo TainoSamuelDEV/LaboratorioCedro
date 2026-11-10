@@ -62,7 +62,7 @@ export default function LoginPage() {
         />
       </header>
 
-      <p className="cedro-eval-unit">Plataforma INDECX</p>
+      <p className="cedro-eval-unit">Laboratório Cedro — Experiência & Ouvidoria</p>
 
       <h1 className="cedro-eval-h1 !text-[clamp(2rem,4.5vw,2.75rem)]">
         Acesse sua conta.
@@ -171,7 +171,7 @@ export default function LoginPage() {
           <DrawerHeader>
             <DrawerTitle>Recuperação de Acesso</DrawerTitle>
             <DrawerDescription>
-              Instruções para redefinição de credenciais na Plataforma INDECX
+              Instruções para redefinição de credenciais na Plataforma de Experiência do Cliente
             </DrawerDescription>
           </DrawerHeader>
           <DrawerBody className="space-y-3 text-xs text-[#323232]">
