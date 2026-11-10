@@ -64,13 +64,9 @@ export default function LoginPage() {
 
       <p className="cedro-eval-unit">Laboratório Cedro — Experiência & Ouvidoria</p>
 
-      <h1 className="cedro-eval-h1 !text-[clamp(2rem,4.5vw,2.75rem)]">
+      <h1 className="cedro-eval-h1 !text-[clamp(2rem,4.5vw,2.75rem)] !mb-8">
         Acesse sua conta.
       </h1>
-
-      <p className="cedro-eval-lead !mb-8">
-        Entre com seu e-mail corporativo para acompanhar avaliações e tratativas de ouvidoria.
-      </p>
 
       {erro && (
         <p className="mb-6 text-sm font-bold text-[#CA2E24]" role="alert">
