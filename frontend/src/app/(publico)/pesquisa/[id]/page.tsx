@@ -3,7 +3,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { EvaluationPageSkeleton } from '../../../../components/ui/Skeleton';
-import { useEvaluationTransition } from '../../../../contexts/EvaluationTransitionContext';
 import { pesquisaService } from '../../../../services/pesquisa.service';
 import { PesquisaPublicaDTO, RespostaComManifestacaoDTO } from '../../../../types/api';
 
@@ -31,7 +30,6 @@ const PROMPTS = {
 function PesquisaPublicaContent() {
   const params = useParams();
   const pesquisaId = String(params?.id || '');
-  const { startSweep, isSweeping } = useEvaluationTransition();
 
   const [pesquisa, setPesquisa] = useState<PesquisaPublicaDTO | null>(null);
   const [carregando, setCarregando] = useState(true);
@@ -136,30 +134,21 @@ function PesquisaPublicaContent() {
     setErroComentario(false);
     setStatusErro(false);
     setEnviando(true);
-    setStatusMsg('');
+    setStatusMsg('Enviando sua avaliação…');
 
     try {
       const ticketTrim = senhaAtendimento.trim();
 
-      // Transição fluida com o sweep das escamas cobrindo a tela e retornando ao lugar
-      await startSweep(async () => {
-        const res = await pesquisaService.responderPublica(pesquisaId, {
-          unidadeId,
-          clienteAtendimento: ticketTrim,
-          nota,
-          comentario: commentTrim,
-        });
-
-        // Atualiza para o estado de confirmação com a tela totalmente coberta
-        setSucesso(res);
-        setStatusMsg('');
-        setStatusErro(false);
-
-        if (typeof window !== 'undefined') {
-          window.scrollTo({ top: 0, behavior: 'instant' });
-        }
+      const res = await pesquisaService.responderPublica(pesquisaId, {
+        unidadeId,
+        clienteAtendimento: ticketTrim,
+        nota,
+        comentario: commentTrim,
       });
 
+      setSucesso(res);
+      setStatusMsg('');
+      setStatusErro(false);
       setTimeout(() => {
         doneHeadingRef.current?.focus();
       }, 50);
@@ -399,9 +388,9 @@ function PesquisaPublicaContent() {
                 type="submit"
                 id="send"
                 className="cedro-btn-send"
-                disabled={!nota || enviando || isSweeping}
+                disabled={!nota || enviando}
               >
-                {enviando || isSweeping ? 'Enviando…' : 'Enviar avaliação'}
+                {enviando ? 'Enviando…' : 'Enviar avaliação'}
               </button>
               {statusMsg && (
                 <span

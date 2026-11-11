@@ -209,159 +209,54 @@ main h1 {
   }
 }
 
-/* =========================================================
- * ANIMAÇÕES DAS ESCAMAS NA AVALIAÇÃO (ENTRADA & SWEEP TRANSIÇÃO)
- * ========================================================= */
-
-/* 1. Entrada inicial escalonada (da direita para o local de repouso) */
-@keyframes cedro-eval-arc-entrance {
+/* Animação de entrada em camadas dos arcos da tela de Avaliação (da direita para a esquerda) */
+@keyframes cedro-eval-arc-slide-in {
   from {
-    transform: translate3d(var(--eval-arc-start, 960px), 0, 0);
+    transform: translate3d(var(--eval-arc-start, 920px), 0, 0);
   }
   to {
     transform: translate3d(0, 0, 0);
   }
 }
 
-.cedro-eval-arc-enter-1 {
+.cedro-eval-arc {
+  will-change: transform;
+  animation-name: cedro-eval-arc-slide-in;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+/* Camada 4 (Interna - Verde Cedro Profundo #027053, borda esquerda em x=580): sai primeiro da borda direita */
+.cedro-eval-arc-1 {
   --eval-arc-start: 400px;
-  will-change: transform;
-  animation: cedro-eval-arc-entrance 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-duration: 0.42s;
+  animation-delay: 0s;
 }
 
-.cedro-eval-arc-enter-2 {
+/* Camada 3 (Vibrante - Verde Esmeralda #00AE6F, borda esquerda em x=330): avança ultrapassando a Camada 4 */
+.cedro-eval-arc-2 {
   --eval-arc-start: 650px;
-  will-change: transform;
-  animation: cedro-eval-arc-entrance 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.06s both;
+  animation-duration: 0.48s;
+  animation-delay: 0.06s;
 }
 
-.cedro-eval-arc-enter-3 {
+/* Camada 2 (Intermediária - Verde Petróleo #049671, borda esquerda em x=160): avança ultrapassando a Camada 3 */
+.cedro-eval-arc-3 {
   --eval-arc-start: 820px;
-  will-change: transform;
-  animation: cedro-eval-arc-entrance 0.54s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+  animation-duration: 0.54s;
+  animation-delay: 0.12s;
 }
 
-.cedro-eval-arc-enter-4 {
-  --eval-arc-start: 960px;
-  will-change: transform;
-  animation: cedro-eval-arc-entrance 0.60s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
-}
-
-/* 2. Sweep In: Ao enviar, as escamas avançam para a esquerda preenchendo 100% da tela */
-@keyframes cedro-sweep-wave-in {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-1760px, 0, 0);
-  }
-}
-
-.cedro-sweep-in-layer-1 {
-  will-change: transform;
-  animation: cedro-sweep-wave-in 0.44s cubic-bezier(0.25, 1, 0.35, 1) 0s forwards;
-}
-
-.cedro-sweep-in-layer-2 {
-  will-change: transform;
-  animation: cedro-sweep-wave-in 0.46s cubic-bezier(0.25, 1, 0.35, 1) 0.04s forwards;
-}
-
-.cedro-sweep-in-layer-3 {
-  will-change: transform;
-  animation: cedro-sweep-wave-in 0.48s cubic-bezier(0.25, 1, 0.35, 1) 0.08s forwards;
-}
-
-.cedro-sweep-in-layer-4 {
-  will-change: transform;
-  animation: cedro-sweep-wave-in 0.50s cubic-bezier(0.25, 1, 0.35, 1) 0.12s forwards;
-}
-
-/* Fundo verde profundo que sustenta o momento de cobertura total */
-@keyframes cedro-backdrop-fade-in {
-  0%, 65% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.cedro-sweep-in-backdrop {
-  will-change: opacity;
-  animation: cedro-backdrop-fade-in 0.50s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-/* 3. Estado Coberto (Tela 100% verde enquanto os dados são trocados) */
-.cedro-sweep-covered-layer {
-  transform: translate3d(-1760px, 0, 0);
-}
-
-.cedro-sweep-covered-backdrop {
-  opacity: 1;
-}
-
-/* 4. Sweep Out: As escamas retornam para o lado direito, revelando o sucesso */
-@keyframes cedro-sweep-wave-out {
-  from {
-    transform: translate3d(-1760px, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-.cedro-sweep-out-layer-4 {
-  will-change: transform;
-  animation: cedro-sweep-wave-out 0.44s cubic-bezier(0.22, 1, 0.36, 1) 0s forwards;
-}
-
-.cedro-sweep-out-layer-3 {
-  will-change: transform;
-  animation: cedro-sweep-wave-out 0.46s cubic-bezier(0.22, 1, 0.36, 1) 0.04s forwards;
-}
-
-.cedro-sweep-out-layer-2 {
-  will-change: transform;
-  animation: cedro-sweep-wave-out 0.48s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
-}
-
-.cedro-sweep-out-layer-1 {
-  will-change: transform;
-  animation: cedro-sweep-wave-out 0.50s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
-}
-
-@keyframes cedro-backdrop-fade-out {
-  0% {
-    opacity: 1;
-  }
-  40%, 100% {
-    opacity: 0;
-  }
-}
-
-.cedro-sweep-out-backdrop {
-  will-change: opacity;
-  animation: cedro-backdrop-fade-out 0.46s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+/* Camada 1 (Externa - Verde Menta #79DDA9, borda esquerda em x=40): avança ultrapassando todas até o final */
+.cedro-eval-arc-4 {
+  --eval-arc-start: 940px;
+  animation-duration: 0.6s;
+  animation-delay: 0.18s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cedro-eval-arc-enter-1,
-  .cedro-eval-arc-enter-2,
-  .cedro-eval-arc-enter-3,
-  .cedro-eval-arc-enter-4,
-  .cedro-sweep-in-layer-1,
-  .cedro-sweep-in-layer-2,
-  .cedro-sweep-in-layer-3,
-  .cedro-sweep-in-layer-4,
-  .cedro-sweep-out-layer-1,
-  .cedro-sweep-out-layer-2,
-  .cedro-sweep-out-layer-3,
-  .cedro-sweep-out-layer-4,
-  .cedro-sweep-in-backdrop,
-  .cedro-sweep-out-backdrop {
+  .cedro-eval-arc {
     animation: none !important;
-    transform: none !important;
   }
 }
 
