@@ -1,4 +1,4 @@
-# 06. Revisão Arquitetural: Páginas por ID (`/[id]`), CRUD Completo e Soft Delete
+# Solicitação de Alteração Arquitetural: Páginas por ID (`/[id]`), CRUD Completo e Soft Delete
 
 Este documento explica de forma direta **o que estava faltando na documentação original**, **o que será alterado** na arquitetura (Documentação, Back-end e Front-end) e **o motivo de cada mudança**.
 
