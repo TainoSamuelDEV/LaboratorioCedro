@@ -258,7 +258,7 @@ export function Sidebar() {
             <img
               src="/logo-cedro-completa.svg"
               alt="Laboratório Cedro"
-              className="h-9 w-auto block"
+              className="h-[42px] w-auto block"
             />
           </Link>
 
@@ -300,7 +300,7 @@ export function Sidebar() {
               <img
                 src="/logo-cedro-completa.svg"
                 alt="Laboratório Cedro"
-                className="h-10 w-auto block"
+                className="h-[42px] w-auto block"
               />
             </DrawerTitle>
           </DrawerHeader>

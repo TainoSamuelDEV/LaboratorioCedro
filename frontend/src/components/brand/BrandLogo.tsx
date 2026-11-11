@@ -17,9 +17,9 @@ export function BrandLogo({
   showBadge = false,
 }: BrandLogoProps) {
   const heightClasses = {
-    sm: 'h-7',
-    md: 'h-[34px]',
-    lg: 'h-[38px]',
+    sm: 'h-8',
+    md: 'h-[42px]',
+    lg: 'h-12',
   };
 
   const logoSrc =
