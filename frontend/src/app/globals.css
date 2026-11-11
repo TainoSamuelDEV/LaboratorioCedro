@@ -209,6 +209,57 @@ main h1 {
   }
 }
 
+/* Animação de entrada em camadas dos arcos da tela de Avaliação (da direita para a esquerda) */
+@keyframes cedro-eval-arc-slide-in {
+  from {
+    transform: translate3d(var(--eval-arc-start, 920px), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.cedro-eval-arc {
+  will-change: transform;
+  animation-name: cedro-eval-arc-slide-in;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+/* Camada 4 (Interna - Verde Cedro Profundo #027053, borda esquerda em x=580): sai primeiro da borda direita */
+.cedro-eval-arc-1 {
+  --eval-arc-start: 400px;
+  animation-duration: 0.42s;
+  animation-delay: 0s;
+}
+
+/* Camada 3 (Vibrante - Verde Esmeralda #00AE6F, borda esquerda em x=330): avança ultrapassando a Camada 4 */
+.cedro-eval-arc-2 {
+  --eval-arc-start: 650px;
+  animation-duration: 0.48s;
+  animation-delay: 0.06s;
+}
+
+/* Camada 2 (Intermediária - Verde Petróleo #049671, borda esquerda em x=160): avança ultrapassando a Camada 3 */
+.cedro-eval-arc-3 {
+  --eval-arc-start: 820px;
+  animation-duration: 0.54s;
+  animation-delay: 0.12s;
+}
+
+/* Camada 1 (Externa - Verde Menta #79DDA9, borda esquerda em x=40): avança ultrapassando todas até o final */
+.cedro-eval-arc-4 {
+  --eval-arc-start: 940px;
+  animation-duration: 0.6s;
+  animation-delay: 0.18s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cedro-eval-arc {
+    animation: none !important;
+  }
+}
+
 /* =========================================================
  * ESTILOS DA PÁGINA PÚBLICA DE AVALIAÇÃO (MODELO OFICIAL)
  * ========================================================= */
@@ -231,6 +282,13 @@ main h1 {
   max-width: 680px;
   margin: 0 auto;
   padding: 48px 24px 56px;
+}
+
+/* Quando renderizado no layout split da avaliação */
+.cedro-eval-split-main .cedro-eval-main {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .cedro-eval-brand {

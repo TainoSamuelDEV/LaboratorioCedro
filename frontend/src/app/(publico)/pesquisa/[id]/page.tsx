@@ -190,7 +190,7 @@ function PesquisaPublicaContent() {
   );
 
   return (
-    <main className="cedro-eval-main" style={toneStyle}>
+    <main className="cedro-eval-main animate-rise" style={toneStyle}>
       <header className="cedro-eval-brand">
         <img
           src="/logo-cedro-completa.svg"
