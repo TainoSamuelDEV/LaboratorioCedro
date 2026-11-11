@@ -12,13 +12,13 @@ export function Input({ label, error, helperText, className = '', id, ...props }
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label htmlFor={inputId} className="text-xs font-bold text-[#171717]">
+        <label htmlFor={inputId} className="text-sm font-bold text-[#171717]">
           {label}
         </label>
       )}
       <input
         id={inputId}
-        className={`px-3.5 py-2.5 text-sm rounded-lg border bg-white text-[#171717] transition-colors placeholder:text-[#999999] focus:outline-none focus:ring-2 focus:ring-[#02A562]/25 focus:border-[#02A562] disabled:bg-[#F3F3F3] disabled:text-[#999999] ${
+        className={`w-full min-h-[48px] px-4 py-3 text-sm rounded-[10px] border-[1.5px] bg-white text-[#171717] transition-all placeholder:text-[#999999] focus:outline-none focus:border-[#02A562] focus:ring-2 focus:ring-[#02A562]/20 disabled:bg-[#F3F3F3] disabled:text-[#999999] disabled:cursor-not-allowed ${
           error ? 'border-[#CA2E24] focus:border-[#CA2E24] focus:ring-[#CA2E24]/20' : 'border-[#E3E3E3]'
         } ${className}`}
         {...props}

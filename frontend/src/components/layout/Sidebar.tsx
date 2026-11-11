@@ -253,7 +253,7 @@ export function Sidebar() {
           BARRA SUPERIOR MOBILE (< 1024px) + DRAWER DE NAVEGAÇÃO
          ==================================================================== */}
       <header className="lg:hidden sticky top-0 z-30 bg-[#F3F3F3]/90 backdrop-blur-md px-4 pt-3 pb-1">
-        <div className="flex items-center justify-between h-14 px-4 bg-white border border-[#E9E9E9] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-between h-14 px-4 bg-white border border-[#E3E3E3] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
           <Link href="/dashboard" aria-label="Cedro, ir para o Dashboard" className="block">
             <img
               src="/logo-cedro-completa.svg"
@@ -295,7 +295,7 @@ export function Sidebar() {
         direction="left"
       >
         <DrawerContent className="p-0 flex flex-col justify-between">
-          <DrawerHeader className="px-5 pt-5 pb-4 border-b border-[#E9E9E9]">
+          <DrawerHeader className="px-5 pt-5 pb-4 border-b border-[#E3E3E3]">
             <DrawerTitle className="flex items-center">
               <img
                 src="/logo-cedro-completa.svg"
@@ -324,7 +324,7 @@ export function Sidebar() {
 
               {itensAdministrativos.length > 0 && (
                 <>
-                  <div className="my-2 border-t border-[#E9E9E9]" />
+                  <div className="my-2 border-t border-[#E3E3E3]" />
                   {itensAdministrativos.map((item) => {
                     const ativo = verificarAtivo(item.href);
                     return (
@@ -344,7 +344,7 @@ export function Sidebar() {
             </nav>
           </DrawerBody>
 
-          <DrawerFooter className="p-3 border-t border-[#E9E9E9] bg-white flex-col sm:flex-col items-stretch gap-2">
+          <DrawerFooter className="p-3 border-t border-[#E3E3E3] bg-white flex-col sm:flex-col items-stretch gap-2">
             <div className="flex items-center gap-2.5 p-1.5 bg-[#F3F3F3] rounded-full">
               <span className="grid place-items-center shrink-0 w-9 h-9 rounded-full bg-[#075618] text-white text-[13px] font-black">
                 {iniciais}
@@ -353,7 +353,7 @@ export function Sidebar() {
                 <strong className="block text-sm text-[#171717] leading-tight truncate">
                   {usuario?.nome}
                 </strong>
-                <small className="block text-xs text-[#666666] leading-tight truncate">
+                <small className="block text-xs text-[#5E5E5E] leading-tight truncate">
                   {perfilFormatado}
                 </small>
               </div>
@@ -362,7 +362,7 @@ export function Sidebar() {
                 onClick={handleLogout}
                 title="Sair da conta"
                 aria-label="Sair da conta"
-                className="grid place-items-center shrink-0 w-9 h-9 rounded-full text-[#666666] hover:text-[#CA2E24] hover:bg-white transition-colors cursor-pointer"
+                className="grid place-items-center shrink-0 w-9 h-9 rounded-full text-[#5E5E5E] hover:text-[#CA2E24] hover:bg-white transition-colors cursor-pointer"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -491,7 +491,7 @@ export function Sidebar() {
               <strong className="block text-[14px] text-[#171717] leading-[1.2] truncate">
                 {usuario?.nome}
               </strong>
-              <small className="block text-[12px] text-[#666666] leading-[1.2] truncate">
+              <small className="block text-[12px] text-[#5E5E5E] leading-[1.2] truncate">
                 {perfilFormatado}
               </small>
             </div>
@@ -502,7 +502,7 @@ export function Sidebar() {
                 onClick={handleLogout}
                 title="Sair da conta"
                 aria-label="Sair da conta"
-                className="grid place-items-center shrink-0 w-8 h-8 rounded-full text-[#666666] hover:text-[#CA2E24] hover:bg-white transition-colors cursor-pointer"
+                className="grid place-items-center shrink-0 w-8 h-8 rounded-full text-[#5E5E5E] hover:text-[#CA2E24] hover:bg-white transition-colors cursor-pointer"
               >
                 <svg
                   viewBox="0 0 24 24"

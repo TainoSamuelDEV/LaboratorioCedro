@@ -26,14 +26,14 @@ export function Select({
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label htmlFor={selectId} className="text-xs font-bold text-[#171717]">
+        <label htmlFor={selectId} className="text-sm font-bold text-[#171717]">
           {label}
         </label>
       )}
       <select
         id={selectId}
-        className={`px-3.5 py-2.5 text-sm rounded-lg border bg-white text-[#171717] transition-colors focus:outline-none focus:ring-2 focus:ring-[#02A562]/25 focus:border-[#02A562] disabled:bg-[#F3F3F3] disabled:text-[#999999] cursor-pointer ${
-          error ? 'border-[#CA2E24] focus:border-[#CA2E24]' : 'border-[#E3E3E3]'
+        className={`w-full min-h-[48px] px-4 py-3 text-sm rounded-[10px] border-[1.5px] bg-white text-[#171717] transition-all focus:outline-none focus:border-[#02A562] focus:ring-2 focus:ring-[#02A562]/20 disabled:bg-[#F3F3F3] disabled:text-[#999999] disabled:cursor-not-allowed cursor-pointer ${
+          error ? 'border-[#CA2E24] focus:border-[#CA2E24] focus:ring-[#CA2E24]/20' : 'border-[#E3E3E3]'
         } ${className}`}
         {...props}
       >

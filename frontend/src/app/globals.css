@@ -470,8 +470,9 @@ main h1 {
 
 .cedro-label-q {
   display: block;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 8px;
   color: var(--ink);
 }
 
@@ -560,8 +561,10 @@ main h1 {
   box-sizing: border-box;
   width: 100%;
   max-width: 260px;
-  padding: 14px 16px;
+  min-height: 48px;
+  padding: 12px 16px;
   font: inherit;
+  font-size: 0.95rem;
   color: var(--ink);
   background: var(--field);
   border: 1.5px solid var(--line);
@@ -585,7 +588,8 @@ main h1 {
   box-sizing: border-box;
   width: 100%;
   max-width: 360px;
-  padding: 10px 14px;
+  min-height: 48px;
+  padding: 12px 16px;
   font: inherit;
   font-size: 0.95rem;
   font-weight: 600;
@@ -625,7 +629,7 @@ main h1 {
   letter-spacing: 0.02em;
   cursor: pointer;
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   min-height: 48px;
   padding: 12px 28px;
   background: #02A562;
@@ -771,7 +775,7 @@ main h1 {
 
 .cedro-sidebar {
   background: #ffffff;
-  border: 1px solid #E9E9E9;
+  border: 1px solid #E3E3E3;
   border-radius: 20px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
   margin: 16px 0 16px 16px;
