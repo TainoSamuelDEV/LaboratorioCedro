@@ -941,3 +941,38 @@ main h1 {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
 }
+
+/* ==========================================================================
+   ESTILOS DE IMPRESSÃO / EXPORTAÇÃO DE PDF DE TOTEM & DISPLAY DE BALCÃO
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Ocultar elementos auxiliares na impressão */
+  .no-print,
+  .cedro-sidebar,
+  header,
+  nav {
+    display: none !important;
+  }
+
+  .cedro-print-display {
+    box-shadow: none !important;
+    border: 2px solid #075618 !important;
+    border-radius: 20px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
