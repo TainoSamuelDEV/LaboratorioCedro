@@ -166,6 +166,8 @@ export class ObterIndicadoresDashboardUseCase {
             ? mapaPesquisas.get(respOrigem.pesquisaId) || 'Pesquisa de Satisfação'
             : 'Pesquisa de Satisfação',
           nota: respOrigem ? respOrigem.nota : 0,
+          comentario: respOrigem?.comentario || undefined,
+          senhaAtendimento: respOrigem?.clienteAtendimento !== 'Não informado' ? respOrigem?.clienteAtendimento : undefined,
           status: m.status,
           prioridade: m.prioridade,
           criadoEm: m.criadoEm.toISOString(),

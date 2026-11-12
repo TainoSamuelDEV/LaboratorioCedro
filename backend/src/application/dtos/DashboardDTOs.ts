@@ -32,6 +32,8 @@ export interface UltimaManifestacaoDashboardDTO {
   unidadeNome: string;
   pesquisaTitulo: string;
   nota: number;
+  comentario?: string;
+  senhaAtendimento?: string;
   status: string;
   prioridade: string;
   criadoEm: string;

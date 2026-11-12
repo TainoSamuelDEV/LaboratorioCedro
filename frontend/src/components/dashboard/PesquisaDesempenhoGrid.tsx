@@ -1,148 +1,145 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { MetricaPesquisaDashboardDTO } from '../../types/api';
-import { NOTA_COLORS } from '../../config/brand';
-import { FileText, ArrowUpRight, CheckCircle2, XCircle } from 'lucide-react';
+import { MetricaPesquisaDashboardDTO, VolumePorUnidadeDTO } from '../../types/api';
 
 interface PesquisaDesempenhoGridProps {
   pesquisas: MetricaPesquisaDashboardDTO[];
-  unidadeNome?: string;
+  volumePorUnidade?: VolumePorUnidadeDTO[];
+  permiteAlternarUnidade?: boolean;
 }
 
 export function PesquisaDesempenhoGrid({
   pesquisas,
-  unidadeNome,
+  volumePorUnidade = [],
+  permiteAlternarUnidade = false,
 }: PesquisaDesempenhoGridProps) {
-  const getNotaColor = (nota: number) => {
-    const rounded = Math.min(5, Math.max(1, Math.round(nota)));
-    return NOTA_COLORS[rounded]?.bg || '#02A562';
-  };
+  const [abaAtiva, setAbaAtiva] = useState<'pesquisas' | 'unidades'>('pesquisas');
 
   return (
-    <div className="bg-white rounded-xl border border-[#E3E3E3] p-5 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] h-full flex flex-col justify-between">
-      <div>
-        <div className="flex items-center justify-between pb-4 border-b border-[#E3E3E3]">
-          <div>
-            <h3 className="text-base font-bold text-[#171717]">
-              Desempenho por Pesquisa
-            </h3>
-            <p className="text-xs text-[#5E5E5E] mt-0.5">
-              {unidadeNome
-                ? `Métricas filtradas para ${unidadeNome}`
-                : 'Métricas divididas por questionário em circulação'}
-            </p>
-          </div>
-          <Link
-            href="/pesquisas"
-            className="text-xs font-semibold text-[#075618] hover:text-[#02A562] flex items-center gap-1 transition-colors"
-          >
-            Gerenciar pesquisas
-            <ArrowUpRight size={14} />
-          </Link>
-        </div>
+    <div className="bg-white rounded-xl border border-[#E3E3E3] p-5 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] h-full">
+      <div className="flex items-center justify-between mb-3.5">
+        <h2 className="text-[1.1rem] font-bold leading-tight text-[#171717] m-0">
+          {abaAtiva === 'pesquisas'
+            ? 'Desempenho por pesquisa'
+            : 'Volume por unidade'}
+        </h2>
 
-        {pesquisas.length === 0 ? (
-          <div className="py-12 text-center">
-            <div className="w-12 h-12 rounded-full bg-[#F3F3F3] text-[#5E5E5E] flex items-center justify-center mx-auto mb-3">
-              <FileText size={22} />
-            </div>
-            <p className="text-sm font-semibold text-[#171717]">
-              Nenhuma pesquisa encontrada
-            </p>
-            <p className="text-xs text-[#5E5E5E] mt-1 max-w-sm mx-auto">
-              Não há pesquisas cadastradas ou respostas registradas para a seleção atual.
-            </p>
-          </div>
-        ) : (
-          <div className="divide-y divide-[#E3E3E3] mt-2">
-            {pesquisas.map((item) => {
-              const temRespostas = item.totalRespostas > 0;
-              const corNota = getNotaColor(item.notaMedia);
-
-              return (
-                <div
-                  key={item.pesquisaId}
-                  className="py-3.5 first:pt-2 last:pb-1 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group transition-colors hover:bg-[#F8FAF9]/80 rounded-lg px-2"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-[#171717] truncate">
-                        {item.titulo}
-                      </span>
-                      {item.ativa ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                          <CheckCircle2 size={11} />
-                          Ativa
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#5E5E5E] bg-[#F3F3F3] px-2 py-0.5 rounded-full border border-[#E3E3E3]">
-                          <XCircle size={11} />
-                          Inativa
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 mt-1 text-xs text-[#5E5E5E]">
-                      <span className="uppercase text-[10px] font-bold px-1.5 py-0.5 bg-[#F3F3F3] rounded text-[#5E5E5E]">
-                        {item.canal || 'Geral'}
-                      </span>
-                      <span>•</span>
-                      <span>
-                        {item.totalRespostas}{' '}
-                        {item.totalRespostas === 1 ? 'resposta' : 'respostas'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
-                    {temRespostas ? (
-                      <div className="flex items-center gap-2">
-                        <div className="text-right">
-                          <span className="text-xs font-semibold text-[#5E5E5E] block leading-none">
-                            Média
-                          </span>
-                          <span
-                            className="text-base font-black leading-none mt-1 inline-block"
-                            style={{ color: corNota }}
-                          >
-                            {item.notaMedia.toFixed(1)}
-                          </span>
-                        </div>
-                        <div
-                          className="w-2.5 h-8 rounded-full"
-                          style={{ backgroundColor: corNota }}
-                          title={`Média: ${item.notaMedia.toFixed(1)} de 5.0`}
-                        />
-                      </div>
-                    ) : (
-                      <span className="text-xs text-[#5E5E5E] italic">
-                        Sem respostas
-                      </span>
-                    )}
-
-                    <Link
-                      href={`/pesquisas/${item.pesquisaId}`}
-                      className="p-1.5 rounded-lg text-[#5E5E5E] hover:text-[#075618] hover:bg-[#F0FDF4] transition-colors"
-                      title="Ver detalhes da pesquisa"
-                    >
-                      <ArrowUpRight size={16} />
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+        {permiteAlternarUnidade && volumePorUnidade.length > 0 && (
+          <div className="flex gap-1.5 p-0.5 bg-[#F3F3F3] rounded-lg text-xs font-bold">
+            <button
+              type="button"
+              onClick={() => setAbaAtiva('pesquisas')}
+              className={`px-2.5 py-1 rounded-md transition-all ${
+                abaAtiva === 'pesquisas'
+                  ? 'bg-white text-[#075618] shadow-sm'
+                  : 'text-[#5E5E5E] hover:text-[#171717]'
+              }`}
+            >
+              Pesquisas
+            </button>
+            <button
+              type="button"
+              onClick={() => setAbaAtiva('unidades')}
+              className={`px-2.5 py-1 rounded-md transition-all ${
+                abaAtiva === 'unidades'
+                  ? 'bg-white text-[#075618] shadow-sm'
+                  : 'text-[#5E5E5E] hover:text-[#171717]'
+              }`}
+            >
+              Unidades
+            </button>
           </div>
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-[#E3E3E3] flex items-center justify-between text-[11px] text-[#5E5E5E]">
-        <span>Total de {pesquisas.length} questionários monitorados</span>
-        <Link
-          href="/pesquisas"
-          className="text-[#075618] font-semibold hover:underline"
-        >
-          Ver todas as pesquisas
-        </Link>
-      </div>
+      {abaAtiva === 'pesquisas' ? (
+        pesquisas.length === 0 ? (
+          <p className="text-sm text-[#5E5E5E] py-6 text-center my-0">
+            Nenhuma pesquisa registrada para esta seleção.
+          </p>
+        ) : (
+          <div className="space-y-3 pt-1">
+            {pesquisas.map((p) => {
+              const temRespostas = p.totalRespostas > 0;
+              const pct = temRespostas ? (p.notaMedia / 5) * 100 : 0;
+
+              return (
+                <div
+                  key={p.pesquisaId}
+                  className="grid grid-cols-[140px_1fr_44px] sm:grid-cols-[180px_1fr_44px] items-center gap-3 my-2"
+                >
+                  {/* Nome da pesquisa com link */}
+                  <Link
+                    href={`/pesquisas/${p.pesquisaId}`}
+                    title={p.titulo}
+                    className="truncate text-sm font-medium text-[#323232] hover:text-[#075618] hover:underline"
+                  >
+                    {p.titulo}
+                  </Link>
+
+                  {/* Trilha e barra preenchida */}
+                  <div className="h-2.5 bg-[#EEE] rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500 ease-out bg-[#02A562]"
+                      style={{ width: `${pct}%` }}
+                      title={`Média: ${p.notaMedia.toFixed(1)} de 5.0 (${p.totalRespostas} respostas)`}
+                    />
+                  </div>
+
+                  {/* Nota Média */}
+                  <span className="text-right font-bold text-sm text-[#171717]">
+                    {temRespostas ? p.notaMedia.toFixed(1) : '—'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )
+      ) : (
+        /* Visualização de Volume por Unidade */
+        volumePorUnidade.length === 0 ? (
+          <p className="text-sm text-[#5E5E5E] py-6 text-center my-0">
+            Nenhuma unidade com respostas registradas.
+          </p>
+        ) : (
+          <div className="space-y-3 pt-1">
+            {(() => {
+              const maiorTotal = Math.max(
+                ...volumePorUnidade.map((u) => u.total),
+                1
+              );
+              return volumePorUnidade.map((u) => {
+                const pct = (u.total / maiorTotal) * 100;
+                return (
+                  <div
+                    key={u.unidadeId}
+                    className="grid grid-cols-[140px_1fr_44px] sm:grid-cols-[180px_1fr_44px] items-center gap-3 my-2"
+                  >
+                    <span
+                      title={u.unidadeNome}
+                      className="truncate text-sm font-medium text-[#323232]"
+                    >
+                      {u.unidadeNome}
+                    </span>
+
+                    <div className="h-2.5 bg-[#EEE] rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500 ease-out bg-[#02A562]"
+                        style={{ width: `${pct}%` }}
+                        title={`${u.total} respostas`}
+                      />
+                    </div>
+
+                    <span className="text-right font-bold text-sm text-[#171717]">
+                      {u.total}
+                    </span>
+                  </div>
+                );
+              });
+            })()}
+          </div>
+        )
+      )}
     </div>
   );
 }
