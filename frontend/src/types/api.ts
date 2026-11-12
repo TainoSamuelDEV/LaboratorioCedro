@@ -52,6 +52,47 @@ export interface PesquisaDTO {
   criadoEm: string;
 }
 
+export interface PesquisaDetalhadaDTO {
+  id: string;
+  titulo: string;
+  descricao: string;
+  periodo: string;
+  canal: CanalPesquisa;
+  ativa: boolean;
+  unidadePadraoId: string | null;
+  unidadePadraoNome: string | null;
+  criadoEm: string;
+  indicadores: {
+    totalRespostas: number;
+    notaMedia: number;
+    percentualSatisfeitos: number;
+    totalManifestacoes: number;
+    distribuicaoNotas: Array<{
+      nota: number;
+      quantidade: number;
+      percentual: number;
+    }>;
+  };
+  ultimasManifestacoes: Array<{
+    id: string;
+    protocolo: string;
+    unidadeNome: string;
+    nota: number;
+    comentario: string;
+    status: string;
+    criadoEm: string;
+  }>;
+}
+
+export interface AtualizarPesquisaDTO {
+  titulo?: string;
+  descricao?: string;
+  periodo?: string;
+  canal?: CanalPesquisa;
+  unidadePadraoId?: string | null;
+  ativa?: boolean;
+}
+
 export interface PesquisaPublicaDTO {
   id: string;
   titulo: string;

@@ -1,5 +1,7 @@
 import {
+  AtualizarPesquisaDTO,
   CanalPesquisa,
+  PesquisaDetalhadaDTO,
   PesquisaDTO,
   PesquisaPublicaDTO,
   RespostaComManifestacaoDTO,
@@ -11,6 +13,10 @@ export const pesquisaService = {
     return apiClient.get<PesquisaDTO[]>(`/api/pesquisas${apenasAtivas ? '?apenasAtivas=true' : ''}`);
   },
 
+  async obterPorId(id: string): Promise<PesquisaDetalhadaDTO> {
+    return apiClient.get<PesquisaDetalhadaDTO>(`/api/pesquisas/${id}`);
+  },
+
   async criar(data: {
     titulo: string;
     descricao: string;
@@ -19,6 +25,14 @@ export const pesquisaService = {
     unidadePadraoId?: string | null;
   }): Promise<PesquisaDTO> {
     return apiClient.post<PesquisaDTO>('/api/pesquisas', data);
+  },
+
+  async atualizar(id: string, data: AtualizarPesquisaDTO): Promise<PesquisaDTO> {
+    return apiClient.patch<PesquisaDTO>(`/api/pesquisas/${id}`, data);
+  },
+
+  async alternarStatus(id: string, ativa: boolean): Promise<PesquisaDTO> {
+    return apiClient.patch<PesquisaDTO>(`/api/pesquisas/${id}`, { ativa });
   },
 
   async obterPublica(id: string): Promise<PesquisaPublicaDTO> {
