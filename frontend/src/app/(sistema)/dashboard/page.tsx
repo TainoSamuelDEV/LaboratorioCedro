@@ -30,17 +30,15 @@ export default function DashboardPage() {
     }
   }, [ehCoordenador, usuario]);
 
-  // Carrega lista de unidades ativas para Admin e Ouvidoria
+  // Carrega lista de unidades ativas para identificação e filtros
   useEffect(() => {
-    if (ehAdmin || ehOuvidoria) {
-      unidadeService
-        .listar(true)
-        .then((dados) => setUnidades(dados))
-        .catch((err) => {
-          console.warn('[Dashboard] Aviso ao listar unidades:', err);
-        });
-    }
-  }, [ehAdmin, ehOuvidoria]);
+    unidadeService
+      .listar(true)
+      .then((dados) => setUnidades(dados))
+      .catch((err) => {
+        console.warn('[Dashboard] Aviso ao listar unidades:', err);
+      });
+  }, []);
 
   // Busca indicadores do dashboard
   const carregarIndicadores = useCallback(
@@ -78,8 +76,9 @@ export default function DashboardPage() {
     carregarIndicadores(true);
   }, [carregarIndicadores]);
 
-  const unidadeAtual = unidades.find((u) => u.id === unidadeFiltro);
-  const nomeUnidade = unidadeAtual?.nome || (ehCoordenador ? 'Sua Unidade' : 'todas as unidades');
+  const unidadeIdEfetiva = ehCoordenador ? usuario?.unidadeId : unidadeFiltro;
+  const unidadeAtual = unidades.find((u) => u.id === unidadeIdEfetiva);
+  const nomeUnidade = unidadeAtual?.nome || (ehCoordenador ? 'Sua Unidade Vinculada' : 'todas as unidades');
 
   if (carregando) {
     return <DashboardSkeleton />;

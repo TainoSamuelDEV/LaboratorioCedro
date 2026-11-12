@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { MetricaPesquisaDashboardDTO, VolumePorUnidadeDTO } from '../../types/api';
 
 interface PesquisaDesempenhoGridProps {
@@ -68,14 +67,13 @@ export function PesquisaDesempenhoGrid({
                   key={p.pesquisaId}
                   className="grid grid-cols-[140px_1fr_44px] sm:grid-cols-[180px_1fr_44px] items-center gap-3 my-2"
                 >
-                  {/* Nome da pesquisa com link */}
-                  <Link
-                    href={`/pesquisas/${p.pesquisaId}`}
+                  {/* Nome da pesquisa (rótulo informativo) */}
+                  <span
                     title={p.titulo}
-                    className="truncate text-sm font-medium text-[#323232] hover:text-[#075618] hover:underline"
+                    className="truncate text-sm font-medium text-[#323232]"
                   >
                     {p.titulo}
-                  </Link>
+                  </span>
 
                   {/* Trilha e barra preenchida */}
                   <div className="h-2.5 bg-[#EEE] rounded-full overflow-hidden">

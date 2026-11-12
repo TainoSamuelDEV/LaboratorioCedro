@@ -150,6 +150,35 @@ describe('Dashboard e Relatórios: Casos de Uso (Entrega 8)', () => {
       expect(resultado.volumePorUnidade[0].unidadeId).toBe('unid-sul');
       expect(resultado.desempenhoPorPesquisa[0].totalRespostas).toBe(2);
     });
+
+    it('não deve exibir pesquisas de outras unidades no desempenho por pesquisa do Coordenador', async () => {
+      // Cadastra pesquisa exclusiva da Matriz
+      const pesquisaExclusivaMatriz = new Pesquisa(
+        'pesq-matriz-exclusiva',
+        'Pesquisa Coleta Matriz',
+        'Exclusiva da matriz',
+        '2026-Q1',
+        CanalPesquisa.TOTEM,
+        true,
+        'unid-matriz'
+      );
+      await pesquisaRepo.salvar(pesquisaExclusivaMatriz);
+
+      const useCase = new ObterIndicadoresDashboardUseCase(
+        manifestacaoRepo,
+        respostaRepo,
+        unidadeRepo,
+        usuarioRepo,
+        pesquisaRepo
+      );
+
+      const resultado = await useCase.execute(coordSul.id);
+
+      // Coordenador Sul não pode ver 'pesq-matriz-exclusiva'
+      const idsPesquisas = resultado.desempenhoPorPesquisa.map((p) => p.pesquisaId);
+      expect(idsPesquisas).not.toContain('pesq-matriz-exclusiva');
+      expect(idsPesquisas).toContain('pesq-1');
+    });
   });
 
   describe('ExportarRelatorioUseCase', () => {

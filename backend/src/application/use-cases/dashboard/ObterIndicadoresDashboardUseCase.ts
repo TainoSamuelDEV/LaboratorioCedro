@@ -128,12 +128,28 @@ export class ObterIndicadoresDashboardUseCase {
       };
     });
 
-    // 11. Desempenho dividido por pesquisa
-    const pesquisas = this.pesquisaRepo ? await this.pesquisaRepo.listarTodas() : [];
+    // 11. Desempenho dividido por pesquisa (com estrito isolamento por unidade)
+    const todasPesquisas = this.pesquisaRepo ? await this.pesquisaRepo.listarTodas() : [];
     const mapaPesquisas = new Map<string, string>();
-    pesquisas.forEach((p) => mapaPesquisas.set(p.id, p.titulo));
+    todasPesquisas.forEach((p) => mapaPesquisas.set(p.id, p.titulo));
 
-    const desempenhoPorPesquisa: MetricaPesquisaDashboardDTO[] = pesquisas.map((p) => {
+    // Regra de segurança RBAC / Escopo de Unidade:
+    // Quando unidadeIdEfetiva está definido (Coordenador de Unidade ou filtro ativo):
+    // - Pesquisas com unidadePadraoId vinculadas a OUTRA unidade são estritamente BLOQUEADAS.
+    // - Pesquisas com unidadePadraoId desta unidade são incluídas.
+    // - Pesquisas globais (sem unidadePadraoId) só aparecem se houver respostas registradas nesta unidade.
+    const pesquisasFiltradas = todasPesquisas.filter((p) => {
+      if (!unidadeIdEfetiva) return true;
+      if (p.unidadePadraoId && p.unidadePadraoId !== unidadeIdEfetiva) {
+        return false;
+      }
+      if (!p.unidadePadraoId) {
+        return respostas.some((r) => r.pesquisaId === p.id);
+      }
+      return true;
+    });
+
+    const desempenhoPorPesquisa: MetricaPesquisaDashboardDTO[] = pesquisasFiltradas.map((p) => {
       const respostasPesquisa = respostas.filter((r) => r.pesquisaId === p.id);
       const total = respostasPesquisa.length;
       const media =
