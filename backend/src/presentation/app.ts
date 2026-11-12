@@ -105,7 +105,9 @@ export function criarApp(deps: AppDependencies): Express {
   );
   const listarManifestacoesUseCase = new ListarManifestacoesUseCase(
     deps.manifestacaoRepo,
-    deps.usuarioRepo
+    deps.usuarioRepo,
+    deps.unidadeRepo,
+    deps.respostaRepo
   );
   const tratarManifestacaoUseCase = new TratarManifestacaoUseCase(
     deps.manifestacaoRepo,
