@@ -2,13 +2,15 @@ import { NextFunction, Response } from 'express';
 import { AtualizarUnidadeUseCase } from '../../application/use-cases/unidades/AtualizarUnidadeUseCase';
 import { CriarUnidadeUseCase } from '../../application/use-cases/unidades/CriarUnidadeUseCase';
 import { ListarUnidadesUseCase } from '../../application/use-cases/unidades/ListarUnidadesUseCase';
+import { ObterUnidadePorIdUseCase } from '../../application/use-cases/unidades/ObterUnidadePorIdUseCase';
 import { RequestAutenticada } from '../types/RequestAutenticada';
 
 export class UnidadeController {
   constructor(
     private readonly criarUnidadeUseCase: CriarUnidadeUseCase,
     private readonly atualizarUnidadeUseCase: AtualizarUnidadeUseCase,
-    private readonly listarUnidadesUseCase: ListarUnidadesUseCase
+    private readonly listarUnidadesUseCase: ListarUnidadesUseCase,
+    private readonly obterUnidadePorIdUseCase: ObterUnidadePorIdUseCase
   ) {}
 
   public criar = async (req: RequestAutenticada, res: Response, next: NextFunction): Promise<void> => {
@@ -55,6 +57,16 @@ export class UnidadeController {
       const apenasAtivas = req.query.apenasAtivas === 'true';
       const unidades = await this.listarUnidadesUseCase.executar(apenasAtivas);
       res.status(200).json(unidades);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public obterPorId = async (req: RequestAutenticada, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const unidadeDetalhada = await this.obterUnidadePorIdUseCase.executar(id);
+      res.status(200).json(unidadeDetalhada);
     } catch (error) {
       next(error);
     }

@@ -12,6 +12,14 @@ export function criarUnidadeRouter(unidadeController: UnidadeController, tokenSe
   // Listagem pode ser acessada por usuários autenticados
   router.get('/', authMiddleware, unidadeController.listar);
 
+  // Consulta analítica da unidade por ID
+  router.get(
+    '/:id',
+    authMiddleware,
+    autorizarPerfis(PerfilUsuario.ADMINISTRADOR, PerfilUsuario.OPERADOR_OUVIDORIA),
+    unidadeController.obterPorId
+  );
+
   // Cadastro e alteração restritos ao Administrador
   router.post(
     '/',

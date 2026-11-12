@@ -18,6 +18,7 @@ import { AtualizarPesquisaUseCase } from '../application/use-cases/pesquisas/Atu
 import { AtualizarUnidadeUseCase } from '../application/use-cases/unidades/AtualizarUnidadeUseCase';
 import { CriarUnidadeUseCase } from '../application/use-cases/unidades/CriarUnidadeUseCase';
 import { ListarUnidadesUseCase } from '../application/use-cases/unidades/ListarUnidadesUseCase';
+import { ObterUnidadePorIdUseCase } from '../application/use-cases/unidades/ObterUnidadePorIdUseCase';
 import { CriarUsuarioUseCase } from '../application/use-cases/usuarios/CriarUsuarioUseCase';
 import { ListarUsuariosUseCase } from '../application/use-cases/usuarios/ListarUsuariosUseCase';
 import { ObterIndicadoresDashboardUseCase } from '../application/use-cases/dashboard/ObterIndicadoresDashboardUseCase';
@@ -83,6 +84,13 @@ export function criarApp(deps: AppDependencies): Express {
   const criarUnidadeUseCase = new CriarUnidadeUseCase(deps.unidadeRepo, deps.usuarioRepo);
   const atualizarUnidadeUseCase = new AtualizarUnidadeUseCase(deps.unidadeRepo, deps.usuarioRepo);
   const listarUnidadesUseCase = new ListarUnidadesUseCase(deps.unidadeRepo);
+  const obterUnidadePorIdUseCase = new ObterUnidadePorIdUseCase(
+    deps.unidadeRepo,
+    deps.manifestacaoRepo,
+    deps.respostaRepo,
+    deps.pesquisaRepo,
+    deps.usuarioRepo
+  );
 
   // Casos de Uso - Pesquisas
   const criarPesquisaUseCase = new CriarPesquisaUseCase(deps.pesquisaRepo, deps.usuarioRepo);
@@ -149,7 +157,8 @@ export function criarApp(deps: AppDependencies): Express {
   const unidadeController = new UnidadeController(
     criarUnidadeUseCase,
     atualizarUnidadeUseCase,
-    listarUnidadesUseCase
+    listarUnidadesUseCase,
+    obterUnidadePorIdUseCase
   );
   const pesquisaController = new PesquisaController(
     criarPesquisaUseCase,
