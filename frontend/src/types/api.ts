@@ -41,6 +41,67 @@ export interface UnidadeDTO {
   criadoEm: string;
 }
 
+export interface UnidadeDetalhadaDTO {
+  id: string;
+  nome: string;
+  responsavelNome: string | null;
+  ativa: boolean;
+  prazoPadraoHoras: number;
+  criadoEm: string;
+  indicadores: {
+    totalManifestacoes: number;
+    pendenciasAbertas: number;
+    pendenciasAtrasadas: number;
+    notaMediaGeral: number;
+    totalRespostas: number;
+  };
+  desempenhoPorPesquisa: Array<{
+    pesquisaId: string;
+    titulo: string;
+    totalRespostas: number;
+    notaMedia: number;
+  }>;
+  coordenadores: Array<{
+    id: string;
+    nome: string;
+    email: string;
+    ativo: boolean;
+  }>;
+}
+
+export interface UsuarioDetalhadoDTO {
+  id: string;
+  nome: string;
+  email: string;
+  perfil: PerfilUsuario;
+  unidadeId: string | null;
+  unidadeNome: string | null;
+  ativo: boolean;
+  criadoEm: string;
+  auditoria: {
+    totalInteracoes: number;
+    totalRespostasUnidade: number;
+    totalEscalonamentos: number;
+  };
+}
+
+export interface CriarUsuarioDTO {
+  nome: string;
+  email: string;
+  senha?: string;
+  perfil: PerfilUsuario;
+  unidadeId?: string | null;
+}
+
+export interface AtualizarUsuarioDTO {
+  nome?: string;
+  email?: string;
+  senha?: string;
+  perfil?: PerfilUsuario;
+  unidadeId?: string | null;
+  ativo?: boolean;
+}
+
 export interface PesquisaDTO {
   id: string;
   titulo: string;
