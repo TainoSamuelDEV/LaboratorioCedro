@@ -1,5 +1,10 @@
 # Solicitação de Alteração Arquitetural: Páginas por ID (`/[id]`), CRUD Completo e Soft Delete
 
+> **Status de Execução (Atualizado):**
+> - [x] **A. Documentação (`docs/`)**: **CONCLUÍDO** — Os documentos `docs/01-arquitetura-e-papeis.md`, `docs/02-modelagem-poo-dominio.md`, `docs/04-contrato-api-e-plano-qa.md` e `docs/05-diagramas-uml-casos-de-uso.md` já foram atualizados com as novas sub-rotas `/[id]`, métodos POO de edição/Soft Delete e contratos REST (`GET /:id` e `PATCH /:id`).
+> - [ ] **B. Back-end (`backend/`)**: Pendente de implementação (ver Seção 4.B abaixo).
+> - [ ] **C. Front-end (`frontend/`)**: Pendente de implementação (ver Seção 4.C abaixo).
+
 Este documento explica de forma direta **o que estava faltando na documentação original**, **o que será alterado** na arquitetura (Documentação, Back-end e Front-end) e **o motivo de cada mudança**.
 
 ---
@@ -44,10 +49,11 @@ Por isso, o **D** do CRUD é implementado como **Soft Delete (Inativação Lógi
 
 ## 4. Resumo do que deve ser alterado em cada parte do projeto
 
-### A. Na Documentação (`docs/`)
-1. **`docs/01-arquitetura-e-papeis.md`**: Adicionar as sub-rotas `/pesquisas/[id]`, `/unidades/[id]` e `/usuarios/[id]` na árvore de diretórios do `frontend/`.
-2. **`docs/02-modelagem-poo-dominio.md`**: Adicionar na classe `Usuario` os métodos de negócio para edição (`atualizarDados()`, `alterarPerfil()`) mantendo a validação obrigatória de `unidadeId` quando o perfil for `COORDENADOR_UNIDADE`.
-3. **`docs/04-contrato-api-e-plano-qa.md`**: Incluir os novos endpoints REST de consulta individual (`GET /:id`) e atualização/Soft Delete (`PATCH /:id`).
+### A. Na Documentação (`docs/`) — ✅ JÁ APLICADO NA DOCUMENTAÇÃO
+1. [x] **`docs/01-arquitetura-e-papeis.md`**: Adicionadas as sub-rotas `/pesquisas/[id]`, `/unidades/[id]` e `/usuarios/[id]` na árvore de diretórios do `frontend/` e a tabela de escopo das páginas por ID (`Seção 4.1`).
+2. [x] **`docs/02-modelagem-poo-dominio.md`**: Adicionados na classe `Usuario` (e no Diagrama de Classes UML) os métodos de negócio para edição (`atualizarDados()`, `alterarPerfil()`) mantendo a validação obrigatória de `unidadeId` quando o perfil for `COORDENADOR_UNIDADE`, além dos métodos de Soft Delete (`ativar()`, `desativar()`) e a `Seção 4.3` explicando o ciclo de vida CRUD e Soft Delete.
+3. [x] **`docs/04-contrato-api-e-plano-qa.md`**: Incluídos os novos endpoints REST de consulta individual (`GET /:id`) e atualização/Soft Delete (`PATCH /:id`) para Unidades, Usuários e Pesquisas, além do caso de teste `QA-10` para validação de Soft Delete e preservação de auditoria.
+4. [x] **`docs/05-diagramas-uml-casos-de-uso.md`**: Atualizado o `UC13` com o escopo de consulta individual por ID, edição e desativação lógica (*Soft Delete*).
 
 ### B. No Back-end (`backend/`)
 Adicionar os seguintes endpoints que faltavam para fechar o CRUD completo:

@@ -39,10 +39,10 @@ Para cumprir a exigência do professor sem sobrecarregar nenhum dos dois, cada f
 
 4. **Back-end (API Express + Implementação POO)**
    * Implementar as classes de domínio orientadas a objetos, casos de uso (`Services`), `Controllers` e `Middlewares` de autenticação/autorização no Express.js.
-   * Expor os endpoints REST para pesquisas, manifestações, tratativas da unidade, escalonamentos, conclusão e indicadores do dashboard.
+   * Expor os endpoints REST para pesquisas, manifestações, tratativas da unidade, escalonamentos, conclusão, indicadores do dashboard e CRUD completo com *Soft Delete* (`GET /:id` e `PATCH /:id` para pesquisas, unidades e usuários).
 5. **Front-end (Next.js App Router)**
-   * Estruturar a aplicação com *Route Groups* isolados (`(publico)`, `(auth)`, `(sistema)`), garantindo links compartilháveis (incluindo rota dinâmica `/manifestacoes/[id]` e filtros via *Query Params*).
-   * Desenvolver a página pública de resposta da pesquisa (`/pesquisa/[id]` via link/QR Code) e as **9 telas internas** consumindo exclusivamente a API Express do Back-end (`NEXT_PUBLIC_API_URL`) através de uma camada dedicada de `services/`.
+   * Estruturar a aplicação com *Route Groups* isolados (`(publico)`, `(auth)`, `(sistema)`), garantindo links compartilháveis (incluindo rotas dinâmicas por ID `/manifestacoes/[id]`, `/pesquisas/[id]`, `/unidades/[id]`, `/usuarios/[id]` e filtros via *Query Params*).
+   * Desenvolver a página pública de resposta da pesquisa (`/pesquisa/[id]` via link/QR Code) e as telas internas (listagens + páginas de detalhe e gestão por `[id]`) consumindo exclusivamente a API Express do Back-end (`NEXT_PUBLIC_API_URL`) através de uma camada dedicada de `services/`.
 6. **DevOps (Infraestrutura VPS, Coolify e Deploy)**
    * Estruturar o repositório, padronizar variáveis de ambiente isoladas (`frontend/.env.example` apenas com a URL da API e `backend/.env.example` com `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`) e pipeline de CI no GitHub Actions.
    * Provisionar e gerenciar na **VPS via Coolify (PaaS)** os containers do **Front-end (Next.js)**, do **Back-end (API Express)** e da instância **Supabase Self-Hosted (PostgreSQL)**, incluindo domínios e HTTPS.
@@ -120,18 +120,22 @@ poo-taino-gabriel/
     └── src/
         ├── app/
         │   ├── (publico)/                 # Grupo Público: Layout limpo (Mobile-first p/ QR Code, sem Auth)
-        │   │   └── pesquisa/[id]/         # URL: /pesquisa/:id (Formulário público do cliente: nota 1-5 + comentário)
+        │   │   └── pesquisa/              # URL: /pesquisa (Seleção de pesquisa ativa)
+        │   │       └── [id]/              # URL: /pesquisa/:id (Formulário público do cliente: nota 1-5 + comentário)
         │   ├── (auth)/                    # Grupo de Autenticação: Layout centralizado sem Sidebar
         │   │   └── login/                 # URL: /login (Tela 1: Login de usuários internos)
         │   └── (sistema)/                 # Grupo Interno: Layout Corporativo (Sidebar, Header e AuthGuard)
-        │       ├── layout.tsx             # Shell autenticado compartilhado pelas telas 2 a 9
+        │       ├── layout.tsx             # Shell autenticado compartilhado pelas telas internas
         │       ├── dashboard/             # URL: /dashboard (Tela 2: Dashboard Gerencial)
-        │       ├── pesquisas/             # URL: /pesquisas (Tela 3: Gestão de Pesquisas)
+        │       ├── pesquisas/             # URL: /pesquisas (Tela 3: Listagem e Criação de Pesquisas)
+        │       │   └── [id]/              # URL: /pesquisas/:id (Detalhe, Indicadores da Pesquisa, Link/QR Code, Edição e Soft Delete)
         │       ├── manifestacoes/         # URL: /manifestacoes (Tela 4: Lista com Filtros via Query Params)
         │       │   └── [id]/              # URL: /manifestacoes/:id (Tela 5: Detalhe, Histórico e Tratativa)
         │       ├── pendencias/            # URL: /pendencias (Tela 6: Não respondidas, Atrasadas e Escalonadas)
-        │       ├── unidades/              # URL: /unidades (Tela 7: Cadastro e Gestão de Unidades)
-        │       ├── usuarios/              # URL: /usuarios (Tela 8: Gestão de Usuários e Permissões)
+        │       ├── unidades/              # URL: /unidades (Tela 7: Listagem e Cadastro de Unidades)
+        │       │   └── [id]/              # URL: /unidades/:id (Detalhe, Indicadores por Pesquisa, Coordenadores, Edição e Soft Delete)
+        │       ├── usuarios/              # URL: /usuarios (Tela 8: Listagem e Cadastro de Usuários)
+        │       │   └── [id]/              # URL: /usuarios/:id (Ficha do Usuário, Histórico de Atuação, Edição e Soft Delete)
         │       └── relatorios/            # URL: /relatorios (Tela 9: Relatórios e Exportação)
         ├── components/                    # Componentes visuais reutilizáveis (ui/, layout/, manifestacoes/)
         ├── services/                      # Comunicação HTTP com o Back-end Express (/api/...)
@@ -139,6 +143,17 @@ poo-taino-gabriel/
         ├── types/                         # Interfaces e DTOs TypeScript alinhados ao Contrato da API
         └── middleware.ts                  # Proteção de rotas privadas no Next.js
 ```
+
+### 4.1. Mapa de Rotas Internas por Artefato (`Listagem` + `Página Dedicada /[id]`)
+
+Todos os 4 artefatos principais do sistema contam com **Tela de Listagem** e **Página Individual por ID (`/[id]`)** para análise de indicadores, auditoria, edição e desativação lógica (*Soft Delete*):
+
+| Módulo | Rota de Listagem | Rota de Detalhe (`/[id]`) | Escopo da Página por ID (`/[id]`) |
+| :--- | :--- | :--- | :--- |
+| **Manifestações** | `/manifestacoes` | `/manifestacoes/[id]` | Dados do atendimento, nota, comentário, prazo SLA, linha do tempo imutável e ações de fluxo (iniciar tratativa, responder pela unidade, solicitar complemento, escalonar, redirecionar unidade e concluir). |
+| **Pesquisas** | `/pesquisas` | `/pesquisas/[id]` | **Indicadores da pesquisa:** total de respostas, nota média, % de satisfação e distribuição de notas (1 a 5). **Divulgação:** link público (`/pesquisa/:id`) e QR Code. **Listagem:** últimas manifestações geradas. **Gestão (Admin):** editar título, descrição, período, canal e ativar/desativar (*Soft Delete*). |
+| **Unidades** | `/unidades` | `/unidades/[id]` | **Indicadores da unidade:** total de manifestações, pendências abertas/atrasadas e nota média geral. **Desempenho por pesquisa:** pesquisas respondidas na unidade com nº de respostas e nota média. **Equipe:** coordenadores alocados. **Gestão (Admin):** editar nome, responsável, prazo SLA padrão (em horas) e ativar/desativar (*Soft Delete*). |
+| **Usuários** | `/usuarios` | `/usuarios/[id]` | **Ficha do usuário:** nome, e-mail, perfil (`Administrador`, `Ouvidoria` ou `Coordenador`), unidade vinculada e status. **Atividade e auditoria:** resumo das interações, respostas de unidade ou escalonamentos registrados. **Gestão (Admin):** editar nome, e-mail, perfil/unidade vinculada, redefinir senha e ativar/desativar (*Soft Delete*). |
 
 ---
 

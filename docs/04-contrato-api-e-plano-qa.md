@@ -14,16 +14,21 @@ Este documento é o contrato oficial entre o Back-end (Express + TypeScript POO)
 | `POST` | `/api/auth/login` | Público (Usuários internos) | Autentica `email` e `senha`, retornando token JWT e dados do perfil/unidade. |
 | `GET` | `/api/auth/me` | Autenticado | Retorna os dados do usuário logado e suas permissões polimórficas. |
 | `GET` | `/api/unidades` | Todos internos (+ Público para seleção na pesquisa) | Lista unidades cadastradas. |
+| `GET` | `/api/unidades/:id` | `ADMINISTRADOR`, `OPERADOR_OUVIDORIA` *(e `COORDENADOR_UNIDADE` da própria unidade)* | Retorna dados da unidade, indicadores (total de manifestações, pendências abertas/atrasadas, nota média geral), desempenho por pesquisa (nº de respostas e nota média por pesquisa) e coordenadores vinculados. |
 | `POST` | `/api/unidades` | `ADMINISTRADOR` | Cadastra nova unidade (`nome`, `responsavelNome`, `prazoPadraoHoras`). |
-| `PATCH` | `/api/unidades/:id` | `ADMINISTRADOR` | Atualiza dados ou ativa/desativa uma unidade. |
+| `PATCH` | `/api/unidades/:id` | `ADMINISTRADOR` | Atualiza dados (`nome`, `responsavelNome`, `prazoPadraoHoras`) ou ativa/desativa uma unidade (*Soft Delete*: `ativa: boolean`). |
 | `GET` | `/api/usuarios` | `ADMINISTRADOR`, `OPERADOR_OUVIDORIA` | Lista usuários internos e seus respectivos perfis/unidades. |
+| `GET` | `/api/usuarios/:id` | `ADMINISTRADOR`, `OPERADOR_OUVIDORIA` | Retorna ficha completa do usuário (`nome`, `email`, `perfil`, `unidadeId`, `ativo`) e resumo do histórico de atuação/auditoria (interações, respostas de unidade e escalonamentos registrados). |
 | `POST` | `/api/usuarios` | `ADMINISTRADOR` | Cria usuário (`ADMINISTRADOR`, `OPERADOR_OUVIDORIA` ou `COORDENADOR_UNIDADE`). |
+| `PATCH` | `/api/usuarios/:id` | `ADMINISTRADOR` | Atualiza dados (`nome`, `email`, `perfil`, `unidadeId`, redefinição de `senha`) ou ativa/desativa o usuário (*Soft Delete*: `ativo: boolean`), validando vínculo obrigatório de `unidadeId` para `COORDENADOR_UNIDADE`. |
 
 ### Entregas 2, 3 e 4: Pesquisas, Resposta do Cliente e Geração Automática de Manifestação
 | Método | Rota | Perfis Autorizados | Descrição |
 | :---: | :--- | :--- | :--- |
 | `GET` | `/api/pesquisas` | `ADMINISTRADOR`, `OPERADOR_OUVIDORIA` | Lista pesquisas configuradas. |
+| `GET` | `/api/pesquisas/:id` | `ADMINISTRADOR`, `OPERADOR_OUVIDORIA` | Retorna dados da pesquisa, indicadores consolidados (total de respostas, nota média, % de satisfação e distribuição de notas 1 a 5), link público (`/pesquisa/:id`) e últimas manifestações geradas por ela. |
 | `POST` | `/api/pesquisas` | `ADMINISTRADOR` | Cria nova pesquisa (`titulo`, `descricao`, `periodo`, `canal`, `unidadePadraoId`). |
+| `PATCH` | `/api/pesquisas/:id` | `ADMINISTRADOR` | Atualiza dados (`titulo`, `descricao`, `periodo`, `canal`, `unidadePadraoId`) ou ativa/desativa a pesquisa (*Soft Delete*: `ativa: boolean`). |
 | `GET` | `/api/public/pesquisas/:id` | **Público (Cliente)** | Retorna dados públicos da pesquisa e unidades ativas para o formulário/QR Code. |
 | `POST` | `/api/public/pesquisas/:id/respostas` | **Público (Cliente)** | **Fluxo Central:** Recebe `{ unidadeId, clienteAtendimento, nota, comentario }`, salva a `RespostaPesquisa` e **cria automaticamente a `Manifestacao`** (com `protocolo` único e 1ª `Interacao` no histórico). |
 
@@ -91,4 +96,6 @@ Cada uma das **9 Regras de Negócio Essenciais (Seção 6)** da [Documentacao_Fu
 | **QA-07** | A conclusão só deve ocorrer após o registro do tratamento ou resposta da unidade. | `OperadorOuvidoria` tenta chamar `concluir()` em uma manifestação com status `NAO_RESPONDIDA` ou `EM_TRATAMENTO` (sem resposta da unidade). | Bloqueado com `RegraNegocioError`: *"A manifestação só pode ser concluída após resposta formal da unidade"*. |
 | **QA-08** | Nenhuma manifestação concluída deve ser apagada do histórico operacional. | Tentar excluir (`DELETE`) uma manifestação com status `CONCLUIDA` ou alterar uma `Interacao`. | Bloqueado pela classe de domínio e pela Trigger do PostgreSQL. |
 | **QA-09** | As permissões devem restringir a visualização por perfil e, quando aplicável, por unidade. | `CoordenadorUnidade` (Unidade A) chama `GET /api/manifestacoes` ou tenta abrir detalhe de manifestação da Unidade B. | Só retorna manifestações da Unidade A; tentativa de acesso à Unidade B retorna `403 Forbidden`. |
+| **QA-10** | A desativação de Unidades, Pesquisas ou Usuários deve ser lógica (*Soft Delete*), preservando todo o histórico de auditoria. | Inativar uma Pesquisa (`PATCH /api/pesquisas/:id`), Unidade (`PATCH /api/unidades/:id`) ou Usuário (`PATCH /api/usuarios/:id`). | Bloqueia novas respostas na pesquisa, oculta a unidade de novos atendimentos e bloqueia login/ações do usuário inativo (`UC05`), mantendo intactos os dados históricos em `interacoes`, `manifestacoes` e relatórios. |
+
 

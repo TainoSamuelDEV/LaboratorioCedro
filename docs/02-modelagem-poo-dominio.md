@@ -30,6 +30,10 @@ classDiagram
         #unidadeId: string | null
         #ativo: boolean
         #criadoEm: Date
+        +atualizarDados(nome: string, email: string) void
+        +alterarPerfil(novoPerfil: PerfilUsuario, novaUnidadeId: string | null) Usuario
+        +ativar() void
+        +desativar() void
         +podeVisualizar(m: Manifestacao)* boolean
         +podeResponderUnidade(m: Manifestacao)* boolean
         +podeEscalonar(m: Manifestacao)* boolean
@@ -65,8 +69,10 @@ classDiagram
     class Unidade {
         -id: string
         -nome: string
-        -responsavelId: string | null
+        -responsavelNome: string | null
         -ativa: boolean
+        -prazoPadraoHoras: number
+        +atualizarDados(nome: string, responsavelNome: string | null, prazoHoras?: number) void
         +ativar() void
         +desativar() void
     }
@@ -78,6 +84,10 @@ classDiagram
         -periodo: string
         -ativa: boolean
         -canal: CanalPesquisa
+        -unidadePadraoId: string | null
+        +atualizarDados(titulo: string, descricao: string, periodo: string, canal?: CanalPesquisa) void
+        +ativar() void
+        +desativar() void
         +validarRecebimentoResposta() void
     }
 
@@ -195,6 +205,32 @@ export abstract class Usuario {
   get email(): string { return this._email; }
   get ativo(): boolean { return this._ativo; }
 
+  // Métodos de negócio para Edição e Soft Delete (Inativação Lógica)
+  public atualizarDados(nome: string, email: string): void {
+    if (!nome || !nome.trim()) throw new Error('O nome do usuário é obrigatório.');
+    if (!email || !email.includes('@')) throw new Error('Um e-mail válido é obrigatório.');
+    this._nome = nome.trim();
+    this._email = email.trim();
+  }
+
+  public alterarPerfil(novoPerfil: PerfilUsuario, novaUnidadeId: string | null = null): Usuario {
+    if (novoPerfil === PerfilUsuario.COORDENADOR_UNIDADE && (!novaUnidadeId || !novaUnidadeId.trim())) {
+      throw new Error('Coordenador de Unidade deve estar obrigatoriamente vinculado a uma unidade.');
+    }
+    return UsuarioFactory.criar({
+      id: this.id,
+      nome: this._nome,
+      email: this._email,
+      perfil: novoPerfil,
+      unidadeId: novoPerfil === PerfilUsuario.COORDENADOR_UNIDADE ? novaUnidadeId : null,
+      ativo: this._ativo,
+      criadoEm: this.criadoEm,
+    });
+  }
+
+  public ativar(): void { this._ativo = true; }
+  public desativar(): void { this._ativo = false; }
+
   // Métodos polimórficos: cada subclasse define sua regra de acesso
   abstract podeVisualizar(unidadeDaManifestacaoId: string): boolean;
   abstract podeResponderUnidade(unidadeDaManifestacaoId: string): boolean;
@@ -253,4 +289,11 @@ export class Administrador extends Usuario {
 * **Proibição de setters livres:** Não existe `manifestacao.status = 'CONCLUIDA'`.
 * **Auditoria automática:** O método privado `alterarStatus(usuario, novoStatus, tipoInteracao, descricao)` é o único ponto interno capaz de trocar `this._status`, e ele **sempre** instancia um objeto `Interacao` registrando `statusAnterior`, `statusNovo`, `usuario.id` e `new Date()`, adicionando-o à lista privada `this._interacoes`.
 * **Imutabilidade pós-conclusão:** Qualquer tentativa de chamar `registrarRespostaUnidade()` ou `escalonar()` quando `this._status === StatusManifestacao.CONCLUIDA` lança um `RegraNegocioError`.
+
+### 4.3. Ciclo de Vida CRUD e *Soft Delete* (Desativação Lógica) nas Entidades
+Em um sistema de Ouvidoria e Auditoria (Seções 6 e 13 da documentação funcional), **nenhum registro que possui histórico vinculado pode ser apagado fisicamente (`DELETE` no banco)**. Por isso, as classes `Unidade`, `Pesquisa` e `Usuario` encapsulam métodos explícitos de edição (`atualizarDados()`, `alterarPerfil()`) e inativação lógica (`desativar()` / `ativar()`):
+* **`Unidade` (`ativa = false`):** Deixa de aparecer para seleção em novos atendimentos, mas preserva todo o histórico de manifestações passadas no Dashboard e nos Relatórios.
+* **`Pesquisa` (`ativa = false`):** O método `validarRecebimentoResposta()` bloqueia imediatamente novas respostas no link público/QR Code, mantendo intactas todas as respostas e manifestações já originadas por ela.
+* **`Usuario` (`ativo = false`):** Bloqueia imediatamente o login e todas as permissões polimórficas (`this._ativo` retorna `false`), mas preserva a autoria do usuário na trilha de auditoria (`interacoes`, `respostas_unidade` e `escalonamentos`).
+
 

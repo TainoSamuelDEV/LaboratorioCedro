@@ -178,7 +178,7 @@ UC08 ..> UC06 : <<extend>>
 | **UC10** | Solicitar Complemento à Unidade (`<<extend>>`) | `Operador / Ouvidoria` | Retorna status de `RESPONDIDA` para `EM_TRATAMENTO` e notifica unidade. | Acionado quando a resposta da Unidade é rasa ou insuficiente; exige justificativa que fica gravada no histórico (`UC11`). |
 | **UC11** | Gravar Interação no Histórico Imutável | `Sistema (Cedro / NIT)` | Executado via `<<include>>` em toda mudança de status. | Registra `usuarioId`, `tipo`, `texto`, `statusAnterior`, `statusNovo` e `dataHora`. |
 | **UC12** | Atualizar e Consultar Dashboard / Relatórios | `Ouvidoria`, `Admin`, `Sistema` | Atualiza contadores automaticamente após mudanças de status. | Calcula os 10 indicadores da Seção 11 (volume, % por nota, SLA médio de resposta e conclusão, pendências por unidade). |
-| **UC13** | Gerenciar Unidades, Usuários e Pesquisas | `Administrador` | Persiste parâmetros e valida regras estruturais. | Garante que todo `COORDENADOR_UNIDADE` possua uma `Unidade` ativa associada. |
+| **UC13** | Gerenciar Unidades, Usuários e Pesquisas (CRUD + *Soft Delete*) | `Administrador` *(Consulta `/[id]` também por `Ouvidoria`)* | Persiste parâmetros, calcula indicadores individuais por ID (`/pesquisas/:id`, `/unidades/:id`, `/usuarios/:id`) e valida regras estruturais. | Garante que todo `COORDENADOR_UNIDADE` possua uma `Unidade` ativa associada e aplica desativação lógica (*Soft Delete*: `ativa`/`ativo = false`) para nunca apagar registros vinculados ao histórico de auditoria. |
 
 ---
 
