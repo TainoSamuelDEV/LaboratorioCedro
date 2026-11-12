@@ -21,6 +21,8 @@ import { ListarUnidadesUseCase } from '../application/use-cases/unidades/ListarU
 import { ObterUnidadePorIdUseCase } from '../application/use-cases/unidades/ObterUnidadePorIdUseCase';
 import { CriarUsuarioUseCase } from '../application/use-cases/usuarios/CriarUsuarioUseCase';
 import { ListarUsuariosUseCase } from '../application/use-cases/usuarios/ListarUsuariosUseCase';
+import { ObterUsuarioPorIdUseCase } from '../application/use-cases/usuarios/ObterUsuarioPorIdUseCase';
+import { AtualizarUsuarioUseCase } from '../application/use-cases/usuarios/AtualizarUsuarioUseCase';
 import { ObterIndicadoresDashboardUseCase } from '../application/use-cases/dashboard/ObterIndicadoresDashboardUseCase';
 import { ExportarRelatorioUseCase } from '../application/use-cases/relatorios/ExportarRelatorioUseCase';
 import { IManifestacaoRepository } from '../domain/repositories/IManifestacaoRepository';
@@ -79,6 +81,16 @@ export function criarApp(deps: AppDependencies): Express {
   const obterUsuarioLogadoUseCase = new ObterUsuarioLogadoUseCase(deps.usuarioRepo);
   const criarUsuarioUseCase = new CriarUsuarioUseCase(deps.usuarioRepo, passwordHasher);
   const listarUsuariosUseCase = new ListarUsuariosUseCase(deps.usuarioRepo);
+  const obterUsuarioPorIdUseCase = new ObterUsuarioPorIdUseCase(
+    deps.usuarioRepo,
+    deps.unidadeRepo,
+    deps.manifestacaoRepo
+  );
+  const atualizarUsuarioUseCase = new AtualizarUsuarioUseCase(
+    deps.usuarioRepo,
+    deps.unidadeRepo,
+    passwordHasher
+  );
 
   // Casos de Uso - Unidades
   const criarUnidadeUseCase = new CriarUnidadeUseCase(deps.unidadeRepo, deps.usuarioRepo);
@@ -153,7 +165,12 @@ export function criarApp(deps: AppDependencies): Express {
 
   // Controllers
   const authController = new AuthController(loginUseCase, obterUsuarioLogadoUseCase);
-  const usuarioController = new UsuarioController(criarUsuarioUseCase, listarUsuariosUseCase);
+  const usuarioController = new UsuarioController(
+    criarUsuarioUseCase,
+    listarUsuariosUseCase,
+    obterUsuarioPorIdUseCase,
+    atualizarUsuarioUseCase
+  );
   const unidadeController = new UnidadeController(
     criarUnidadeUseCase,
     atualizarUnidadeUseCase,

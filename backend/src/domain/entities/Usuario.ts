@@ -42,6 +42,17 @@ export abstract class Usuario {
     this._ativo = true;
   }
 
+  public atualizarDados(nome: string, email: string): void {
+    if (!nome || !nome.trim()) {
+      throw new RegraNegocioError('O nome do usuário não pode ser vazio.');
+    }
+    if (!email || !email.includes('@')) {
+      throw new RegraNegocioError('Um e-mail válido é obrigatório.');
+    }
+    this._nome = nome.trim();
+    this._email = email.trim().toLowerCase();
+  }
+
   // Métodos polimórficos que determinam o escopo de permissão por perfil e unidade
   public abstract podeVisualizarManifestacao(unidadeDaManifestacaoId: string): boolean;
   public abstract podeTratarPelaUnidade(unidadeDaManifestacaoId: string): boolean;
