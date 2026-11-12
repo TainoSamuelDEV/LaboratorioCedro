@@ -13,6 +13,8 @@ import { CriarPesquisaUseCase } from '../application/use-cases/pesquisas/CriarPe
 import { ListarPesquisasUseCase } from '../application/use-cases/pesquisas/ListarPesquisasUseCase';
 import { ObterPesquisaPublicaUseCase } from '../application/use-cases/pesquisas/ObterPesquisaPublicaUseCase';
 import { ResponderPesquisaUseCase } from '../application/use-cases/pesquisas/ResponderPesquisaUseCase';
+import { ObterPesquisaPorIdUseCase } from '../application/use-cases/pesquisas/ObterPesquisaPorIdUseCase';
+import { AtualizarPesquisaUseCase } from '../application/use-cases/pesquisas/AtualizarPesquisaUseCase';
 import { AtualizarUnidadeUseCase } from '../application/use-cases/unidades/AtualizarUnidadeUseCase';
 import { CriarUnidadeUseCase } from '../application/use-cases/unidades/CriarUnidadeUseCase';
 import { ListarUnidadesUseCase } from '../application/use-cases/unidades/ListarUnidadesUseCase';
@@ -86,6 +88,17 @@ export function criarApp(deps: AppDependencies): Express {
   const criarPesquisaUseCase = new CriarPesquisaUseCase(deps.pesquisaRepo, deps.usuarioRepo);
   const listarPesquisasUseCase = new ListarPesquisasUseCase(deps.pesquisaRepo);
   const obterPesquisaPublicaUseCase = new ObterPesquisaPublicaUseCase(deps.pesquisaRepo, deps.unidadeRepo);
+  const obterPesquisaPorIdUseCase = new ObterPesquisaPorIdUseCase(
+    deps.pesquisaRepo,
+    deps.respostaRepo,
+    deps.manifestacaoRepo,
+    deps.unidadeRepo
+  );
+  const atualizarPesquisaUseCase = new AtualizarPesquisaUseCase(
+    deps.pesquisaRepo,
+    deps.usuarioRepo,
+    deps.unidadeRepo
+  );
   const responderPesquisaUseCase = new ResponderPesquisaUseCase(
     deps.pesquisaRepo,
     deps.unidadeRepo,
@@ -142,7 +155,9 @@ export function criarApp(deps: AppDependencies): Express {
     criarPesquisaUseCase,
     listarPesquisasUseCase,
     obterPesquisaPublicaUseCase,
-    responderPesquisaUseCase
+    responderPesquisaUseCase,
+    obterPesquisaPorIdUseCase,
+    atualizarPesquisaUseCase
   );
   const manifestacaoController = new ManifestacaoController(
     obterManifestacaoPorIdUseCase,

@@ -17,11 +17,25 @@ export function criarPesquisaRouter(pesquisaController: PesquisaController, toke
     pesquisaController.listar
   );
 
+  router.get(
+    '/:id',
+    authMiddleware,
+    autorizarPerfis(PerfilUsuario.ADMINISTRADOR, PerfilUsuario.OPERADOR_OUVIDORIA),
+    pesquisaController.obterPorId
+  );
+
   router.post(
     '/',
     authMiddleware,
     autorizarPerfis(PerfilUsuario.ADMINISTRADOR),
     pesquisaController.criar
+  );
+
+  router.patch(
+    '/:id',
+    authMiddleware,
+    autorizarPerfis(PerfilUsuario.ADMINISTRADOR),
+    pesquisaController.atualizar
   );
 
   return router;

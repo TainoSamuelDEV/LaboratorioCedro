@@ -3,15 +3,17 @@ import { RegraNegocioError } from '../errors/DomainErrors';
 
 export class Pesquisa {
   private _descricao: string;
+  private _canal: CanalPesquisa;
+  private _unidadePadraoId: string | null;
 
   constructor(
     public readonly id: string,
     private _titulo: string,
     descricao: string | null | undefined,
     private _periodo: string,
-    public readonly canal: CanalPesquisa,
+    canal: CanalPesquisa,
     private _ativa: boolean = true,
-    public readonly unidadePadraoId: string | null = null,
+    unidadePadraoId: string | null = null,
     public readonly criadoEm: Date = new Date()
   ) {
     if (!id || !id.trim()) {
@@ -27,8 +29,9 @@ export class Pesquisa {
       throw new RegraNegocioError('O canal da pesquisa é obrigatório.');
     }
 
-    // Descrição é opcional conforme schema.sql (descricao TEXT nullable)
     this._descricao = descricao ? descricao.trim() : '';
+    this._canal = canal;
+    this._unidadePadraoId = unidadePadraoId || null;
   }
 
   get titulo(): string {
@@ -41,6 +44,14 @@ export class Pesquisa {
 
   get periodo(): string {
     return this._periodo;
+  }
+
+  get canal(): CanalPesquisa {
+    return this._canal;
+  }
+
+  get unidadePadraoId(): string | null {
+    return this._unidadePadraoId;
   }
 
   get ativa(): boolean {
@@ -63,7 +74,13 @@ export class Pesquisa {
     }
   }
 
-  public atualizarDados(titulo: string, descricao: string | null | undefined, periodo: string): void {
+  public atualizarDados(
+    titulo: string,
+    descricao: string | null | undefined,
+    periodo: string,
+    canal?: CanalPesquisa,
+    unidadePadraoId?: string | null
+  ): void {
     if (!titulo || !titulo.trim()) {
       throw new RegraNegocioError('O título da pesquisa não pode ser vazio.');
     }
@@ -73,5 +90,11 @@ export class Pesquisa {
     this._titulo = titulo.trim();
     this._descricao = descricao ? descricao.trim() : '';
     this._periodo = periodo.trim();
+    if (canal) {
+      this._canal = canal;
+    }
+    if (unidadePadraoId !== undefined) {
+      this._unidadePadraoId = unidadePadraoId;
+    }
   }
 }

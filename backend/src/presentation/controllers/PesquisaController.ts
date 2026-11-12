@@ -3,6 +3,8 @@ import { CriarPesquisaUseCase } from '../../application/use-cases/pesquisas/Cria
 import { ListarPesquisasUseCase } from '../../application/use-cases/pesquisas/ListarPesquisasUseCase';
 import { ObterPesquisaPublicaUseCase } from '../../application/use-cases/pesquisas/ObterPesquisaPublicaUseCase';
 import { ResponderPesquisaUseCase } from '../../application/use-cases/pesquisas/ResponderPesquisaUseCase';
+import { ObterPesquisaPorIdUseCase } from '../../application/use-cases/pesquisas/ObterPesquisaPorIdUseCase';
+import { AtualizarPesquisaUseCase } from '../../application/use-cases/pesquisas/AtualizarPesquisaUseCase';
 import { RequestAutenticada } from '../types/RequestAutenticada';
 
 export class PesquisaController {
@@ -10,7 +12,9 @@ export class PesquisaController {
     private readonly criarPesquisaUseCase: CriarPesquisaUseCase,
     private readonly listarPesquisasUseCase: ListarPesquisasUseCase,
     private readonly obterPesquisaPublicaUseCase: ObterPesquisaPublicaUseCase,
-    private readonly responderPesquisaUseCase: ResponderPesquisaUseCase
+    private readonly responderPesquisaUseCase: ResponderPesquisaUseCase,
+    private readonly obterPesquisaPorIdUseCase: ObterPesquisaPorIdUseCase,
+    private readonly atualizarPesquisaUseCase: AtualizarPesquisaUseCase
   ) {}
 
   public criar = async (req: RequestAutenticada, res: Response, next: NextFunction): Promise<void> => {
@@ -38,6 +42,39 @@ export class PesquisaController {
       const apenasAtivas = req.query.apenasAtivas === 'true';
       const pesquisas = await this.listarPesquisasUseCase.executar(apenasAtivas);
       res.status(200).json(pesquisas);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public obterPorId = async (req: RequestAutenticada, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const pesquisaDetalhada = await this.obterPesquisaPorIdUseCase.executar(id);
+      res.status(200).json(pesquisaDetalhada);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public atualizar = async (req: RequestAutenticada, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { id } = req.params;
+      const executadoPorUsuarioId = req.usuario!.sub;
+      const { titulo, descricao, periodo, canal, unidadePadraoId, ativa } = req.body;
+
+      const pesquisaAtualizada = await this.atualizarPesquisaUseCase.executar({
+        id,
+        executadoPorUsuarioId,
+        titulo,
+        descricao,
+        periodo,
+        canal,
+        unidadePadraoId,
+        ativa,
+      });
+
+      res.status(200).json(pesquisaAtualizada);
     } catch (error) {
       next(error);
     }
