@@ -119,7 +119,8 @@ export function criarApp(deps: AppDependencies): Express {
     deps.manifestacaoRepo,
     deps.respostaRepo,
     deps.unidadeRepo,
-    deps.usuarioRepo
+    deps.usuarioRepo,
+    deps.pesquisaRepo
   );
   const exportarRelatorioUseCase = new ExportarRelatorioUseCase(
     deps.manifestacaoRepo,

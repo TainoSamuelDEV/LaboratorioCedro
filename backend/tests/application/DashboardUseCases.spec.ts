@@ -91,12 +91,14 @@ describe('Dashboard e Relatórios: Casos de Uso (Entrega 8)', () => {
         manifestacaoRepo,
         respostaRepo,
         unidadeRepo,
-        usuarioRepo
+        usuarioRepo,
+        pesquisaRepo
       );
 
       const resultado = await useCase.execute(admin.id);
 
       expect(resultado.totalRespostas).toBe(3);
+      expect(resultado.notaMediaGeral).toBe(2.7);
       expect(resultado.distribuicaoNotas.length).toBe(5);
       // Nota 1 = 1 (33.3%), Nota 2 = 1 (33.3%), Nota 5 = 1 (33.3%)
       const nota1 = resultado.distribuicaoNotas.find((d) => d.nota === 1);
@@ -117,6 +119,17 @@ describe('Dashboard e Relatórios: Casos de Uso (Entrega 8)', () => {
       expect(resultado.volumePorUnidade.length).toBe(2);
       const volumeSul = resultado.volumePorUnidade.find((v) => v.unidadeId === 'unid-sul');
       expect(volumeSul?.total).toBe(2);
+
+      // Novos campos: desempenho por pesquisa e ultimas manifestacoes
+      expect(resultado.desempenhoPorPesquisa.length).toBe(1);
+      expect(resultado.desempenhoPorPesquisa[0].pesquisaId).toBe('pesq-1');
+      expect(resultado.desempenhoPorPesquisa[0].totalRespostas).toBe(3);
+      expect(resultado.desempenhoPorPesquisa[0].notaMedia).toBe(2.7);
+
+      expect(resultado.ultimasManifestacoes.length).toBe(2);
+      expect(resultado.ultimasManifestacoes[0].protocolo).toBeDefined();
+      expect(resultado.ultimasManifestacoes[0].unidadeNome).toBeDefined();
+      expect(resultado.ultimasManifestacoes[0].pesquisaTitulo).toBe('Satisfação Geral');
     });
 
     it('deve filtrar os indicadores pela unidade do CoordenadorUnidade (polimorfismo)', async () => {
@@ -124,15 +137,18 @@ describe('Dashboard e Relatórios: Casos de Uso (Entrega 8)', () => {
         manifestacaoRepo,
         respostaRepo,
         unidadeRepo,
-        usuarioRepo
+        usuarioRepo,
+        pesquisaRepo
       );
 
       const resultado = await useCase.execute(coordSul.id);
 
       // Respostas da Unidade Sul: resp-2 e resp-3
       expect(resultado.totalRespostas).toBe(2);
+      expect(resultado.notaMediaGeral).toBe(1.5); // (1 + 2) / 2
       expect(resultado.volumePorUnidade.length).toBe(1);
       expect(resultado.volumePorUnidade[0].unidadeId).toBe('unid-sul');
+      expect(resultado.desempenhoPorPesquisa[0].totalRespostas).toBe(2);
     });
   });
 

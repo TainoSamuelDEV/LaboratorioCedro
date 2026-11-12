@@ -16,8 +16,30 @@ export interface PendenciaPorUnidadeDTO {
   pendencias: number;
 }
 
+export interface MetricaPesquisaDashboardDTO {
+  pesquisaId: string;
+  titulo: string;
+  canal: string;
+  ativa: boolean;
+  totalRespostas: number;
+  notaMedia: number;
+}
+
+export interface UltimaManifestacaoDashboardDTO {
+  id: string;
+  protocolo: string;
+  unidadeId: string;
+  unidadeNome: string;
+  pesquisaTitulo: string;
+  nota: number;
+  status: string;
+  prioridade: string;
+  criadoEm: string;
+}
+
 export interface IndicadoresDashboardDTO {
   totalRespostas: number;
+  notaMediaGeral: number;
   distribuicaoNotas: DistribuicaoNotaDTO[];
   totalAbertas: number;
   totalNaoRespondidas: number;
@@ -27,4 +49,6 @@ export interface IndicadoresDashboardDTO {
   tempoMedioConclusaoHoras: number;
   pendenciasPorUnidade: PendenciaPorUnidadeDTO[];
   volumePorUnidade: VolumePorUnidadeDTO[];
+  desempenhoPorPesquisa: MetricaPesquisaDashboardDTO[];
+  ultimasManifestacoes: UltimaManifestacaoDashboardDTO[];
 }

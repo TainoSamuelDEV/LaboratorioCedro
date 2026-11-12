@@ -1,13 +1,16 @@
 import { StatusManifestacao } from '../../../domain/enums';
 import { AcessoNegadoError, ObjetoNaoEncontradoError } from '../../../domain/errors/DomainErrors';
 import { IManifestacaoRepository } from '../../../domain/repositories/IManifestacaoRepository';
+import { IPesquisaRepository } from '../../../domain/repositories/IPesquisaRepository';
 import { IRespostaPesquisaRepository } from '../../../domain/repositories/IRespostaPesquisaRepository';
 import { IUnidadeRepository } from '../../../domain/repositories/IUnidadeRepository';
 import { IUsuarioRepository } from '../../../domain/repositories/IUsuarioRepository';
 import {
   DistribuicaoNotaDTO,
   IndicadoresDashboardDTO,
+  MetricaPesquisaDashboardDTO,
   PendenciaPorUnidadeDTO,
+  UltimaManifestacaoDashboardDTO,
   VolumePorUnidadeDTO,
 } from '../../dtos/DashboardDTOs';
 
@@ -16,7 +19,8 @@ export class ObterIndicadoresDashboardUseCase {
     private readonly manifestacaoRepo: IManifestacaoRepository,
     private readonly respostaRepo: IRespostaPesquisaRepository,
     private readonly unidadeRepo: IUnidadeRepository,
-    private readonly usuarioRepo: IUsuarioRepository
+    private readonly usuarioRepo: IUsuarioRepository,
+    private readonly pesquisaRepo?: IPesquisaRepository
   ) {}
 
   public async execute(
@@ -47,8 +51,11 @@ export class ObterIndicadoresDashboardUseCase {
     );
     const respostas = await this.respostaRepo.listarTodos(unidadeIdEfetiva);
 
-    // 1. Total de respostas
+    // 1. Total de respostas e Nota Média Geral
     const totalRespostas = respostas.length;
+    const somaNotas = respostas.reduce((acc, r) => acc + r.nota, 0);
+    const notaMediaGeral =
+      totalRespostas > 0 ? Number((somaNotas / totalRespostas).toFixed(1)) : 0;
 
     // 2. Distribuição de notas (1 a 5)
     const distribuicaoNotas: DistribuicaoNotaDTO[] = [1, 2, 3, 4, 5].map((nota) => {
@@ -58,7 +65,7 @@ export class ObterIndicadoresDashboardUseCase {
       return { nota, quantidade, porcentagem };
     });
 
-    // 3, 4, 5, 6. Status
+    // 3, 4, 5, 6. Status das manifestações
     const totalAbertas = manifestacoes.filter(
       (m) => m.status !== StatusManifestacao.CONCLUIDA
     ).length;
@@ -121,8 +128,53 @@ export class ObterIndicadoresDashboardUseCase {
       };
     });
 
+    // 11. Desempenho dividido por pesquisa
+    const pesquisas = this.pesquisaRepo ? await this.pesquisaRepo.listarTodas() : [];
+    const mapaPesquisas = new Map<string, string>();
+    pesquisas.forEach((p) => mapaPesquisas.set(p.id, p.titulo));
+
+    const desempenhoPorPesquisa: MetricaPesquisaDashboardDTO[] = pesquisas.map((p) => {
+      const respostasPesquisa = respostas.filter((r) => r.pesquisaId === p.id);
+      const total = respostasPesquisa.length;
+      const media =
+        total > 0
+          ? Number((respostasPesquisa.reduce((acc, r) => acc + r.nota, 0) / total).toFixed(1))
+          : 0;
+      return {
+        pesquisaId: p.id,
+        titulo: p.titulo,
+        canal: p.canal,
+        ativa: p.ativa,
+        totalRespostas: total,
+        notaMedia: media,
+      };
+    });
+
+    // 12. Últimas manifestações registradas (ordenadas por data decrescente)
+    const ultimasManifestacoes: UltimaManifestacaoDashboardDTO[] = manifestacoes
+      .slice()
+      .sort((a, b) => b.criadoEm.getTime() - a.criadoEm.getTime())
+      .slice(0, 5)
+      .map((m) => {
+        const respOrigem = respostas.find((r) => r.id === m.respostaId);
+        return {
+          id: m.id,
+          protocolo: m.protocolo,
+          unidadeId: m.unidadeId,
+          unidadeNome: mapaUnidades.get(m.unidadeId) || 'Unidade não identificada',
+          pesquisaTitulo: respOrigem
+            ? mapaPesquisas.get(respOrigem.pesquisaId) || 'Pesquisa de Satisfação'
+            : 'Pesquisa de Satisfação',
+          nota: respOrigem ? respOrigem.nota : 0,
+          status: m.status,
+          prioridade: m.prioridade,
+          criadoEm: m.criadoEm.toISOString(),
+        };
+      });
+
     return {
       totalRespostas,
+      notaMediaGeral,
       distribuicaoNotas,
       totalAbertas,
       totalNaoRespondidas,
@@ -132,6 +184,8 @@ export class ObterIndicadoresDashboardUseCase {
       tempoMedioConclusaoHoras,
       pendenciasPorUnidade,
       volumePorUnidade,
+      desempenhoPorPesquisa,
+      ultimasManifestacoes,
     };
   }
 }
