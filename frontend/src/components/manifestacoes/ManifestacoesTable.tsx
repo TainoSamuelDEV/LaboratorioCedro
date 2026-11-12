@@ -146,7 +146,7 @@ export function ManifestacoesTable({
 
                   {/* Comentário */}
                   <td
-                    className="py-3.5 px-3.5 max-w-[280px] sm:max-w-[360px] truncate text-xs text-[#5E5E5E]"
+                    className="py-3.5 px-3.5 max-w-[280px] sm:max-w-[400px] xl:max-w-[600px] 2xl:max-w-[800px] truncate text-xs text-[#5E5E5E]"
                     title={item.comentarioCliente || 'O cliente não deixou comentário.'}
                   >
                     {item.comentarioCliente || 'Sem comentário'}

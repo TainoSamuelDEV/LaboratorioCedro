@@ -157,7 +157,7 @@ export function UltimasManifestacoesStream({
 
                     {/* Comentário */}
                     <td
-                      className="py-3.5 px-3 max-w-[280px] sm:max-w-[340px] truncate text-xs text-[#5E5E5E]"
+                      className="py-3.5 px-3 max-w-[280px] sm:max-w-[400px] xl:max-w-[600px] 2xl:max-w-[800px] truncate text-xs text-[#5E5E5E]"
                       title={item.comentario || 'Sem comentário'}
                     >
                       {item.comentario || 'Sem comentário'}
