@@ -1,6 +1,6 @@
 -- =============================================================================
 -- PLATAFORMA DE EXPERIÊNCIA DO CLIENTE (Cedro / NIT)
--- Script de Carga Inicial (Seed Oficial) — PostgreSQL / Supabase
+-- Script de Carga Inicial Oficial (Compatível com schema.sql)
 -- =============================================================================
 
 -- 1. Unidades de Atendimento (Cohama e Renascença)
@@ -13,10 +13,7 @@ ON CONFLICT (id) DO UPDATE SET
   ativa = EXCLUDED.ativa,
   prazo_padrao_horas = EXCLUDED.prazo_padrao_horas;
 
--- 2. Usuários Internos (Senha padrão: cedro123 gerada com crypt/blowfish)
--- 2.1 Administrador
--- 2.2 Ouvidoria
--- 2.3 Unidade (Coordenador Cohama)
+-- 2. Usuários Oficiais (Senha padrão: cedro123)
 INSERT INTO usuarios (id, nome, email, senha_hash, perfil, unidade_id, ativo) VALUES
 (
     'a1b2c3d4-e5f6-4a5b-8c9d-111111111111',
@@ -58,7 +55,7 @@ INSERT INTO pesquisas (id, titulo, descricao, periodo, ativa, canal, unidade_pad
 (
     'c1d2e3f4-a5b6-4c7d-8e9f-111111111111',
     'Pesquisa de Satisfação — Unidade Cohama',
-    'Avaliação da experiência do paciente no atendimento, triagem e coleta de exames laboratoriais na unidade Cohama.',
+    'Avaliação da experiência do paciente no atendimento, triagem e coleta na unidade Cohama.',
     '2026-Q1',
     TRUE,
     'QR_CODE',
@@ -67,7 +64,7 @@ INSERT INTO pesquisas (id, titulo, descricao, periodo, ativa, canal, unidade_pad
 (
     'c1d2e3f4-a5b6-4c7d-8e9f-222222222222',
     'Pesquisa de Satisfação — Unidade Renascença',
-    'Totem de autoavaliação pós-coleta para pacientes e agilidade da triagem na unidade Renascença.',
+    'Totem de autoavaliação pós-coleta e agilidade na unidade Renascença.',
     '2026-Q1',
     TRUE,
     'TOTEM',
@@ -112,40 +109,38 @@ INSERT INTO respostas_pesquisa (id, pesquisa_id, unidade_id, cliente_atendimento
 )
 ON CONFLICT (id) DO NOTHING;
 
--- 5. Manifestações Iniciais
+-- 5. Manifestações das notas detratoras
 INSERT INTO manifestacoes (
-    id, protocolo, resposta_id, unidade_id, tipo, status, prioridade,
-    prazo_resposta, resolvido_no_prazo, criado_em, atualizado_em
+    id, protocolo, resposta_id, unidade_id, status, prioridade,
+    responsavel_id, prazo_resposta, criado_em, concluido_em
 ) VALUES
 (
     'e1f2a3b4-c5d6-4e7f-8a9b-111111111111',
-    'CEDRO-2026-0001',
+    'CED-2026-0001',
     'd1e2f3a4-b5c6-4d7e-8f9a-111111111111',
     'b3d7a100-5232-4821-9b14-111111111111',
-    'RECLAMACAO',
     'EM_TRATAMENTO',
     'CRITICA',
+    'a1b2c3d4-e5f6-4a5b-8c9d-222222222222',
     NOW() + INTERVAL '10 hours',
-    NULL,
     NOW() - INTERVAL '14 hours',
-    NOW() - INTERVAL '2 hours'
+    NULL
 ),
 (
     'e1f2a3b4-c5d6-4e7f-8a9b-222222222222',
-    'CEDRO-2026-0002',
+    'CED-2026-0002',
     'd1e2f3a4-b5c6-4d7e-8f9a-222222222222',
     'b3d7a100-5232-4821-9b14-222222222222',
-    'RECLAMACAO',
     'NOVA',
     'ALTA',
-    NOW() + INTERVAL '43 hours',
     NULL,
+    NOW() + INTERVAL '43 hours',
     NOW() - INTERVAL '5 hours',
-    NOW() - INTERVAL '5 hours'
+    NULL
 )
 ON CONFLICT (id) DO NOTHING;
 
--- 6. Interações de Linha do Tempo
+-- 6. Interações de Auditoria
 INSERT INTO interacoes (id, manifestacao_id, usuario_id, tipo, texto, status_anterior, status_novo, data_hora) VALUES
 (
     'f1a2b3c4-d5e6-4f7a-8b9c-111111111111',
@@ -162,7 +157,7 @@ INSERT INTO interacoes (id, manifestacao_id, usuario_id, tipo, texto, status_ant
     'e1f2a3b4-c5d6-4e7f-8a9b-111111111111',
     'a1b2c3d4-e5f6-4a5b-8c9d-222222222222',
     'INICIO_TRATAMENTO',
-    'Tratativa iniciada pela ouvidoria. Contato telefônico realizado com o paciente Carlos Eduardo para esclarecimentos.',
+    'Tratativa iniciada pela ouvidoria. Contato realizado com o paciente para acolhimento.',
     'NOVA',
     'EM_TRATAMENTO',
     NOW() - INTERVAL '2 hours'
