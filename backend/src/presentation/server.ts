@@ -60,8 +60,8 @@ async function bootstrap() {
     manifestacaoRepo,
   });
 
-  app.listen(PORT, () => {
-    console.log(`[Cedro API] Servidor Express ativo na porta ${PORT}`);
+  app.listen(Number(PORT), '0.0.0.0', () => {
+    console.log(`[Cedro API] Servidor Express ativo em 0.0.0.0:${PORT}`);
     console.log(`[Cedro API] Operando em modo 100% integrado ao Supabase (Zero Mock).`);
   });
 }
