@@ -24,6 +24,12 @@ export function obterSupabaseClient(): SupabaseClient {
     );
   }
 
+  // Garante que o construtor WebSocket exista no ambiente Node para inicialização do client
+  if (typeof globalThis.WebSocket === 'undefined') {
+    // @ts-ignore
+    globalThis.WebSocket = class WebSocketFallback {};
+  }
+
   supabaseClientInstancia = createClient(supabaseUrl, supabaseKey, {
     auth: {
       persistSession: false,
