@@ -27,6 +27,12 @@ export class ObjetoNaoEncontradoError extends DominioError {
   }
 }
 
+export class RecursoNaoEncontradoError extends ObjetoNaoEncontradoError {
+  constructor(mensagem: string) {
+    super(mensagem);
+  }
+}
+
 export class TransicaoStatusInvalidaError extends RegraNegocioError {
   constructor(statusAtual: string, statusTentado: string, motivo?: string) {
     const detalhe = motivo ? ` Motivo: ${motivo}` : '';
