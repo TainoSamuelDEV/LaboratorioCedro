@@ -126,32 +126,35 @@ export default function LoginPage() {
         </div>
       </form>
 
-      {/* Perfis de Demonstração Minimalistas */}
-      <div className="mt-12 pt-6 border-t border-[#E3E3E3]">
-        <p className="cedro-hint !mt-0 mb-3">
-          Acesso rápido para demonstração (senha <span className="font-mono font-bold text-[#171717]">cedro123</span>):
+      {/* Perfis de Acesso Rápido */}
+      <div className="mt-10 pt-6 border-t border-[#E3E3E3]">
+        <p className="cedro-hint !mt-0 mb-3 text-xs">
+          Acesso rápido para homologação (senha <span className="font-mono font-bold text-[#171717]">cedro123</span>):
         </p>
-        <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={() => preencherCredencialTeste('admin@cedro.com.br')}
-            className="cedro-btn-quiet !p-0 !text-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F5F5F5] hover:bg-[#EAEAEA] text-[#171717] border border-[#E3E3E3] transition-colors cursor-pointer"
           >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#02A562]" />
             Administrador
           </button>
           <button
             type="button"
             onClick={() => preencherCredencialTeste('ouvidoria@cedro.com.br')}
-            className="cedro-btn-quiet !p-0 !text-sm"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F5F5F5] hover:bg-[#EAEAEA] text-[#171717] border border-[#E3E3E3] transition-colors cursor-pointer"
           >
+            <span className="w-1.5 h-1.5 rounded-full bg-[#18534F]" />
             Ouvidoria
           </button>
           <button
             type="button"
-            onClick={() => preencherCredencialTeste('coord.sul@cedro.com.br')}
-            className="cedro-btn-quiet !p-0 !text-sm"
+            onClick={() => preencherCredencialTeste('unidade@cedro.com.br')}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#F5F5F5] hover:bg-[#EAEAEA] text-[#171717] border border-[#E3E3E3] transition-colors cursor-pointer"
           >
-            Coord. Unidade Sul
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F2994A]" />
+            Unidade (Cohama)
           </button>
         </div>
       </div>
