@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pitch — Plataforma de Experiência do Cliente | Laboratório Cedro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --bg-slide: #F4F6F4;
+      --surface: #FFFFFF;
+      --cedro-dark: #255521;
+      --cedro-forest: #075618;
+      --cedro-emerald: #02A562;
+      --cedro-hover: #23823D;
+      --cedro-danger: #CA2E24;
+      --text-dark: #171717;
+      --text-body: #374151;
+      --text-muted: #6B7280;
+      --border-color: #E2E8E4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      background-color: #1E2420;
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .deck {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      padding: 32px 0 80px;
+    }
+
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      background-color: var(--bg-slide);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 46px 68px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      page-break-after: always;
+      break-after: page;
+      flex-shrink: 0;
+    }
+
+    /* Compact Header so the Screen gets maximum space */
+    .slide-header {
+      margin-bottom: 20px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid #E2E8E4;
+      padding-bottom: 14px;
+    }
+
+    .slide-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--cedro-emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .slide-title {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--cedro-forest);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .slide-subtitle {
+      font-size: 19px;
+      font-weight: 400;
+      color: #6B7280;
+      white-space: nowrap;
+    }
+
+    /* ==========================================
+       SLIDE 1: CAPA (TELA DE APRESENTAÇÃO)
+       ========================================== */
+    .slide-cover {
+      justify-content: center;
+      padding: 96px 140px;
+    }
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      align-items: center;
+      gap: 96px;
+      width: 100%;
+    }
+
+    .cover-logo {
+      height: 92px;
+      width: auto;
+      margin-bottom: 36px;
+      display: block;
+    }
+
+    .cover-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--cedro-emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 14px;
+    }
+
+    .cover-title {
+      font-size: 76px;
+      font-weight: 900;
+      color: var(--cedro-forest);
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+    }
+
+    .cover-desc {
+      font-size: 29px;
+      color: #4B5563;
+      line-height: 1.5;
+      max-width: 780px;
+    }
+
+    .cover-desc strong {
+      color: #374151;
+      font-weight: 700;
+    }
+
+    .team-card {
+      background: var(--surface);
+      border-radius: 28px;
+      padding: 56px 52px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 50px rgba(7, 86, 24, 0.06);
+    }
+
+    .team-card-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 44px;
+      color: var(--cedro-forest);
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .team-member {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 0;
+    }
+
+    .team-member + .team-member {
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .avatar-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background-color: var(--cedro-emerald);
+      color: #FFFFFF;
+      font-size: 24px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .member-name {
+      font-size: 27px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* ==========================================
+       SLIDE 2: JORNADA OPERACIONAL
+       ========================================== */
+    .slide-journey {
+      padding: 72px 104px;
+    }
+
+    .journey-header {
+      margin-bottom: 40px;
+    }
+
+    .journey-header .eyebrow {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .journey-header .slide-title {
+      font-size: 52px;
+      margin-bottom: 10px;
+    }
+
+    .journey-header .slide-subtitle {
+      font-size: 24px;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .journey-card {
+      background: var(--surface);
+      border-radius: 22px;
+      border: 1px solid var(--border-color);
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.03);
+    }
+
+    .journey-num {
+      font-size: 56px;
+      font-weight: 900;
+      color: #8CC7A1;
+      line-height: 1;
+      margin-bottom: 28px;
+    }
+
+    .journey-card-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--cedro-forest);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .journey-card-title i {
+      color: var(--cedro-emerald);
+      font-size: 26px;
+    }
+
+    .journey-card-text {
+      font-size: 23px;
+      color: #374151;
+      line-height: 1.55;
+    }
+
+    /* ==========================================
+       SLIDES 3–12: SCREEN-FIRST MINIMAL LAYOUT
+       ========================================== */
+    /* Desktop screenshots get ~79% of the slide width */
+    .screen-first-grid {
+      display: grid;
+      grid-template-columns: 1.82fr 0.48fr;
+      gap: 28px;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+    }
+
+    /* Mobile screenshots + QR code on the right */
+    .mobile-first-grid {
+      display: grid;
+      grid-template-columns: 1.42fr 0.58fr;
+      gap: 32px;
+      flex: 1;
+      min-height: 0;
+      align-items: center;
+    }
+
+    /* Direct screen presentation — no extra outer box */
+    .screen-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .screen-frame img.desktop-shot {
+      width: 100%;
+      max-height: 860px;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 1px solid #D8E0DC;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+      background: #FFFFFF;
+    }
+
+    .screen-frame img.mobile-pair-shot {
+      height: 850px;
+      width: auto;
+      max-width: 48.5%;
+      object-fit: contain;
+      border-radius: 18px;
+      border: 1px solid #D8E0DC;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      background: #FFFFFF;
+    }
+
+    .screen-frame img.mobile-single-shot {
+      height: 850px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 18px;
+      border: 1px solid #D8E0DC;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      background: #FFFFFF;
+    }
+
+    /* Compact, low-noise side panel that hugs its content */
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .mobile-first-grid .side-panel {
+      height: 850px;
+      justify-content: space-between;
+    }
+
+    .minimal-card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--cedro-emerald);
+      padding: 28px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+    }
+
+    .minimal-card.restricted {
+      border-left-color: var(--cedro-danger);
+      background: #FFFDFD;
+    }
+
+    .minimal-card-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--cedro-forest);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .minimal-card.restricted .minimal-card-title {
+      color: var(--cedro-danger);
+    }
+
+    .minimal-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .minimal-list li {
+      font-size: 18.5px;
+      color: var(--text-body);
+      line-height: 1.42;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .minimal-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--cedro-emerald);
+      font-weight: 900;
+    }
+
+    .minimal-card.restricted .minimal-list li::before {
+      content: "×";
+      color: var(--cedro-danger);
+      font-weight: 900;
+    }
+
+    /* Bottom-right QR Code box on Slides 3 & 4 */
+    .qr-minimal-box {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
+      flex-shrink: 0;
+    }
+
+    .qr-minimal-info h4 {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--cedro-forest);
+      margin-bottom: 6px;
+    }
+
+    .qr-minimal-info p {
+      font-size: 16.5px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .qr-minimal-img {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      border-radius: 10px;
+      border: 1px solid #E2E8E4;
+      padding: 6px;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    /* ==========================================
+       SLIDE 13: ENCERRAMENTO & REVELAÇÃO
+       ========================================== */
+    .closing-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 56px;
+      flex: 1;
+      align-items: center;
+      padding: 24px 36px;
+      min-height: 0;
+    }
+
+    .closing-title {
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--cedro-forest);
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      margin-bottom: 22px;
+    }
+
+    .closing-highlight {
+      color: var(--cedro-emerald);
+    }
+
+    .closing-lead {
+      font-size: 26px;
+      color: #374151;
+      line-height: 1.5;
+      margin-bottom: 36px;
+      max-width: 760px;
+    }
+
+    .closing-team-bar {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px 26px;
+      width: fit-content;
+    }
+
+    .closing-team-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .closing-team-item .mini-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--cedro-emerald);
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .poster-frame {
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      height: 940px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .poster-frame img {
+      height: 100%;
+      width: auto;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+
+    .presenter-bar {
+      position: fixed;
+      bottom: 20px;
+      right: 24px;
+      background: rgba(23, 23, 23, 0.9);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 14px;
+      z-index: 9999;
+    }
+
+    .presenter-bar button {
+      background: var(--cedro-emerald);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+
+    @media print {
+      html, body {
+        background: var(--bg-slide);
+        margin: 0;
+        padding: 0;
+      }
+      .deck {
+        gap: 0;
+        padding: 0;
+      }
+      .slide {
+        box-shadow: none;
+        margin: 0;
+      }
+      .presenter-bar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presenter-bar">
+    <span>Pitch Laboratório Cedro (13 Slides)</span>
+    <button onclick="window.print()">Exportar PDF</button>
+  </div>
+
+  <div class="deck">
+
+    <!-- ==========================================
+         SLIDE 1: TELA DE APRESENTAÇÃO (CAPA)
+         ========================================== -->
+    <section class="slide slide-cover" id="slide-1">
+      <div class="cover-grid">
+        <div>
+          <svg class="cover-logo" viewBox="0 0 360 102" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="51" r="44" stroke="#255521" stroke-width="3.5" fill="none"/>
+            <circle cx="50" cy="51" r="38" stroke="#255521" stroke-width="2" fill="none"/>
+            <path d="M46 28 H54 C55.5 28 56.5 29 56.5 30.5 C56.5 32 55.5 33 54 33 H46 C44.5 33 43.5 32 43.5 30.5 C43.5 29 44.5 28 46 28 Z" fill="#255521"/>
+            <path d="M36 37 H64 C65.8 37 67 38.2 67 40 C67 41.8 65.8 43 64 43 H36 C34.2 43 33 41.8 33 40 C33 38.2 34.2 37 36 37 Z" fill="#255521"/>
+            <path d="M28 46 H72 C73.8 46 75 47.2 75 49 C75 50.8 73.8 52 72 52 H28 C26.2 52 25 50.8 25 49 C25 47.2 26.2 46 28 46 Z" fill="#255521"/>
+            <path d="M22 55 H78 C79.8 55 81 56.2 81 58 C81 59.8 79.8 61 78 61 H22 C20.2 61 19 59.8 19 58 C19 56.2 20.2 55 22 55 Z" fill="#255521"/>
+            <path d="M26 64 H45 C47.5 64 48.5 65.5 48.5 68 V74 H35 L43 74 V68.5 H26 C24.5 68.5 23.5 67.5 23.5 66.2 C23.5 65 24.5 64 26 64 Z" fill="#255521"/>
+            <path d="M74 64 H55 C52.5 64 51.5 65.5 51.5 68 V74 H65 L57 74 V68.5 H74 C75.5 68.5 76.5 67.5 76.5 66.2 C76.5 65 75.5 64 74 64 Z" fill="#255521"/>
+            <path d="M34 74 Q50 71 66 74" stroke="#255521" stroke-width="3" stroke-linecap="round"/>
+            <text x="108" y="34" fill="#255521" font-family="Lato, sans-serif" font-size="19" font-weight="400" letter-spacing="0.02em">laboratório</text>
+            <text x="105" y="82" fill="#255521" font-family="Lato, sans-serif" font-size="68" font-weight="700" letter-spacing="-0.03em">cedro</text>
+          </svg>
+
+          <div class="cover-eyebrow">
+            <i class="fa-solid fa-code-branch"></i>
+            <span>PROJETO AVALIATIVO DE ENGENHARIA DE SOFTWARE</span>
+          </div>
+
+          <h1 class="cover-title">
+            Plataforma de<br />
+            Experiência do Cliente
+          </h1>
+
+          <p class="cover-desc">
+            Gestão Integrada de Ouvidoria, Pesquisa de Satisfação e Controle de Prazos para a rede <strong>Laboratório Cedro</strong>.
+          </p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-card-header">
+            <i class="fa-solid fa-users"></i>
+            <span>Equipe de<br />Desenvolvimento</span>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar-circle">TS</div>
+            <div class="member-name">Taino Samuel</div>
+          </div>
+
+          <div class="team-member">
+            <div class="avatar-circle">GO</div>
+            <div class="member-name">Gabriel Ordóñez</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 2: JORNADA OPERACIONAL DO CASO
+         ========================================== -->
+    <section class="slide slide-journey" id="slide-2">
+      <div class="journey-header">
+        <div class="eyebrow">
+          <i class="fa-solid fa-sitemap"></i>
+          <span>VISÃO SISTÊMICA</span>
+        </div>
+        <h2 class="slide-title">Jornada Operacional do Caso</h2>
+        <p class="slide-subtitle">Do totem físico de coleta até o encerramento homologado pela Ouvidoria Central.</p>
+      </div>
+
+      <div class="journey-grid">
+        <div class="journey-card">
+          <div class="journey-num">01</div>
+          <div class="journey-card-title">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Coleta Mobile</span>
+          </div>
+          <p class="journey-card-text">
+            Paciente escaneia o QR Code na unidade, avalia o atendimento (1 a 5) e deixa comentários pelo celular.
+          </p>
+        </div>
+
+        <div class="journey-card">
+          <div class="journey-num">02</div>
+          <div class="journey-card-title">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Geração de Protocolo</span>
+          </div>
+          <p class="journey-card-text">
+            Notas de detratores disparam a criação de Manifestação com prazo pré-configurado para a unidade.
+          </p>
+        </div>
+
+        <div class="journey-card">
+          <div class="journey-num">03</div>
+          <div class="journey-card-title">
+            <i class="fa-solid fa-user-doctor"></i>
+            <span>Tratativa da Unidade</span>
+          </div>
+          <p class="journey-card-text">
+            O Coordenador acessa o caso, apura a ocorrência operacional e submete a proposta oficial de resolução.
+          </p>
+        </div>
+
+        <div class="journey-card">
+          <div class="journey-num">04</div>
+          <div class="journey-card-title">
+            <i class="fa-solid fa-clipboard-check"></i>
+            <span>Ouvidoria Central</span>
+          </div>
+          <p class="journey-card-text">
+            A Ouvidoria analisa a qualidade do retorno. Se aprovado, conclui; se insuficiente, devolve compulsoriamente.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 3: INÍCIO DA COLETA (TELA DE AVALIAÇÃO + QR CODE)
+         ========================================== -->
+    <section class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">ETAPA 01 • COLETA NA UNIDADE</div>
+          <h2 class="slide-title">Tela de Avaliação do Paciente</h2>
+        </div>
+        <p class="slide-subtitle">Coleta mobile rápida e sem login nas unidades de atendimento.</p>
+      </div>
+
+      <div class="mobile-first-grid">
+        <div class="screen-frame">
+          <img class="mobile-pair-shot" src="assets/01-avaliacao-inicial.png" alt="Tela de Avaliação Inicial" />
+          <img class="mobile-pair-shot" src="assets/02-avaliacao-preenchida.png" alt="Tela de Avaliação Preenchida" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Tela de Avaliação (1 a 5)</div>
+            <ul class="minimal-list">
+              <li><strong>Acesso Direto:</strong> Avaliação rápida via celular sem exigir cadastro ou login.</li>
+              <li><strong>Comentário Obrigatório (Notas 1 a 3):</strong> Notas baixas ou regulares exigem o relato do ocorrido (ex: <em>"Ar condicionado não estava funcionando"</em>).</li>
+              <li><strong>Senha de Atendimento (<code>A067</code>):</strong> Campo opcional para localizar o guichê e horário do atendimento.</li>
+            </ul>
+          </div>
+
+          <div class="qr-minimal-box">
+            <div class="qr-minimal-info">
+              <h4>Acesso via QR Code</h4>
+              <p>Aponte a câmera do celular para visualizar a tela de avaliação.</p>
+            </div>
+            <img class="qr-minimal-img" src="assets/03-qrcode-surpresa.png" alt="QR Code" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 4: FINALIZAÇÃO DA AVALIAÇÃO (TELA RESPONDIDA + QR CODE)
+         ========================================== -->
+    <section class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">ETAPA 02 • PÓS-ENVIO</div>
+          <h2 class="slide-title">Avaliação Finalizada & Protocolo</h2>
+        </div>
+        <p class="slide-subtitle">Confirmação da nota atribuída, agradecimento e protocolo gerado.</p>
+      </div>
+
+      <div class="mobile-first-grid">
+        <div class="screen-frame">
+          <img class="mobile-single-shot" src="assets/04-avaliacao-finalizada.png" alt="Tela de Avaliação Respondida" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Tela de Confirmação ao Cliente</div>
+            <ul class="minimal-list">
+              <li><strong>Nota e Agradecimento:</strong> Exibe a nota escolhida pelo paciente (<strong>3 de 5</strong>) e a mensagem de confirmação.</li>
+              <li><strong>Protocolo Automático:</strong> Gera na hora o código <code>CED-2026-000169</code> para rastreabilidade do caso.</li>
+              <li><strong>Envio Imediato para a Fila:</strong> A manifestação passa a constar instantaneamente nos painéis internos.</li>
+            </ul>
+          </div>
+
+          <div class="qr-minimal-box">
+            <div class="qr-minimal-info">
+              <h4>Acesso via QR Code</h4>
+              <p>Aponte a câmera do celular para testar o envio da avaliação.</p>
+            </div>
+            <img class="qr-minimal-img" src="assets/03-qrcode-surpresa.png" alt="QR Code" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 5: ADMINISTRADOR (1/3) — DASHBOARD GLOBAL
+         ========================================== -->
+    <section class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL ADMINISTRADOR • VISÃO GERAL</div>
+          <h2 class="slide-title">Administrador: Dashboard & Escopo de Atuação</h2>
+        </div>
+        <p class="slide-subtitle">Visão ampla de todas as pesquisas, relatórios e restrição operacional.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/05-admin-dashboard.png" alt="Dashboard do Administrador" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">O que o Administrador Faz</div>
+            <ul class="minimal-list">
+              <li><strong>Visão Ampla:</strong> Acompanha respostas, nota média e desempenho de todas as pesquisas e unidades.</li>
+              <li><strong>Gestão (CRUD):</strong> Cria, atualiza e desativa pesquisas, unidades e usuários.</li>
+              <li><strong>Relatórios:</strong> Gera e extrai relatórios gerenciais consolidados.</li>
+            </ul>
+          </div>
+
+          <div class="minimal-card restricted">
+            <div class="minimal-card-title">O que NÃO Pode Fazer</div>
+            <ul class="minimal-list">
+              <li><strong>Não Responde Manifestações:</strong> Bloqueado de registrar tratativas em nome das unidades.</li>
+              <li><strong>Sem Alteração de Status:</strong> Não escalona e não conclui chamados operacionais.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 6: ADMINISTRADOR (2/3) — CRUD DE PESQUISAS
+         ========================================== -->
+    <section class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL ADMINISTRADOR • GESTÃO DE PESQUISAS</div>
+          <h2 class="slide-title">Administrador: CRUD de Pesquisas</h2>
+        </div>
+        <p class="slide-subtitle">Criação, atualização, inativação e geração de QR Codes por pesquisa.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/06-admin-pesquisas.png" alt="Tela de Pesquisas do Administrador" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Gestão de Pesquisas</div>
+            <ul class="minimal-list">
+              <li><strong>Criar e Atualizar:</strong> Cadastra novas pesquisas (<code>+ Nova Pesquisa</code>), edita títulos, canais e períodos.</li>
+              <li><strong>Ativar / Deletar:</strong> Controla quais formulários estão ativos na rede.</li>
+              <li><strong>QR Code e Indicadores:</strong> Gera o cartaz QR Code de cada pesquisa e consulta seus indicadores individuais.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 7: ADMINISTRADOR (3/3) — CRUD DE UNIDADES
+         ========================================== -->
+    <section class="slide" id="slide-7">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL ADMINISTRADOR • GESTÃO DE UNIDADES</div>
+          <h2 class="slide-title">Administrador: CRUD de Unidades & Relatórios</h2>
+        </div>
+        <p class="slide-subtitle">Cadastro de unidades, definição de coordenadores, prazos de SLA e relatórios.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/07-admin-unidades.png" alt="Tela de Unidades do Administrador" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Gestão de Unidades e Relatórios</div>
+            <ul class="minimal-list">
+              <li><strong>CRUD de Unidades:</strong> Cria, atualiza e desativa unidades de atendimento (ex: <em>Cohama</em> e <em>Renascença</em>).</li>
+              <li><strong>Responsável e SLA:</strong> Vincula o Coordenador da unidade e configura o prazo padrão (<code>48h</code>).</li>
+              <li><strong>Geração de Relatórios:</strong> Extrai relatórios comparativos entre unidades e pesquisas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 8: COORDENADOR (1/3) — VISÃO DA UNIDADE
+         ========================================== -->
+    <section class="slide" id="slide-8">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL COORDENADOR DA UNIDADE • ESCOPO LOCAL</div>
+          <h2 class="slide-title">Coordenador: Visão Exclusiva da Sua Unidade</h2>
+        </div>
+        <p class="slide-subtitle">Visualiza apenas as pesquisas e indicadores respectivos à sua unidade.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/08-coordenador-dashboard.png" alt="Dashboard do Coordenador" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Escopo Restrito à Unidade</div>
+            <ul class="minimal-list">
+              <li><strong>Apenas Sua Unidade:</strong> Visualiza somente dados e pesquisas da unidade vinculada (<code>Cedro Cohama</code>).</li>
+              <li><strong>Isolamento de Dados:</strong> Não possui seletor para ver outras unidades nem acesso a menus administrativos.</li>
+              <li><strong>Monitoramento Local:</strong> Acompanha nota média, satisfação e pendências da própria equipe.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 9: COORDENADOR (2/3) — MANIFESTAÇÕES DA UNIDADE
+         ========================================== -->
+    <section class="slide" id="slide-9">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL COORDENADOR DA UNIDADE • FILA SETORIAL</div>
+          <h2 class="slide-title">Coordenador: Manifestações da Unidade</h2>
+        </div>
+        <p class="slide-subtitle">Acesso direto aos protocolos registrados pelos pacientes na unidade.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/09-coordenador-manifestacoes.png" alt="Manifestações da Unidade" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Fila de Atendimento Local</div>
+            <ul class="minimal-list">
+              <li><strong>Manifestações da Unidade:</strong> Lista todos os protocolos abertos na unidade com nota, relato e senha (<code>A067</code>).</li>
+              <li><strong>Filtros Rápidos:</strong> Busca por protocolo (<code>#CED-2026-000169</code>), status ou nota atribuída.</li>
+              <li><strong>Controle de Pendências:</strong> Destaca os casos <em>Não respondidos</em> para atuação dentro do prazo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 10: COORDENADOR (3/3) — RESPONDER OU ESCALONAR
+         ========================================== -->
+    <section class="slide" id="slide-10">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL COORDENADOR DA UNIDADE • TRATATIVA</div>
+          <h2 class="slide-title">Coordenador: Responder ou Escalonar</h2>
+        </div>
+        <p class="slide-subtitle">Registro da resposta operacional da unidade ou escalonamento do caso.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/10-coordenador-tratativa.png" alt="Tratativa do Coordenador" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Ações do Coordenador</div>
+            <ul class="minimal-list">
+              <li><strong>Responder Manifestação:</strong> Analisa a queixa do cliente e registra a tratativa realizada pela unidade.</li>
+              <li><strong>Escalonar:</strong> Pode escalonar ocorrências que dependam de alçada superior.</li>
+              <li><strong>Sem Conclusão Direta:</strong> Não pode encerrar o chamado por conta própria (exige validação da Ouvidoria).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 11: OUVIDORIA (1/2) — VISÃO GERAL E RELATÓRIOS
+         ========================================== -->
+    <section class="slide" id="slide-11">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL OUVIDORIA • MONITORAMENTO GLOBAL</div>
+          <h2 class="slide-title">Ouvidoria: Visão Geral, Pesquisas & Relatórios</h2>
+        </div>
+        <p class="slide-subtitle">Visualização global de pesquisas (sem CRUD) e extração de relatórios.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/11-ouvidoria-dashboard.png" alt="Dashboard da Ouvidoria" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Atuação da Ouvidoria</div>
+            <ul class="minimal-list">
+              <li><strong>Visão Geral das Pesquisas:</strong> Acompanha indicadores de todas as unidades, mas <strong>só consegue visualizar pesquisas</strong> (não cria nem edita).</li>
+              <li><strong>Visualizar e Extrair Relatórios:</strong> Acesso completo ao módulo de Relatórios para exportação de dados.</li>
+              <li><strong>Monitoramento de Filas:</strong> Supervisiona todas as manifestações e pendências da rede.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 12: OUVIDORIA (2/2) — MANIFESTAÇÕES, ESCALONAMENTO E CONCLUSÃO
+         ========================================== -->
+    <section class="slide" id="slide-12">
+      <div class="slide-header">
+        <div class="slide-header-left">
+          <div class="eyebrow">PERFIL OUVIDORIA • GOVERNANÇA FINAL</div>
+          <h2 class="slide-title">Ouvidoria: Resposta, Escalonamento & Conclusão</h2>
+        </div>
+        <p class="slide-subtitle">Registro de resposta do coordenador, escalonamento por atraso e conclusão oficial.</p>
+      </div>
+
+      <div class="screen-first-grid">
+        <div class="screen-frame">
+          <img class="desktop-shot" src="assets/12-ouvidoria-tratativa.png" alt="Tratativa da Ouvidoria" />
+        </div>
+
+        <div class="side-panel">
+          <div class="minimal-card">
+            <div class="minimal-card-title">Controle de Manifestações</div>
+            <ul class="minimal-list">
+              <li><strong>Registrar Resposta:</strong> Visualiza a manifestação e pode registrar a resposta do coordenador.</li>
+              <li><strong>Escalonar:</strong> Caso não tenha sido respondida no prazo, aciona o escalonamento do chamado.</li>
+              <li><strong>Concluir:</strong> Homologa a tratativa e conclui oficialmente o protocolo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 13: AGRADECIMENTO & REVELAÇÃO DO QR CODE
+         ========================================== -->
+    <section class="slide" id="slide-13">
+      <div class="closing-grid">
+        <div>
+          <div class="cover-eyebrow">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>AGRADECIMENTO • PARTICIPAÇÃO AO VIVO</span>
+          </div>
+
+          <h2 class="closing-title">
+            Obrigado pela atenção!<br />
+            <span class="closing-highlight">Avalie agora nossa apresentação.</span>
+          </h2>
+
+          <p class="closing-lead">
+            Aponte a câmera do seu celular para o QR Code ao lado e registre sua nota de 1 a 5 diretamente na nossa plataforma!
+          </p>
+
+          <div class="closing-team-bar">
+            <div class="closing-team-item">
+              <div class="mini-avatar">TS</div>
+              <span>Taino Samuel</span>
+            </div>
+            <div class="closing-team-item">
+              <div class="mini-avatar">GO</div>
+              <span>Gabriel Ordóñez</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:center;">
+          <div class="poster-frame">
+            <img src="assets/13-qrcode-poster-final.png" alt="Avalie agora nossa apresentação" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      let current = 0;
+
+      function goToSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= slides.length) index = slides.length - 1;
+        current = index;
+        slides[current].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) {
+          e.preventDefault();
+          goToSlide(current + 1);
+        } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+          e.preventDefault();
+          goToSlide(current - 1);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goToSlide(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goToSlide(slides.length - 1);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
