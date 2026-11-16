@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkpoint do Projeto — Plataforma Cedro CX | Laboratório Cedro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Lato', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            cedro: {
+              dark: '#255521',
+              forest: '#075618',
+              emerald: '#02A562',
+              hover: '#23823D',
+              theme: '#008F66',
+              mint: '#93CBA0',
+              soft: '#E6F6EF',
+              orange: '#F29222',
+              danger: '#CA2E24',
+              bg: '#F3F3F3',
+              ink: '#171717',
+              body: '#323232',
+              muted: '#5E5E5E',
+              border: '#E3E3E3',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --cedro-dark: #255521;
+      --cedro-forest: #075618;
+      --cedro-emerald: #02A562;
+      --cedro-mint: #93CBA0;
+      --cedro-bg: #F3F3F3;
+      --cedro-ink: #171717;
+      --cedro-border: #E3E3E3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #141A16;
+      color: #171717;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+    }
+
+    /* Viewport wrapper that scales the 1920x1080 canvas cleanly */
+    .stage {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      position: absolute;
+      transform-origin: center center;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 84px 112px;
+      background-color: #FFFFFF;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    .slide-forest {
+      background: linear-gradient(135deg, #075618 0%, #255521 100%);
+      color: #FFFFFF;
+    }
+
+    .slide-clinical {
+      background-color: #F7F9F7;
+    }
+
+    /* Subtle geometric watermark in brand colors */
+    .cedro-arc {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+    }
+
+    /* Presenter HUD */
+    .hud {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(23, 23, 23, 0.86);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 14px;
+      border-radius: 9999px;
+      color: #FFFFFF;
+      font-size: 13px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      transition: opacity 0.2s ease;
+    }
+
+    .hud button {
+      background: transparent;
+      border: none;
+      color: #E5E7EB;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 9999px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .hud button:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    }
+
+    .hud button:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .hud .btn-pdf {
+      background: #02A562;
+      color: #FFFFFF;
+      padding: 6px 14px;
+    }
+
+    .hud .btn-pdf:hover {
+      background: #23823D !important;
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: #02A562;
+      z-index: 60;
+      transition: width 0.25s ease;
+    }
+
+    /* Print / PDF Export */
+    @media print {
+      @page {
+        size: 1920px 1080px;
+        margin: 0;
+      }
+      html, body {
+        width: 1920px !important;
+        height: auto !important;
+        background: #FFFFFF !important;
+        overflow: visible !important;
+      }
+      .stage {
+        display: block !important;
+        width: 1920px !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      .slide {
+        display: flex !important;
+        position: relative !important;
+        transform: none !important;
+        box-shadow: none !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        margin: 0 !important;
+      }
+      .hud, .progress-bar {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progressBar" style="width: 10%;"></div>
+
+  <main class="stage" id="stage">
+
+    <!-- =====================================================================
+         SLIDE 01 — CAPA EXECUTIVA (LAYOUT 01: FUNDO VERDE FLORESTA)
+         ===================================================================== -->
+    <section class="slide slide-forest active" data-slide="1">
+      <!-- Detalhe geométrico minimalista -->
+      <div class="cedro-arc" style="width: 780px; height: 780px; right: -220px; top: -220px; border: 2px solid rgba(147, 203, 160, 0.16);"></div>
+      <div class="cedro-arc" style="width: 540px; height: 540px; right: -100px; top: -100px; border: 2px solid rgba(2, 165, 98, 0.28);"></div>
+      <div class="cedro-arc" style="width: 320px; height: 320px; right: 10px; top: 10px; background: radial-gradient(circle, rgba(2,165,98,0.18) 0%, transparent 70%);"></div>
+
+      <!-- Topo: Logo oficial em badge branca para contraste fiel + Tag -->
+      <div class="flex items-center justify-between relative z-10">
+        <div class="bg-white px-7 py-3.5 rounded-2xl shadow-lg inline-flex items-center">
+          <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+        </div>
+        <span class="px-5 py-2.5 rounded-full border border-white/25 bg-white/10 text-sm font-bold tracking-[0.14em] uppercase text-[#93CBA0]">
+          Checkpoint do Projeto • Novembro 2026
+        </span>
+      </div>
+
+      <!-- Centro-Inferior: Título de impacto -->
+      <div class="max-w-[1280px] relative z-10 my-auto pt-12">
+        <p class="text-[#93CBA0] text-xl font-bold uppercase tracking-[0.16em] mb-6">
+          Núcleo de Inovação e Tecnologia (NIT) × UNDB
+        </p>
+        <h1 class="text-[76px] font-black leading-[1.05] tracking-tight text-white mb-8">
+          Plataforma de Experiência do Cliente &amp; Ouvidoria
+        </h1>
+        <p class="text-[28px] font-light leading-relaxed text-white/85 max-w-[1040px]">
+          Evolução do acompanhamento de satisfação e gestão automatizada de manifestações, da concepção à operação em produção na VPS.
+        </p>
+      </div>
+
+      <!-- Rodapé -->
+      <div class="flex items-center justify-between border-t border-white/15 pt-7 relative z-10 text-lg text-white/75">
+        <div class="flex items-center gap-8">
+          <span><strong class="text-white font-bold">Squad:</strong> Gabriel Ordonez &amp; Taino Samuel</span>
+          <span class="text-white/30">|</span>
+          <span><strong class="text-white font-bold">Parceiro:</strong> Laboratório Cedro</span>
+        </div>
+        <div class="font-bold tracking-widest text-white/60">01 / 10</div>
+      </div>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 02 — AGENDA CLEAN (LAYOUT 02: LISTA NUMERADA + MARCA D'ÁGUA)
+         ===================================================================== -->
+    <section class="slide bg-white" data-slide="2">
+      <!-- Marca d'água tipográfica gigante à direita -->
+      <div class="absolute right-[-40px] bottom-[90px] text-[240px] font-black leading-none text-[#F3F5F3] select-none pointer-events-none tracking-tighter">
+        CEDRO<br/>CX
+      </div>
+
+      <!-- Header padrão -->
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6 relative z-10">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">Agenda do Checkpoint</span>
+          <h2 class="text-[44px] font-black text-[#075618] tracking-tight mt-1">O que vamos apresentar hoje</h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <!-- Lista numerada -->
+      <div class="grid grid-cols-1 gap-6 max-w-[1020px] my-auto relative z-10">
+        <div class="flex items-center gap-8 p-6 rounded-2xl bg-[#E6F6EF] border border-[#93CBA0]/60">
+          <span class="text-4xl font-black text-[#02A562] w-16">01</span>
+          <div>
+            <h3 class="text-2xl font-bold text-[#075618]">O que é o Projeto &amp; De Onde Foi Baseado</h3>
+            <p class="text-lg text-[#323232] mt-1">Substituição do fluxo legado INDECX por uma solução própria com rastreabilidade de SLA.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-8 p-5 rounded-2xl hover:bg-[#F7F9F7] transition-colors">
+          <span class="text-4xl font-black text-[#93CBA0] w-16">02</span>
+          <div>
+            <h3 class="text-2xl font-bold text-[#171717]">Documentações &amp; Engenharia</h3>
+            <p class="text-lg text-[#5E5E5E] mt-1">6 especificações técnicas oficiais, diagramas UML, contrato de API e 71 testes.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-8 p-5 rounded-2xl hover:bg-[#F7F9F7] transition-colors">
+          <span class="text-4xl font-black text-[#93CBA0] w-16">03</span>
+          <div>
+            <h3 class="text-2xl font-bold text-[#171717]">Stack Tecnológica</h3>
+            <p class="text-lg text-[#5E5E5E] mt-1">Next.js 16, Node.js 22 + Express POO e PostgreSQL / Supabase Self-Hosted.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-8 p-5 rounded-2xl hover:bg-[#F7F9F7] transition-colors">
+          <span class="text-4xl font-black text-[#93CBA0] w-16">04</span>
+          <div>
+            <h3 class="text-2xl font-bold text-[#171717]">Hospedagem em Produção (VPS)</h3>
+            <p class="text-lg text-[#5E5E5E] mt-1">Infraestrutura em VPS Linux gerenciada pelo Coolify v4 com SSL automático.</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-8 p-5 rounded-2xl hover:bg-[#F7F9F7] transition-colors">
+          <span class="text-4xl font-black text-[#93CBA0] w-16">05</span>
+          <div>
+            <h3 class="text-2xl font-bold text-[#171717]">Entregas Concluídas &amp; Próximos Passos</h3>
+            <p class="text-lg text-[#5E5E5E] mt-1">Telas em operação, unidades Cohama/Renascença configuradas e módulo final.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé -->
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E] relative z-10">
+        <span>Laboratório Cedro • Plataforma de Experiência do Cliente</span>
+        <span class="font-bold text-[#075618]">02 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 03 — O PROJETO E SUA ORIGEM (LAYOUT 08: COMPARATIVO LADO A LADO)
+         ===================================================================== -->
+    <section class="slide slide-clinical" data-slide="3">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">01 / Propósito &amp; Origem</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            Do legado <span class="text-[#02A562]">INDECX</span> para uma plataforma própria e rastreável
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-2 gap-12 my-auto">
+        <!-- Coluna Esquerda: Base / Origem -->
+        <div class="bg-white rounded-3xl p-12 border border-[#E3E3E3] shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#F3F3F3] text-[#5E5E5E] text-sm font-bold uppercase tracking-wider mb-6">
+              De onde partimos
+            </div>
+            <h3 class="text-[32px] font-black text-[#171717] mb-4">Referência: Documentação INDECX</h3>
+            <p class="text-xl text-[#5E5E5E] leading-relaxed mb-8">
+              Analisamos integralmente a <strong class="text-[#171717]">Documentacao_Funcional_INDECX.pdf</strong> para mapear o processo real de pesquisas de satisfação e ouvidoria do laboratório.
+            </p>
+          </div>
+          <ul class="space-y-5 text-xl text-[#323232]">
+            <li class="flex items-start gap-4">
+              <span class="w-7 h-7 rounded-full bg-[#CA2E24]/10 text-[#CA2E24] font-black flex items-center justify-center shrink-0 mt-0.5">✕</span>
+              <span>Ausência de controle automático de prazos (SLA) por gravidade da nota.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="w-7 h-7 rounded-full bg-[#CA2E24]/10 text-[#CA2E24] font-black flex items-center justify-center shrink-0 mt-0.5">✕</span>
+              <span>Dependência de triagem manual para identificar pacientes detratores.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="w-7 h-7 rounded-full bg-[#CA2E24]/10 text-[#CA2E24] font-black flex items-center justify-center shrink-0 mt-0.5">✕</span>
+              <span>Pouca visibilidade gerencial e histórico fragmentado entre ouvidoria e unidades.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Coluna Direita: Solução Construída -->
+        <div class="bg-white rounded-3xl p-12 border-2 border-[#02A562] shadow-md flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-[#02A562] text-white text-xs font-bold uppercase tracking-widest px-6 py-2 rounded-bl-2xl">
+            Plataforma Cedro CX
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#E6F6EF] text-[#075618] text-sm font-bold uppercase tracking-wider mb-6">
+              O que construímos
+            </div>
+            <h3 class="text-[32px] font-black text-[#075618] mb-4">Plataforma Própria Sob Medida</h3>
+            <p class="text-xl text-[#323232] leading-relaxed mb-8">
+              Sistema web completo focado na <strong class="text-[#075618]">jornada do paciente e fechamento do ciclo</strong> entre recepção, ouvidoria e coordenação de unidade.
+            </p>
+          </div>
+          <ul class="space-y-5 text-xl text-[#171717]">
+            <li class="flex items-start gap-4">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 mt-0.5">✓</span>
+              <span><strong>Coleta sem atrito:</strong> QR Code impresso, Totem ou Link direto sem login para o paciente.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 mt-0.5">✓</span>
+              <span><strong>Abertura automática:</strong> notas <strong>1 e 2</strong> geram manifestação crítica com SLA calculado na hora.</span>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 mt-0.5">✓</span>
+              <span><strong>Auditoria imutável:</strong> linha do tempo completa de encaminhamentos, respostas e escalonamentos.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Baseado no levantamento funcional INDECX • Evoluído para a realidade do Cedro</span>
+        <span class="font-bold text-[#075618]">03 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 04 — MATURIDADE TÉCNICA (LAYOUT 04: BIG NUMBERS + CONTEXTO)
+         ===================================================================== -->
+    <section class="slide bg-white" data-slide="4">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">02 / Maturidade de Engenharia</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            Números do projeto até este checkpoint
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-12 gap-12 items-center my-auto">
+        <!-- Big Number Principal à esquerda -->
+        <div class="col-span-5 bg-[#E6F6EF] rounded-3xl p-14 border border-[#93CBA0]/60 flex flex-col justify-center">
+          <span class="text-sm font-bold uppercase tracking-[0.16em] text-[#075618] mb-3">Garantia de Qualidade</span>
+          <div class="text-[128px] font-black leading-none text-[#02A562] tracking-tighter mb-4">
+            71
+          </div>
+          <h3 class="text-3xl font-bold text-[#075618] mb-4">Testes automatizados passando</h3>
+          <p class="text-xl text-[#323232] leading-relaxed">
+            Regras de domínio, cálculo de SLA, transições de status e casos de uso validados com <strong>14 suítes no Vitest</strong> antes de chegar à produção.
+          </p>
+        </div>
+
+        <!-- 3 métricas de apoio à direita -->
+        <div class="col-span-7 grid grid-cols-2 gap-8">
+          <div class="p-10 rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3]">
+            <div class="text-[64px] font-black text-[#075618] leading-none mb-3">16</div>
+            <h4 class="text-2xl font-bold text-[#171717] mb-2">Rotas em Produção</h4>
+            <p class="text-lg text-[#5E5E5E]">Fluxo público do paciente, autenticação, dashboard, pesquisas, manifestações, pendências, unidades e usuários.</p>
+          </div>
+
+          <div class="p-10 rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3]">
+            <div class="text-[64px] font-black text-[#075618] leading-none mb-3">06</div>
+            <h4 class="text-2xl font-bold text-[#171717] mb-2">Documentos Oficiais</h4>
+            <p class="text-lg text-[#5E5E5E]">Arquitetura, modelagem POO, banco relacional, contrato da API, diagramas UML e guia de deploy.</p>
+          </div>
+
+          <div class="p-10 rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3]">
+            <div class="text-[64px] font-black text-[#02A562] leading-none mb-3">03</div>
+            <h4 class="text-2xl font-bold text-[#171717] mb-2">Perfis com RBAC</h4>
+            <p class="text-lg text-[#5E5E5E]">Controle de acesso por perfil: <strong>Administrador</strong>, <strong>Ouvidoria</strong> e <strong>Coordenador de Unidade</strong>.</p>
+          </div>
+
+          <div class="p-10 rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3]">
+            <div class="text-[64px] font-black text-[#02A562] leading-none mb-3">02</div>
+            <h4 class="text-2xl font-bold text-[#171717] mb-2">Unidades Ativas</h4>
+            <p class="text-lg text-[#5E5E5E]">Base limpa e configurada para operação real das unidades <strong>Cedro Cohama</strong> e <strong>Cedro Renascença</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Validação contínua no back-end e compilação otimizada em Next.js 16</span>
+        <span class="font-bold text-[#075618]">04 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 05 — DOCUMENTAÇÕES FEITAS (LAYOUT 07: TÍTULO ESQUERDA + GRID 2x3)
+         ===================================================================== -->
+    <section class="slide slide-clinical" data-slide="5">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">02 / Documentação do Projeto</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            Documentações técnicas produzidas em <code class="text-[#02A562] font-mono text-[36px]">/docs</code>
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-12 gap-10 items-center my-auto">
+        <!-- Coluna esquerda explicativa -->
+        <div class="col-span-4 pr-4">
+          <div class="w-14 h-1.5 bg-[#02A562] rounded-full mb-6"></div>
+          <h3 class="text-3xl font-black text-[#171717] leading-tight mb-5">
+            Cada módulo foi especificado antes de ser codificado.
+          </h3>
+          <p class="text-xl text-[#5E5E5E] leading-relaxed mb-8">
+            Toda a arquitetura, regras de negócio, tabelas SQL e infraestrutura de servidor estão documentadas no repositório para facilitar manutenção futura pela equipe do NIT.
+          </p>
+          <div class="p-6 rounded-2xl bg-[#E6F6EF] border border-[#93CBA0]">
+            <p class="text-sm font-bold uppercase tracking-wider text-[#075618] mb-2">Bônus Acadêmico &amp; Técnico</p>
+            <p class="text-base text-[#255521] leading-relaxed">
+              Inclui também planos de implementação em <code class="font-mono font-bold">docs/superpowers/plans</code>, diagramas SVG UML e scripts SQL de criação e limpeza.
+            </p>
+          </div>
+        </div>
+
+        <!-- Coluna direita: 6 Cards de Documentação -->
+        <div class="col-span-8 grid grid-cols-2 gap-6">
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-black uppercase tracking-widest text-[#02A562]">Doc 01</span>
+            <h4 class="text-xl font-bold text-[#075618] mt-1 mb-2">Arquitetura e Papéis</h4>
+            <p class="text-base text-[#5E5E5E]">Estrutura de pastas, isolamento entre front/back/banco e permissões por perfil.</p>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-black uppercase tracking-widest text-[#02A562]">Doc 02</span>
+            <h4 class="text-xl font-bold text-[#075618] mt-1 mb-2">Modelagem POO &amp; Domínio</h4>
+            <p class="text-base text-[#5E5E5E]">Entidades ricas, máquina de estados da manifestação, enums e políticas de SLA.</p>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-black uppercase tracking-widest text-[#02A562]">Doc 03</span>
+            <h4 class="text-xl font-bold text-[#075618] mt-1 mb-2">Modelagem de Banco de Dados</h4>
+            <p class="text-base text-[#5E5E5E]">DER relacional, <code class="font-mono text-sm">schema.sql</code>, <code class="font-mono text-sm">seed.sql</code> e <code class="font-mono text-sm">limpeza-e-seed.sql</code>.</p>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-black uppercase tracking-widest text-[#02A562]">Doc 04</span>
+            <h4 class="text-xl font-bold text-[#075618] mt-1 mb-2">Contrato da API &amp; Plano QA</h4>
+            <p class="text-base text-[#5E5E5E]">Endpoints REST, DTOs, códigos HTTP esperados e matriz de validação de testes.</p>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-black uppercase tracking-widest text-[#02A562]">Doc 05</span>
+            <h4 class="text-xl font-bold text-[#075618] mt-1 mb-2">Diagramas UML &amp; Casos de Uso</h4>
+            <p class="text-base text-[#5E5E5E]">Atores, fluxos de avaliação e tratativa, acompanhados de diagrama UML vetorial.</p>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-black uppercase tracking-widest text-[#02A562]">Doc 06</span>
+            <h4 class="text-xl font-bold text-[#075618] mt-1 mb-2">Guia de Deploy VPS + Coolify</h4>
+            <p class="text-base text-[#5E5E5E]">Passo a passo de produção, DNS, Dockerfiles, variáveis de build e troubleshooting.</p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Documentação viva mantida em sincronia com o código-fonte</span>
+        <span class="font-bold text-[#075618]">05 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 06 — STACK TECNOLÓGICA (LAYOUT 05: GRID DE 3 COLUNAS IGUAIS)
+         ===================================================================== -->
+    <section class="slide bg-white" data-slide="6">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">03 / Stack Tecnológica</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            Arquitetura moderna em camadas desacopladas
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-3 gap-10 my-auto">
+        <!-- Coluna 1: Front-end -->
+        <div class="rounded-3xl p-10 bg-[#F7F9F7] border border-[#E3E3E3] flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-[#02A562] text-white flex items-center justify-center text-2xl font-black mb-7">
+              FE
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">Interface &amp; Experiência</span>
+            <h3 class="text-3xl font-black text-[#075618] mt-1 mb-6">Front-end Web</h3>
+            <ul class="space-y-4 text-xl text-[#323232]">
+              <li><strong class="text-[#171717]">Next.js 16</strong> (App Router + Turbopack)</li>
+              <li><strong class="text-[#171717]">React 19</strong> + TypeScript</li>
+              <li><strong class="text-[#171717]">Tailwind CSS v4</strong> + Design System Cedro</li>
+              <li><strong class="text-[#171717]">Output Standalone</strong> em Docker leve</li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-6 border-t border-[#E3E3E3] text-base text-[#5E5E5E]">
+            Foco em velocidade mobile para QR Code e limpeza clínica para gestão interna.
+          </div>
+        </div>
+
+        <!-- Coluna 2: Back-end -->
+        <div class="rounded-3xl p-10 bg-[#E6F6EF] border border-[#93CBA0] flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-[#075618] text-white flex items-center justify-center text-2xl font-black mb-7">
+              BE
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest text-[#075618]">Regras de Negócio &amp; API</span>
+            <h3 class="text-3xl font-black text-[#075618] mt-1 mb-6">Back-end POO</h3>
+            <ul class="space-y-4 text-xl text-[#171717]">
+              <li><strong>Node.js 22 LTS</strong> + Express.js</li>
+              <li><strong>TypeScript estrito</strong> em Clean Architecture</li>
+              <li><strong>JWT + Bcrypt</strong> para autenticação e RBAC</li>
+              <li><strong>Vitest + Supertest</strong> (71 testes unitários)</li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-6 border-t border-[#93CBA0]/60 text-base text-[#255521]">
+            Domínio isolado de frameworks: entidades puras validam SLA e transições de status.
+          </div>
+        </div>
+
+        <!-- Coluna 3: Banco de Dados -->
+        <div class="rounded-3xl p-10 bg-[#F7F9F7] border border-[#E3E3E3] flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-[#255521] text-white flex items-center justify-center text-2xl font-black mb-7">
+              DB
+            </div>
+            <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">Dados &amp; Auditoria</span>
+            <h3 class="text-3xl font-black text-[#075618] mt-1 mb-6">Persistência</h3>
+            <ul class="space-y-4 text-xl text-[#323232]">
+              <li><strong class="text-[#171717]">PostgreSQL</strong> relacional com UUIDs</li>
+              <li><strong class="text-[#171717]">Supabase Self-Hosted</strong> (Kong + Studio)</li>
+              <li><strong class="text-[#171717]">pgcrypto</strong> para senhas com hash Blowfish</li>
+              <li><strong class="text-[#171717]">Constraints &amp; ENUMs</strong> no banco</li>
+            </ul>
+          </div>
+          <div class="mt-8 pt-6 border-t border-[#E3E3E3] text-base text-[#5E5E5E]">
+            Chaves do banco isoladas no back-end; o navegador nunca acessa o banco diretamente.
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Separação total de responsabilidades entre cliente, API e dados</span>
+        <span class="font-bold text-[#075618]">06 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 07 — ONDE FOI HOSPEDADO (LAYOUT 06: SPLIT TEXTO + DIAGRAMA VPS)
+         ===================================================================== -->
+    <section class="slide slide-clinical" data-slide="7">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">04 / Infraestrutura &amp; Hospedagem</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            Hospedado em VPS própria com <span class="text-[#02A562]">Coolify v4</span> e HTTPS automático
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-12 gap-12 items-center my-auto">
+        <!-- Esquerda: Fatos da Infraestrutura (40%) -->
+        <div class="col-span-5 space-y-6">
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">Servidor &amp; Orquestração</span>
+            <h3 class="text-2xl font-bold text-[#075618] mt-1 mb-2">VPS Linux + Coolify v4.7.5</h3>
+            <p class="text-lg text-[#5E5E5E]">
+              Contêineres Docker isolados por serviço, com proxy reverso <strong>Traefik</strong> e emissão automática de certificados SSL Let's Encrypt.
+            </p>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">Endereços Ativos em Produção</span>
+            <ul class="mt-3 space-y-3 text-lg text-[#171717]">
+              <li class="flex items-center justify-between">
+                <span class="font-bold">Front-end</span>
+                <code class="text-sm font-mono bg-[#E6F6EF] text-[#075618] px-3 py-1 rounded-lg">cedro.tainosamuel.tech</code>
+              </li>
+              <li class="flex items-center justify-between">
+                <span class="font-bold">API Back-end</span>
+                <code class="text-sm font-mono bg-[#E6F6EF] text-[#075618] px-3 py-1 rounded-lg">api.cedro.tainosamuel.tech</code>
+              </li>
+              <li class="flex items-center justify-between">
+                <span class="font-bold">Health Check</span>
+                <code class="text-sm font-mono bg-[#F3F3F3] text-[#323232] px-3 py-1 rounded-lg">/api/health → 200 OK</code>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-white p-7 rounded-2xl border border-[#E3E3E3]">
+            <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">Automação CI/CD</span>
+            <p class="text-lg text-[#323232] mt-1">
+              Webhooks conectados ao branch <code class="font-mono font-bold text-[#075618]">prod</code> do GitHub: cada atualização gera novo build automaticamente.
+            </p>
+          </div>
+        </div>
+
+        <!-- Direita: Diagrama Limpo da VPS (60%) -->
+        <div class="col-span-7 bg-white rounded-3xl p-12 border border-[#E3E3E3] shadow-sm">
+          <div class="text-center mb-8">
+            <span class="text-xs font-bold uppercase tracking-[0.16em] text-[#5E5E5E]">Topologia em Produção na VPS</span>
+          </div>
+
+          <!-- Camada 1: Internet -> Traefik -->
+          <div class="flex flex-col items-center gap-5">
+            <div class="px-8 py-4 rounded-2xl bg-[#F7F9F7] border border-[#E3E3E3] text-center w-[460px]">
+              <div class="text-sm font-bold text-[#5E5E5E] uppercase tracking-wider">Pacientes &amp; Equipe Cedro</div>
+              <div class="text-xl font-black text-[#171717] mt-0.5">Navegador / Celular (HTTPS 443)</div>
+            </div>
+
+            <div class="text-[#02A562] font-black text-2xl">↓</div>
+
+            <div class="px-8 py-5 rounded-2xl bg-[#075618] text-white text-center w-[540px] shadow-md">
+              <div class="text-xs font-bold uppercase tracking-[0.16em] text-[#93CBA0]">Reverse Proxy + SSL Automático</div>
+              <div class="text-2xl font-black mt-1">Traefik (Gerenciado pelo Coolify v4)</div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-16 w-[620px] text-center text-[#02A562] font-black text-2xl">
+              <div>↙</div>
+              <div>↘</div>
+            </div>
+
+            <!-- Camada 2: Containers -->
+            <div class="grid grid-cols-2 gap-8 w-full">
+              <div class="p-7 rounded-2xl bg-[#E6F6EF] border border-[#93CBA0] text-center">
+                <span class="text-xs font-bold uppercase tracking-widest text-[#075618]">Contêiner Web • :3000</span>
+                <div class="text-2xl font-black text-[#075618] mt-1">cedro-frontend</div>
+                <div class="text-sm text-[#255521] mt-2 font-mono">Next.js 16 Standalone (Node 22)</div>
+              </div>
+
+              <div class="p-7 rounded-2xl bg-[#E6F6EF] border border-[#93CBA0] text-center">
+                <span class="text-xs font-bold uppercase tracking-widest text-[#075618]">Contêiner API • :3001</span>
+                <div class="text-2xl font-black text-[#075618] mt-1">cedro-backend</div>
+                <div class="text-sm text-[#255521] mt-2 font-mono">Express POO + JWT (Node 22)</div>
+              </div>
+            </div>
+
+            <div class="text-[#02A562] font-black text-2xl">↓ <span class="text-xs font-bold uppercase tracking-wider text-[#5E5E5E] align-middle ml-2">Rede Docker Privada (coolify)</span></div>
+
+            <!-- Camada 3: Supabase -->
+            <div class="px-8 py-5 rounded-2xl bg-[#171717] text-white text-center w-full">
+              <div class="text-xs font-bold uppercase tracking-[0.16em] text-[#93CBA0]">Persistência Self-Hosted na Mesma VPS</div>
+              <div class="text-2xl font-black mt-1">Supabase (PostgreSQL + Kong Gateway + Studio)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Domínio próprio configurado • Zero dependência de servidores terceiros caros</span>
+        <span class="font-bold text-[#075618]">07 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 08 — VITRINE VISUAL DO SISTEMA (LAYOUT 05/06 COM TELAS REAIS)
+         ===================================================================== -->
+    <section class="slide bg-white" data-slide="8">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">05 / Sistema em Operação</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            Fluxo completo já entregue e validado
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-3 gap-8 my-auto">
+        <!-- Tela 1: Coleta Pública -->
+        <div class="rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3] p-6 flex flex-col">
+          <div class="rounded-2xl overflow-hidden border border-[#E3E3E3] bg-white h-[430px] flex items-center justify-center mb-6">
+            <img src="./assets/01-avaliacao-inicial.png" alt="Tela de Avaliação do Paciente" class="w-full h-full object-cover object-top" />
+          </div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">01 • Coleta do Paciente</span>
+          <h3 class="text-2xl font-bold text-[#075618] mt-1 mb-2">Avaliação Mobile-First</h3>
+          <p class="text-base text-[#5E5E5E]">
+            Escala intuitiva de 1 a 5 com abertura automática de chamado crítico para notas 1 e 2.
+          </p>
+        </div>
+
+        <!-- Tela 2: Placa QR Code PDF -->
+        <div class="rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3] p-6 flex flex-col">
+          <div class="rounded-2xl overflow-hidden border border-[#E3E3E3] bg-white h-[430px] flex items-center justify-center mb-6">
+            <img src="./assets/13-qrcode-poster-final.png" alt="Placa QR Code em PDF" class="w-full h-full object-contain bg-white p-2" />
+          </div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">02 • Divulgação nas Unidades</span>
+          <h3 class="text-2xl font-bold text-[#075618] mt-1 mb-2">Display QR Code em PDF</h3>
+          <p class="text-base text-[#5E5E5E]">
+            Geração de placa A4 com identidade visual Cedro, título, unidade vinculada e QR Code pronto para recepção.
+          </p>
+        </div>
+
+        <!-- Tela 3: Dashboard Gerencial -->
+        <div class="rounded-3xl bg-[#F7F9F7] border border-[#E3E3E3] p-6 flex flex-col">
+          <div class="rounded-2xl overflow-hidden border border-[#E3E3E3] bg-white h-[430px] flex items-center justify-center mb-6">
+            <img src="./assets/05-admin-dashboard.png" alt="Dashboard Gerencial Cedro" class="w-full h-full object-cover object-top" />
+          </div>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#02A562]">03 • Gestão &amp; Ouvidoria</span>
+          <h3 class="text-2xl font-bold text-[#075618] mt-1 mb-2">Painel Gerencial &amp; SLA</h3>
+          <p class="text-base text-[#5E5E5E]">
+            Indicadores de NPS/CSAT, fila de pendências, tratativa por unidade e gestão de usuários.
+          </p>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Capturas reais da plataforma desenvolvida</span>
+        <span class="font-bold text-[#075618]">08 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 09 — CHECKPOINT: CONCLUÍDO VS PRÓXIMOS PASSOS (LAYOUT 08)
+         ===================================================================== -->
+    <section class="slide slide-clinical" data-slide="9">
+      <header class="flex items-center justify-between border-b border-[#E3E3E3] pb-6">
+        <div>
+          <span class="text-sm font-bold uppercase tracking-[0.14em] text-[#02A562]">05 / Status do Checkpoint</span>
+          <h2 class="text-[42px] font-black text-[#075618] tracking-tight mt-1">
+            O que já entregamos e o que falta para fechar o MVP
+          </h2>
+        </div>
+        <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+      </header>
+
+      <div class="grid grid-cols-12 gap-12 my-auto">
+        <!-- Concluído (7 cols) -->
+        <div class="col-span-7 bg-white rounded-3xl p-11 border border-[#E3E3E3]">
+          <div class="flex items-center justify-between mb-8">
+            <h3 class="text-3xl font-black text-[#075618]">Concluído até agora</h3>
+            <span class="px-4 py-1.5 rounded-full bg-[#E6F6EF] text-[#02A562] text-sm font-bold uppercase tracking-wider">
+              ~90% do MVP
+            </span>
+          </div>
+          <div class="grid grid-cols-1 gap-4 text-xl text-[#171717]">
+            <div class="flex items-center gap-4 p-4 rounded-xl bg-[#F7F9F7]">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 text-sm">✓</span>
+              <span><strong>Banco de Dados &amp; Seed Limpo:</strong> Unidades <em>Cedro Cohama</em> e <em>Cedro Renascença</em> + 3 perfis oficiais.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4 rounded-xl bg-[#F7F9F7]">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 text-sm">✓</span>
+              <span><strong>Autenticação &amp; Acesso Rápido:</strong> Login corporativo JWT com tela ajustada para os 3 perfis.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4 rounded-xl bg-[#F7F9F7]">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 text-sm">✓</span>
+              <span><strong>Pesquisas &amp; QR Code PDF:</strong> Criação, edição, painel analítico por pesquisa e placa de impressão.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4 rounded-xl bg-[#F7F9F7]">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 text-sm">✓</span>
+              <span><strong>Manifestações &amp; Pendências:</strong> Fluxo completo de tratativa, SLA, escalonamento e redirecionamento.</span>
+            </div>
+            <div class="flex items-center gap-4 p-4 rounded-xl bg-[#F7F9F7]">
+              <span class="w-7 h-7 rounded-full bg-[#02A562] text-white font-black flex items-center justify-center shrink-0 text-sm">✓</span>
+              <span><strong>Unidades, Usuários &amp; Deploy VPS:</strong> CRUD completo e ambiente no ar via Coolify v4 + HTTPS.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Próximos Passos (5 cols) -->
+        <div class="col-span-5 bg-white rounded-3xl p-11 border-2 border-[#93CBA0] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-8">
+              <h3 class="text-3xl font-black text-[#171717]">Próximas Etapas</h3>
+              <span class="px-4 py-1.5 rounded-full bg-[#F29222]/15 text-[#A85F00] text-sm font-bold uppercase tracking-wider">
+                Reta Final
+              </span>
+            </div>
+            <ul class="space-y-5 text-xl text-[#323232]">
+              <li class="flex items-start gap-4">
+                <span class="w-8 h-8 rounded-lg bg-[#075618] text-white font-bold flex items-center justify-center shrink-0 text-sm mt-0.5">1</span>
+                <div>
+                  <strong class="text-[#171717] block">Módulo de Relatórios (<code class="font-mono text-base text-[#02A562]">/relatorios</code>)</strong>
+                  <span class="text-base text-[#5E5E5E]">Filtros por período/unidade e exportação gerencial para diretoria.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="w-8 h-8 rounded-lg bg-[#075618] text-white font-bold flex items-center justify-center shrink-0 text-sm mt-0.5">2</span>
+                <div>
+                  <strong class="text-[#171717] block">Notificações SMTP &amp; Alertas de SLA</strong>
+                  <span class="text-base text-[#5E5E5E]">Disparo real de e-mails (via <code class="font-mono text-sm">INotificador</code> já plugado) e alerta automático de prazos vencidos.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="w-8 h-8 rounded-lg bg-[#075618] text-white font-bold flex items-center justify-center shrink-0 text-sm mt-0.5">3</span>
+                <div>
+                  <strong class="text-[#171717] block">Homologação com a Equipe Cedro</strong>
+                  <span class="text-base text-[#5E5E5E]">Validação prática com coordenadores da Cohama e Renascença + Ouvidoria.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-4">
+                <span class="w-8 h-8 rounded-lg bg-[#075618] text-white font-bold flex items-center justify-center shrink-0 text-sm mt-0.5">4</span>
+                <div>
+                  <strong class="text-[#171717] block">Ajustes Finos &amp; Go-Live</strong>
+                  <span class="text-base text-[#5E5E5E]">Refinamentos pós-feedback e entrega dos totens impressos nas recepções.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="mt-8 p-5 rounded-2xl bg-[#E6F6EF] text-[#075618] text-base font-bold text-center">
+            Ambiente já disponível para testes reais da equipe do Cedro
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-[#E3E3E3] pt-5 text-base text-[#5E5E5E]">
+        <span>Alinhamento de escopo e transparência do progresso</span>
+        <span class="font-bold text-[#075618]">09 / 10</span>
+      </footer>
+    </section>
+
+
+    <!-- =====================================================================
+         SLIDE 10 — ENCERRAMENTO (LAYOUT 01: FUNDO VERDE FLORESTA)
+         ===================================================================== -->
+    <section class="slide slide-forest" data-slide="10">
+      <div class="cedro-arc" style="width: 720px; height: 720px; left: -240px; bottom: -240px; border: 2px solid rgba(147, 203, 160, 0.16);"></div>
+      <div class="cedro-arc" style="width: 500px; height: 500px; right: -140px; top: -140px; border: 2px solid rgba(2, 165, 98, 0.25);"></div>
+
+      <div class="flex items-center justify-between relative z-10">
+        <div class="bg-white px-7 py-3.5 rounded-2xl shadow-lg inline-flex items-center">
+          <img src="../frontend/public/logo-cedro-completa.svg" alt="Laboratório Cedro" class="h-12 w-auto" />
+        </div>
+        <span class="text-sm font-bold uppercase tracking-[0.16em] text-[#93CBA0]">
+          Checkpoint • Laboratório Cedro
+        </span>
+      </div>
+
+      <div class="max-w-[1220px] my-auto relative z-10">
+        <h2 class="text-[72px] font-black leading-[1.08] tracking-tight text-white mb-8">
+          Pronto para validação com a equipe do Cedro.
+        </h2>
+        <p class="text-[26px] font-light text-white/85 leading-relaxed mb-12 max-w-[960px]">
+          Código estruturado, testes automatizados, documentação completa e servidor em produção aguardando o feedback operacional de vocês.
+        </p>
+
+        <div class="flex flex-wrap gap-5">
+          <div class="px-7 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
+            <span class="block text-xs uppercase tracking-widest text-[#93CBA0] font-bold">Aplicação Web</span>
+            <span class="text-xl font-bold text-white font-mono">https://cedro.tainosamuel.tech</span>
+          </div>
+          <div class="px-7 py-4 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
+            <span class="block text-xs uppercase tracking-widest text-[#93CBA0] font-bold">API em Produção</span>
+            <span class="text-xl font-bold text-white font-mono">https://api.cedro.tainosamuel.tech/api/health</span>
+          </div>
+        </div>
+      </div>
+
+      <footer class="flex items-center justify-between border-t border-white/15 pt-7 relative z-10 text-lg text-white/75">
+        <span>Gabriel Ordonez dos Reis &amp; Taino Samuel • UNDB / NIT Laboratório Cedro</span>
+        <span class="font-bold tracking-widest text-white/60">10 / 10</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- Controles de Apresentação (não aparecem na impressão/PDF) -->
+  <nav class="hud" aria-label="Controles da apresentação">
+    <button type="button" id="prevBtn" title="Slide anterior (←)">← Anterior</button>
+    <span id="counter" class="px-3 font-mono text-xs text-white/80 font-bold">1 / 10</span>
+    <button type="button" id="nextBtn" title="Próximo slide (→ ou Espaço)">Próximo →</button>
+    <span class="w-px h-4 bg-white/20 mx-1"></span>
+    <button type="button" id="fsBtn" title="Tela cheia (F)">Tela Cheia</button>
+    <button type="button" class="btn-pdf" id="pdfBtn" title="Exportar slides em PDF">Exportar PDF</button>
+  </nav>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const total = slides.length;
+      let current = 0;
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const counter = document.getElementById('counter');
+      const progressBar = document.getElementById('progressBar');
+      const fsBtn = document.getElementById('fsBtn');
+      const pdfBtn = document.getElementById('pdfBtn');
+
+      function scaleSlides() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const scale = Math.min(vw / 1920, vh / 1080) * 0.96;
+        slides.forEach((slide) => {
+          slide.style.transform = `scale(${scale})`;
+        });
+      }
+
+      function showSlide(index) {
+        current = Math.max(0, Math.min(index, total - 1));
+        slides.forEach((s, i) => s.classList.toggle('active', i === current));
+        counter.textContent = `${current + 1} / ${total}`;
+        progressBar.style.width = `${((current + 1) / total) * 100}%`;
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === total - 1;
+      }
+
+      prevBtn.addEventListener('click', () => showSlide(current - 1));
+      nextBtn.addEventListener('click', () => showSlide(current + 1));
+
+      fsBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen?.();
+        } else {
+          document.exitFullscreen?.();
+        }
+      });
+
+      pdfBtn.addEventListener('click', () => {
+        window.print();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          showSlide(current + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          showSlide(current - 1);
+        } else if (e.key === 'Home') {
+          showSlide(0);
+        } else if (e.key === 'End') {
+          showSlide(total - 1);
+        } else if (e.key.toLowerCase() === 'f') {
+          fsBtn.click();
+        }
+      });
+
+      window.addEventListener('resize', scaleSlides);
+      scaleSlides();
+      showSlide(0);
+    })();
+  </script>
+</body>
+</html>
