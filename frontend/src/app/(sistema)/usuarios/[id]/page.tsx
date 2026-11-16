@@ -137,13 +137,13 @@ export default function DetalheUsuarioPage() {
 
       {/* Cabeçalho */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-[#075618] text-white text-xl font-black grid place-items-center shrink-0 shadow-sm">
+        <div className="flex items-center gap-4 min-w-0 max-w-full">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#075618] text-white text-lg sm:text-xl font-black grid place-items-center shrink-0 shadow-sm">
             {iniciais}
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h1 className="text-[clamp(1.75rem,3vw,2.25rem)] font-black text-[#075618] tracking-[-0.02em] leading-[1.1] m-0">
+              <h1 className="text-[clamp(1.5rem,3vw,2.25rem)] font-black text-[#075618] tracking-[-0.02em] leading-[1.1] m-0 break-words">
                 {usuario.nome}
               </h1>
               <span
@@ -162,7 +162,7 @@ export default function DetalheUsuarioPage() {
               </span>
             </div>
 
-            <p className="text-[#5E5E5E] text-[15px] mt-1 mb-0">
+            <p className="text-[#5E5E5E] text-sm sm:text-[15px] mt-1 mb-0 break-words">
               {usuario.email} ·{' '}
               {usuario.unidadeNome
                 ? `Coordenador da ${usuario.unidadeNome}`

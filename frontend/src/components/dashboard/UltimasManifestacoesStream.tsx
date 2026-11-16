@@ -74,7 +74,74 @@ export function UltimasManifestacoesStream({
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#E3E3E3] shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] overflow-x-auto">
+      {/* Visão em Cards para Mobile (< 768px) */}
+      <div className="md:hidden space-y-3">
+        {manifestacoes.length === 0 ? (
+          <div className="bg-white rounded-xl border border-[#E3E3E3] p-6 text-center text-sm text-[#5E5E5E] shadow-[-10px_15px_30px_rgba(0,0,0,0.04)]">
+            Nenhuma manifestação encontrada.
+          </div>
+        ) : (
+          manifestacoes.map((item) => {
+            const configNota = NOTA_CONFIG[item.nota] || {
+              bg: '#5E5E5E',
+              text: '#FFFFFF',
+            };
+            const configStatus = STATUS_CONFIG[item.status] || {
+              label: item.status,
+              className: 'bg-[#F3F3F3] text-[#323232] border border-[#E3E3E3]',
+            };
+
+            return (
+              <Link
+                key={item.id}
+                href={`/manifestacoes/${item.id}`}
+                className="block bg-white rounded-xl border border-[#E3E3E3] p-4 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] active:bg-[#FAFAFA] transition-colors"
+              >
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className="w-7 h-7 rounded-full inline-grid place-items-center font-black text-sm shrink-0"
+                      style={{
+                        backgroundColor: configNota.bg,
+                        color: configNota.text,
+                      }}
+                    >
+                      {item.nota || '—'}
+                    </span>
+                    <span className="font-bold text-sm text-[#075618] truncate">
+                      #{item.protocolo}
+                    </span>
+                  </div>
+                  <span
+                    className={`inline-block py-0.5 px-2.5 rounded-full text-[11px] font-bold whitespace-nowrap shrink-0 ${configStatus.className}`}
+                  >
+                    {configStatus.label}
+                  </span>
+                </div>
+
+                <p className="text-xs text-[#323232] line-clamp-2 mb-2.5 leading-relaxed">
+                  {item.comentario || 'Sem comentário'}
+                </p>
+
+                <div className="flex items-center justify-between gap-2 text-[11px] text-[#5E5E5E] pt-2 border-t border-[#F0F0F0]">
+                  <span className="font-semibold text-[#323232] truncate">
+                    {item.unidadeNome}
+                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {item.senhaAtendimento && (
+                      <span className="font-mono">Senha: {item.senhaAtendimento}</span>
+                    )}
+                    <span>há {formatarTempoRelativo(item.criadoEm)}</span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })
+        )}
+      </div>
+
+      {/* Tabela para Tablet/Desktop (>= 768px) */}
+      <div className="hidden md:block bg-white rounded-xl border border-[#E3E3E3] shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] overflow-x-auto">
         <table className="w-full border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-[#EEE]">

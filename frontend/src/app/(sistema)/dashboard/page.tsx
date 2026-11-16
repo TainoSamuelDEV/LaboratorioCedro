@@ -135,9 +135,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Controles de Escopo e Atualização */}
-        <div className="flex items-center gap-2 self-start">
+        <div className="flex items-center gap-2 w-full sm:w-auto sm:self-start">
           {ehCoordenador ? (
-            <span className="inline-block py-1 px-3 rounded-full text-xs font-bold bg-[#ECFDF5] text-[#075618] border border-[#A7F3D0]">
+            <span className="inline-block py-1.5 px-3 rounded-full text-xs font-bold bg-[#ECFDF5] text-[#075618] border border-[#A7F3D0] truncate max-w-full">
               {nomeUnidade}
             </span>
           ) : (
@@ -145,7 +145,7 @@ export default function DashboardPage() {
               value={unidadeFiltro}
               onChange={(e) => setUnidadeFiltro(e.target.value)}
               aria-label="Filtrar por unidade"
-              className="text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
+              className="flex-1 sm:flex-initial min-w-0 text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
             >
               <option value="">Todas as unidades</option>
               {unidades.map((u) => (
@@ -162,7 +162,7 @@ export default function DashboardPage() {
             disabled={atualizando}
             title="Atualizar dados"
             aria-label="Atualizar dados"
-            className="w-[44px] h-[44px] inline-grid place-items-center rounded-lg border-[1.5px] border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50"
+            className="w-[44px] h-[44px] shrink-0 inline-grid place-items-center rounded-lg border-[1.5px] border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
           >
             <RotateCw
               size={18}

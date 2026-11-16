@@ -159,12 +159,12 @@ export default function PesquisasPage() {
         </div>
 
         {/* Ações do Topo: Botão de Criação e Atualizar */}
-        <div className="flex items-center gap-2 self-start">
+        <div className="flex items-center gap-2 w-full sm:w-auto sm:self-start">
           {ehAdmin && (
             <button
               type="button"
               onClick={() => setModalCriarAberto(true)}
-              className="inline-flex items-center gap-2 px-4 h-11 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
+              className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 h-11 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
             >
               <Plus size={16} />
               <span>Nova Pesquisa</span>
@@ -177,7 +177,7 @@ export default function PesquisasPage() {
             disabled={atualizando}
             title="Atualizar lista"
             aria-label="Atualizar lista"
-            className="w-11 h-11 inline-grid place-items-center rounded-lg border-[1.5px] border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
+            className="w-11 h-11 shrink-0 inline-grid place-items-center rounded-lg border-[1.5px] border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
           >
             <RotateCw
               size={18}
@@ -227,8 +227,8 @@ export default function PesquisasPage() {
       </div>
 
       {/* Barra de Filtros: Busca e Unidade */}
-      <div className="flex flex-wrap gap-3 mb-6">
-        <div className="flex-1 min-w-[240px] relative">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="w-full sm:flex-1 relative">
           <Search
             size={16}
             className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none"
@@ -248,7 +248,7 @@ export default function PesquisasPage() {
             value={filtroUnidade}
             onChange={(e) => setFiltroUnidade(e.target.value)}
             aria-label="Filtrar por unidade vinculada"
-            className="text-sm text-[#171717] bg-white border border-[#E3E3E3] rounded-lg px-3.5 h-11 cursor-pointer focus:outline-none focus:border-[#02A562]"
+            className="w-full sm:w-auto text-sm text-[#171717] bg-white border border-[#E3E3E3] rounded-lg px-3.5 h-11 cursor-pointer focus:outline-none focus:border-[#02A562]"
           >
             <option value="">Todas as Unidades</option>
             {unidades.map((u) => (

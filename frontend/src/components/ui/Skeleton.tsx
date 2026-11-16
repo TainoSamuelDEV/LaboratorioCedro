@@ -189,16 +189,16 @@ export function DetalheManifestacaoSkeleton() {
   return (
     <div className="space-y-6 w-full" aria-busy="true" aria-live="polite">
       {/* Barra de Topo */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Skeleton className="w-8 h-8 rounded-lg" />
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-44" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <Skeleton className="w-8 h-8 rounded-lg shrink-0" />
+          <div className="space-y-2 min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <Skeleton className="h-6 w-44 max-w-full" />
               <Skeleton className="h-5 w-24 rounded-full" />
               <Skeleton className="h-5 w-20 rounded-full" />
             </div>
-            <Skeleton className="h-3.5 w-72" />
+            <Skeleton className="h-3.5 w-72 max-w-full" />
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -255,6 +255,14 @@ export function DetalheManifestacaoSkeleton() {
 export function AppShellSkeleton() {
   return (
     <div className="cedro-admin-shell" aria-busy="true">
+      {/* Topbar Skeleton (Mobile) */}
+      <div className="lg:hidden sticky top-0 z-30 px-4 pt-3">
+        <div className="flex items-center justify-between h-14 px-4 bg-white/95 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5">
+          <Skeleton className="h-8 w-28 rounded-lg" />
+          <Skeleton className="h-9 w-9 rounded-xl" />
+        </div>
+      </div>
+
       {/* Sidebar Flutuante Skeleton (Desktop) */}
       <aside className="hidden lg:flex cedro-sidebar">
         <Skeleton className="h-12 w-36 rounded-xl" />
@@ -278,8 +286,8 @@ export function AppShellSkeleton() {
       {/* Main Content Skeleton */}
       <main className="cedro-admin-main space-y-6">
         <div className="space-y-2 mb-7">
-          <Skeleton className="h-9 w-56 rounded-lg" />
-          <Skeleton className="h-4 w-80 rounded" />
+          <Skeleton className="h-9 w-56 max-w-full rounded-lg" />
+          <Skeleton className="h-4 w-80 max-w-full rounded" />
         </div>
         <DashboardSkeleton />
       </main>

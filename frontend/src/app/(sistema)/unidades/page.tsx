@@ -125,12 +125,12 @@ export default function UnidadesPage() {
         </div>
 
         {/* Ações */}
-        <div className="flex items-center gap-2 self-start">
+        <div className="flex items-center gap-2 w-full sm:w-auto sm:self-start">
           {ehAdmin && (
             <button
               type="button"
               onClick={() => setModalCriarAberto(true)}
-              className="inline-flex items-center gap-2 px-4 h-11 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
+              className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 h-11 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
             >
               <Plus size={16} />
               <span>Nova Unidade</span>
@@ -143,7 +143,7 @@ export default function UnidadesPage() {
             disabled={atualizando}
             title="Atualizar lista"
             aria-label="Atualizar lista"
-            className="w-11 h-11 inline-grid place-items-center rounded-lg border border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
+            className="w-11 h-11 shrink-0 inline-grid place-items-center rounded-lg border border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
           >
             <RotateCw
               size={18}
@@ -193,8 +193,8 @@ export default function UnidadesPage() {
       </div>
 
       {/* Busca */}
-      <div className="flex flex-wrap gap-3 mb-6">
-        <div className="flex-1 min-w-[240px] relative">
+      <div className="mb-6">
+        <div className="w-full relative">
           <Search
             size={16}
             className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none"

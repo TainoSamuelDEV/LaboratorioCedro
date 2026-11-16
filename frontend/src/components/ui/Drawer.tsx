@@ -218,7 +218,7 @@ export function DrawerContent({
           </button>
         )}
 
-        <div className="flex-1 overflow-y-auto">{children}</div>
+        <div className="flex-1 overflow-y-auto overscroll-contain flex flex-col">{children}</div>
       </div>
     </div>,
     document.body
@@ -233,7 +233,7 @@ export function DrawerHeader({
   className?: string;
 }) {
   return (
-    <div className={`flex flex-col gap-1 px-6 pt-5 pb-4 border-b border-[#E3E3E3]/80 text-left ${className}`}>
+    <div className={`flex flex-col gap-1 px-6 pr-12 pt-5 pb-4 border-b border-[#E3E3E3]/80 text-left shrink-0 ${className}`}>
       {children}
     </div>
   );

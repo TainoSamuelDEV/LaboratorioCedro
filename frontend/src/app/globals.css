@@ -758,172 +758,188 @@ main h1 {
 
 /* ==========================================================================
    SISTEMA INTERNO (SHELL CORPORATIVO & SIDEBAR FLUTUANTE)
+   Envolvido em @layer components para respeitar utilitários Tailwind (ex: hidden lg:flex)
    ========================================================================== */
 
-.cedro-admin-shell {
-  min-height: 100dvh;
-  background-color: #F3F3F3;
-  color: #323232;
-}
-
-@media (min-width: 1024px) {
+@layer components {
   .cedro-admin-shell {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    min-height: 100dvh;
+    background-color: #F3F3F3;
+    color: #323232;
+    overflow-x: clip;
   }
-}
 
-.cedro-sidebar {
-  background: #ffffff;
-  border: 1px solid #E3E3E3;
-  border-radius: 20px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-  margin: 16px 0 16px 16px;
-  padding: 20px 12px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  position: sticky;
-  top: 16px;
-  height: calc(100dvh - 32px);
-  align-self: start;
-  width: 248px;
-  transition: width 0.25s cubic-bezier(0.3, 0.7, 0.2, 1);
-  z-index: 30;
-}
+  @media (min-width: 1024px) {
+    .cedro-admin-shell {
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
+  }
 
-.cedro-sidebar.is-collapsed {
-  width: 72px;
-}
+  .cedro-sidebar {
+    display: none;
+  }
 
-.cedro-sidebar-logo-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 48px;
-  width: 100%;
-  overflow: visible;
-}
+  @media (min-width: 1024px) {
+    .cedro-sidebar {
+      background: #ffffff;
+      border: 1px solid #E3E3E3;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+      margin: 16px 0 16px 16px;
+      padding: 20px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: sticky;
+      top: 16px;
+      height: calc(100dvh - 32px);
+      align-self: start;
+      width: 248px;
+      transition: width 0.25s cubic-bezier(0.3, 0.7, 0.2, 1);
+      z-index: 30;
+    }
+  }
 
-.cedro-sidebar.is-collapsed .cedro-sidebar-logo-wrap {
-  width: 48px;
-  justify-content: center;
-}
+  .cedro-sidebar.is-collapsed {
+    width: 72px;
+  }
 
-.cedro-sidebar-logo-wrap .cedro-logo-full {
-  display: block;
-  height: 42px;
-  width: auto;
-  flex-shrink: 0;
-}
+  .cedro-sidebar-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    width: 100%;
+    overflow: visible;
+  }
 
-.cedro-sidebar-logo-wrap .cedro-logo-icon {
-  display: block;
-  height: 42px;
-  width: 42px;
-  flex-shrink: 0;
-  object-fit: contain;
-}
+  .cedro-sidebar.is-collapsed .cedro-sidebar-logo-wrap {
+    width: 48px;
+    justify-content: center;
+  }
 
-.cedro-nav-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-  height: 48px;
-  padding: 0 13px;
-  border-radius: 12px;
-  color: #323232;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 1;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
-}
+  .cedro-sidebar-logo-wrap .cedro-logo-full {
+    display: block;
+    height: 42px;
+    width: auto;
+    flex-shrink: 0;
+  }
 
-.cedro-nav-item:hover {
-  background: #F3F3F3;
-}
+  .cedro-sidebar-logo-wrap .cedro-logo-icon {
+    display: block;
+    height: 42px;
+    width: 42px;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
 
-.cedro-nav-item.is-active,
-.cedro-nav-item.is-active:hover {
-  background: #255521;
-  color: #ffffff;
-}
+  .cedro-nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    height: 48px;
+    padding: 0 13px;
+    border-radius: 12px;
+    color: #323232;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+  }
 
-.cedro-nav-item.is-active svg {
-  color: #93CBA0;
-}
+  .cedro-nav-item:hover {
+    background: #F3F3F3;
+  }
 
-.cedro-nav-item svg {
-  flex: none;
-  width: 22px;
-  height: 22px;
-}
+  .cedro-nav-item.is-active,
+  .cedro-nav-item.is-active:hover {
+    background: #255521;
+    color: #ffffff;
+  }
 
-.cedro-nav-label {
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 170px;
-  transition: max-width 0.25s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s ease;
-}
+  .cedro-nav-item.is-active svg {
+    color: #93CBA0;
+  }
 
-.cedro-sidebar.is-collapsed .cedro-nav-label {
-  max-width: 0;
-  opacity: 0;
-}
+  .cedro-nav-item svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+  }
 
-.cedro-nav-badge {
-  margin-left: auto;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 900;
-  background: #CA2E24;
-  color: #ffffff;
-  border-radius: 99px;
-  padding: 2px 8px;
-  line-height: 1.4;
-}
+  .cedro-nav-label {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 170px;
+    transition: max-width 0.25s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s ease;
+  }
 
-.cedro-sidebar.is-collapsed .cedro-nav-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 10px;
-  height: 10px;
-  padding: 0;
-  font-size: 0;
-  border: 2px solid #ffffff;
-  box-sizing: content-box;
-}
+  .cedro-sidebar.is-collapsed .cedro-nav-label {
+    max-width: 0;
+    opacity: 0;
+  }
 
-.cedro-sidebar.is-collapsed .cedro-nav-item:hover::after,
-.cedro-sidebar.is-collapsed .cedro-nav-item:focus-visible::after {
-  content: attr(data-tip);
-  position: absolute;
-  left: calc(100% + 14px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: #171717;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 8px;
-  white-space: nowrap;
-  z-index: 40;
-  pointer-events: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+  .cedro-nav-badge {
+    margin-left: auto;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 900;
+    background: #CA2E24;
+    color: #ffffff;
+    border-radius: 99px;
+    padding: 2px 8px;
+    line-height: 1.4;
+  }
 
-.cedro-admin-main {
-  padding: 28px clamp(16px, 3vw, 40px) 56px;
-  width: 100%;
-  min-width: 0;
+  .cedro-sidebar.is-collapsed .cedro-nav-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    font-size: 0;
+    border: 2px solid #ffffff;
+    box-sizing: content-box;
+  }
+
+  .cedro-sidebar.is-collapsed .cedro-nav-item:hover::after,
+  .cedro-sidebar.is-collapsed .cedro-nav-item:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: #171717;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    z-index: 40;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .cedro-admin-main {
+    padding: 20px 16px 48px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .cedro-admin-main {
+      padding: 28px clamp(20px, 3vw, 40px) 56px;
+    }
+  }
 }
 
 /* Scrollbar refinada */

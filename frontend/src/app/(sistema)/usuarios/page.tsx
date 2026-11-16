@@ -157,12 +157,12 @@ export default function UsuariosPage() {
         </div>
 
         {/* Ações */}
-        <div className="flex items-center gap-2 self-start">
+        <div className="flex items-center gap-2 w-full sm:w-auto sm:self-start">
           {ehAdmin && (
             <button
               type="button"
               onClick={() => setModalCriarAberto(true)}
-              className="inline-flex items-center gap-2 px-4 h-11 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
+              className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-2 px-4 h-11 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
             >
               <Plus size={16} />
               <span>Novo Usuário</span>
@@ -175,7 +175,7 @@ export default function UsuariosPage() {
             disabled={atualizando}
             title="Atualizar lista"
             aria-label="Atualizar lista"
-            className="w-11 h-11 inline-grid place-items-center rounded-lg border border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
+            className="w-11 h-11 shrink-0 inline-grid place-items-center rounded-lg border border-[#E3E3E3] bg-white text-[#5E5E5E] hover:text-[#075618] hover:border-[#075618] transition-colors disabled:opacity-50 cursor-pointer"
           >
             <RotateCw
               size={18}
@@ -225,8 +225,8 @@ export default function UsuariosPage() {
       </div>
 
       {/* Filtros: Busca e Perfil */}
-      <div className="flex flex-wrap gap-3 mb-6">
-        <div className="flex-1 min-w-[240px] relative">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="w-full sm:flex-1 relative">
           <Search
             size={16}
             className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#999] pointer-events-none"
@@ -245,7 +245,7 @@ export default function UsuariosPage() {
           value={filtroPerfil}
           onChange={(e) => setFiltroPerfil(e.target.value)}
           aria-label="Filtrar por perfil"
-          className="text-sm text-[#171717] bg-white border border-[#E3E3E3] rounded-lg px-3.5 h-11 cursor-pointer focus:outline-none focus:border-[#02A562]"
+          className="w-full sm:w-auto text-sm text-[#171717] bg-white border border-[#E3E3E3] rounded-lg px-3.5 h-11 cursor-pointer focus:outline-none focus:border-[#02A562]"
         >
           <option value="">Todos os perfis</option>
           <option value="ADMINISTRADOR">Administrador</option>
@@ -272,7 +272,111 @@ export default function UsuariosPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-[#E3E3E3] shadow-xs overflow-hidden">
+        <>
+          {/* Visão em Cards para Mobile (< 768px) */}
+          <div className="md:hidden space-y-3">
+            {usuariosFiltrados.map((u) => {
+              const perfilConfig = PERFIL_CONFIG[u.perfil] || {
+                label: u.perfil,
+                className: 'bg-[#F3F3F3] text-[#323232] border border-[#E3E3E3]',
+              };
+              const iniciais = u.nome
+                .split(' ')
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((n) => n[0].toUpperCase())
+                .join('');
+              const nomeUnidade = u.unidadeId ? mapaUnidades.get(u.unidadeId) : 'Geral (Todas)';
+
+              return (
+                <div
+                  key={u.id}
+                  className="bg-white rounded-2xl border border-[#E3E3E3] p-4 shadow-xs space-y-3"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-full bg-[#075618] text-white text-xs font-black grid place-items-center shrink-0">
+                        {iniciais}
+                      </div>
+                      <div className="min-w-0">
+                        <Link
+                          href={`/usuarios/${u.id}`}
+                          className="font-bold text-[#171717] hover:text-[#075618] hover:underline block leading-snug truncate"
+                        >
+                          {u.nome}
+                        </Link>
+                        <span className="text-xs text-[#5E5E5E] block truncate">{u.email}</span>
+                      </div>
+                    </div>
+
+                    <span
+                      className={`inline-block py-0.5 px-2.5 rounded-full text-[11px] font-bold shrink-0 ${
+                        u.ativo
+                          ? 'bg-[#E6F5EC] text-[#075618]'
+                          : 'bg-[#F3F3F3] text-[#767676]'
+                      }`}
+                    >
+                      {u.ativo ? 'Ativo' : 'Inativo'}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 text-xs">
+                    <span
+                      className={`inline-block py-0.5 px-2.5 rounded-full font-bold whitespace-nowrap ${perfilConfig.className}`}
+                    >
+                      {perfilConfig.label}
+                    </span>
+                    <span className="text-[#5E5E5E] truncate">{nomeUnidade}</span>
+                  </div>
+
+                  <div className="pt-2.5 border-t border-[#F0F0F0] flex items-center justify-between gap-2">
+                    <Link
+                      href={`/usuarios/${u.id}`}
+                      className="px-3 py-1.5 rounded-lg bg-[#E6F5EC] text-[#075618] text-xs font-bold hover:bg-[#D1EEDB] transition-colors"
+                    >
+                      Ver Ficha
+                    </Link>
+
+                    {ehAdmin && (
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleEditar(u)}
+                          title="Editar usuário"
+                          aria-label="Editar usuário"
+                          className="p-2 rounded-lg text-[#5E5E5E] hover:text-[#075618] hover:bg-[#F3F3F3] transition-colors cursor-pointer"
+                        >
+                          <Edit size={16} />
+                        </button>
+
+                        {u.id !== usuarioLogado?.id && (
+                          <button
+                            type="button"
+                            onClick={() => handleAlternarStatus(u)}
+                            title={u.ativo ? 'Desativar usuário' : 'Reativar usuário'}
+                            aria-label={u.ativo ? 'Desativar usuário' : 'Reativar usuário'}
+                            className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                              u.ativo
+                                ? 'text-[#CA2E24] hover:bg-[#FEE2E2]'
+                                : 'text-[#02A562] hover:bg-[#DCFCE7]'
+                            }`}
+                          >
+                            <Power size={16} />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+            <p className="text-[#5E5E5E] text-[13px] pt-1 mb-0">
+              {usuariosFiltrados.length} de {usuarios.length} usuários listados
+            </p>
+          </div>
+
+          {/* Tabela para Tablet/Desktop (>= 768px) */}
+          <div className="hidden md:block bg-white rounded-2xl border border-[#E3E3E3] shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left text-sm">
               <thead>
@@ -396,6 +500,7 @@ export default function UsuariosPage() {
             {usuariosFiltrados.length} de {usuarios.length} usuários listados
           </div>
         </div>
+        </>
       )}
 
       {/* Modais */}

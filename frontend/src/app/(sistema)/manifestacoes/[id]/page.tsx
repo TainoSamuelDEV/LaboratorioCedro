@@ -409,14 +409,14 @@ export default function DetalheManifestacaoPage() {
               )}
 
               {/* Botões de Ação de acordo com o Perfil (RBAC) */}
-              <div className="flex gap-2.5 flex-wrap mt-3.5">
+              <div className="flex flex-col sm:flex-row gap-2.5 flex-wrap mt-3.5">
                 {/* Se for Coordenador de Unidade e a manifestação estiver NOVA */}
                 {ehCoordenador && manifestacao.status === 'NOVA' && (
                   <button
                     type="button"
                     onClick={handleIniciarTratamento}
                     disabled={executandoAcao}
-                    className="min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-white bg-[#075618] hover:bg-[#23823D] transition-colors cursor-pointer disabled:opacity-50"
+                    className="w-full sm:w-auto min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-white bg-[#075618] hover:bg-[#23823D] transition-colors cursor-pointer disabled:opacity-50"
                   >
                     Iniciar Tratamento
                   </button>
@@ -427,7 +427,7 @@ export default function DetalheManifestacaoPage() {
                   type="button"
                   onClick={handleResponderPelaUnidade}
                   disabled={executandoAcao}
-                  className="min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-white bg-[#02A562] hover:bg-[#23823D] transition-colors cursor-pointer shadow-sm disabled:opacity-50"
+                  className="w-full sm:w-auto min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-white bg-[#02A562] hover:bg-[#23823D] transition-colors cursor-pointer shadow-sm disabled:opacity-50"
                 >
                   Registrar resposta
                 </button>
@@ -439,7 +439,7 @@ export default function DetalheManifestacaoPage() {
                       type="button"
                       onClick={handleEscalonar}
                       disabled={executandoAcao}
-                      className="min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-white bg-[#075618] hover:bg-[#F29222] transition-colors cursor-pointer disabled:opacity-50"
+                      className="w-full sm:w-auto min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-white bg-[#075618] hover:bg-[#F29222] transition-colors cursor-pointer disabled:opacity-50"
                     >
                       Escalonar
                     </button>
@@ -448,7 +448,7 @@ export default function DetalheManifestacaoPage() {
                       type="button"
                       onClick={handleConcluir}
                       disabled={executandoAcao}
-                      className="min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-[#02A562] bg-white border border-[#02A562] hover:bg-[#02A562] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
+                      className="w-full sm:w-auto min-h-[44px] px-5 rounded-lg text-xs font-bold uppercase tracking-[0.02em] text-[#02A562] bg-white border border-[#02A562] hover:bg-[#02A562] hover:text-white transition-colors cursor-pointer disabled:opacity-50"
                     >
                       Concluir
                     </button>

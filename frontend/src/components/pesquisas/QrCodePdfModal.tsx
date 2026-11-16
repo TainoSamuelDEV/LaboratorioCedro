@@ -121,8 +121,7 @@ export function QrCodePdfModal({
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#F5F5F5]">
           <div
             ref={printRef}
-            className="cedro-print-display mx-auto max-w-md bg-white rounded-2xl shadow-md border-[2px] border-[#075618]/20 overflow-hidden text-center flex flex-col justify-between"
-            style={{ minHeight: '520px' }}
+            className="cedro-print-display mx-auto max-w-md min-h-[420px] sm:min-h-[520px] bg-white rounded-2xl shadow-md border-[2px] border-[#075618]/20 overflow-hidden text-center flex flex-col justify-between"
           >
             {/* Topo Institucional com Padrão de Identidade Cedro */}
             <div className="bg-[#075618] text-white pt-6 pb-5 px-6 relative overflow-hidden">
@@ -175,7 +174,7 @@ export function QrCodePdfModal({
               </div>
 
               {/* Link Curto Legível */}
-              <div className="mt-3.5 px-3 py-1 rounded-md bg-[#F3F3F3] text-[11px] font-mono text-[#5E5E5E] max-w-[320px] truncate select-all">
+              <div className="mt-3.5 px-3 py-1 rounded-md bg-[#F3F3F3] text-[11px] font-mono text-[#5E5E5E] max-w-full w-full truncate select-all">
                 {urlPublica}
               </div>
             </div>
@@ -189,12 +188,12 @@ export function QrCodePdfModal({
         </div>
 
         {/* Rodapé de Ações do Modal (não impresso) */}
-        <div className="p-4 border-t border-[#E3E3E3] bg-white flex flex-wrap items-center justify-between gap-2 no-print">
+        <div className="p-4 border-t border-[#E3E3E3] bg-white flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-between gap-2 no-print">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleCopiarLink}
-              className="inline-flex items-center gap-1.5 px-3 h-10 rounded-lg border border-[#E3E3E3] bg-white text-xs font-bold text-[#323232] hover:bg-[#F7F7F7] transition-colors"
+              className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 px-3 h-10 rounded-lg border border-[#E3E3E3] bg-white text-xs font-bold text-[#323232] hover:bg-[#F7F7F7] transition-colors cursor-pointer"
             >
               {copiado ? (
                 <>
@@ -212,7 +211,7 @@ export function QrCodePdfModal({
             <button
               type="button"
               onClick={handleBaixarQr}
-              className="inline-flex items-center gap-1.5 px-3 h-10 rounded-lg border border-[#E3E3E3] bg-white text-xs font-bold text-[#323232] hover:bg-[#F7F7F7] transition-colors"
+              className="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 px-3 h-10 rounded-lg border border-[#E3E3E3] bg-white text-xs font-bold text-[#323232] hover:bg-[#F7F7F7] transition-colors cursor-pointer"
             >
               <Download size={14} />
               <span>Baixar QR (PNG)</span>
@@ -223,7 +222,7 @@ export function QrCodePdfModal({
             <button
               type="button"
               onClick={handleImprimir}
-              className="inline-flex items-center gap-1.5 px-4 h-10 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
+              className="w-full sm:w-auto justify-center inline-flex items-center gap-1.5 px-4 h-10 rounded-lg bg-[#075618] hover:bg-[#054012] text-white text-xs font-black shadow-sm transition-colors cursor-pointer"
             >
               <Printer size={15} />
               <span>Imprimir / Salvar PDF</span>

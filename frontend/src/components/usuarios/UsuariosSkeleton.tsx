@@ -4,24 +4,24 @@ import { Skeleton } from '../ui/Skeleton';
 export function UsuariosSkeleton() {
   return (
     <div className="space-y-6 w-full" aria-busy="true" aria-live="polite">
-      <div className="flex flex-wrap gap-3">
-        <Skeleton className="h-11 flex-1 min-w-[240px] rounded-lg" />
-        <Skeleton className="h-11 w-44 rounded-lg" />
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Skeleton className="h-11 w-full sm:flex-1 rounded-lg" />
+        <Skeleton className="h-11 w-full sm:w-44 rounded-lg" />
       </div>
 
       <div className="p-4 bg-white rounded-2xl border border-[#E3E3E3] shadow-xs space-y-4">
         {[1, 2, 3, 4, 5].map((i) => (
-          <div key={i} className="flex items-center justify-between py-2 border-b border-[#F0F0F0] last:border-0">
-            <div className="flex items-center gap-3">
-              <Skeleton className="w-9 h-9 rounded-full" />
-              <div className="space-y-1.5">
-                <Skeleton className="h-4 w-40 rounded" />
-                <Skeleton className="h-3 w-56 rounded" />
+          <div key={i} className="flex items-center justify-between gap-3 py-2 border-b border-[#F0F0F0] last:border-0">
+            <div className="flex items-center gap-3 min-w-0">
+              <Skeleton className="w-9 h-9 rounded-full shrink-0" />
+              <div className="space-y-1.5 min-w-0">
+                <Skeleton className="h-4 w-36 sm:w-40 rounded" />
+                <Skeleton className="h-3 w-44 sm:w-56 max-w-full rounded" />
               </div>
             </div>
-            <Skeleton className="h-6 w-24 rounded-full" />
-            <Skeleton className="h-6 w-28 rounded-full" />
-            <Skeleton className="h-8 w-20 rounded-lg" />
+            <Skeleton className="hidden md:block h-6 w-24 rounded-full" />
+            <Skeleton className="hidden md:block h-6 w-28 rounded-full" />
+            <Skeleton className="h-8 w-20 rounded-lg shrink-0" />
           </div>
         ))}
       </div>

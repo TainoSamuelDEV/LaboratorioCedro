@@ -323,57 +323,60 @@ export default function DetalhePesquisaPage() {
             </p>
 
             <div className="space-y-2.5 text-xs">
-              <div className="flex justify-between py-1.5 border-b border-[#F0F0F0]">
+              <div className="flex flex-wrap justify-between gap-2 py-1.5 border-b border-[#F0F0F0]">
                 <span className="text-[#5E5E5E]">Unidade vinculada:</span>
-                <span className="font-bold text-[#171717]">
+                <span className="font-bold text-[#171717] text-right">
                   {pesquisa.unidadePadraoNome || 'Todas as Unidades (Global)'}
                 </span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-[#F0F0F0]">
+              <div className="flex flex-wrap justify-between gap-2 py-1.5 border-b border-[#F0F0F0]">
                 <span className="text-[#5E5E5E]">Canal configurado:</span>
                 <span className="font-bold text-[#171717]">{pesquisa.canal}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-[#F0F0F0]">
+              <div className="flex flex-wrap justify-between gap-2 py-1.5 border-b border-[#F0F0F0]">
                 <span className="text-[#5E5E5E]">Período de aplicação:</span>
                 <span className="font-bold text-[#171717]">{pesquisa.periodo}</span>
               </div>
-              <div className="flex justify-between py-1.5 border-b border-[#F0F0F0]">
+              <div className="flex flex-wrap justify-between gap-2 py-1.5 border-b border-[#F0F0F0]">
                 <span className="text-[#5E5E5E]">Identificador (ID):</span>
-                <span className="font-mono text-[#767676]">{pesquisa.id}</span>
+                <span className="font-mono text-[#767676] break-all text-right">{pesquisa.id}</span>
               </div>
             </div>
           </div>
 
           {/* Caixa de Link de Resposta */}
           <div className="mt-4 p-3 rounded-lg bg-[#F9F9F9] border border-[#E3E3E3]">
-            <span className="block text-[11px] font-bold text-[#5E5E5E] uppercase tracking-wider mb-1">
+            <span className="block text-[11px] font-bold text-[#5E5E5E] uppercase tracking-wider mb-1.5">
               Link Direto do Formulário
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <input
                 type="text"
                 readOnly
                 value={urlPublica}
-                className="flex-1 text-xs font-mono text-[#323232] bg-white border border-[#E3E3E3] rounded px-2.5 h-8 select-all focus:outline-none"
+                className="min-w-0 flex-1 text-xs font-mono text-[#323232] bg-white border border-[#E3E3E3] rounded px-2.5 h-9 select-all focus:outline-none"
               />
-              <button
-                type="button"
-                onClick={handleCopiarLink}
-                title="Copiar link"
-                className="h-8 px-2.5 rounded bg-white border border-[#E3E3E3] hover:bg-[#F3F3F3] text-xs font-bold text-[#323232] inline-flex items-center gap-1 transition-colors"
-              >
-                {copiado ? <Check size={13} className="text-[#02A562]" /> : <Copy size={13} />}
-                <span>{copiado ? 'Copiado!' : 'Copiar'}</span>
-              </button>
-              <a
-                href={urlPublica}
-                target="_blank"
-                rel="noreferrer"
-                title="Abrir formulário em nova aba"
-                className="h-8 px-2 rounded bg-white border border-[#E3E3E3] hover:bg-[#F3F3F3] text-[#5E5E5E] inline-grid place-items-center transition-colors"
-              >
-                <ExternalLink size={14} />
-              </a>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopiarLink}
+                  title="Copiar link"
+                  className="flex-1 sm:flex-initial justify-center h-9 px-3 rounded bg-white border border-[#E3E3E3] hover:bg-[#F3F3F3] text-xs font-bold text-[#323232] inline-flex items-center gap-1 transition-colors cursor-pointer"
+                >
+                  {copiado ? <Check size={13} className="text-[#02A562]" /> : <Copy size={13} />}
+                  <span>{copiado ? 'Copiado!' : 'Copiar'}</span>
+                </button>
+                <a
+                  href={urlPublica}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Abrir formulário em nova aba"
+                  aria-label="Abrir formulário em nova aba"
+                  className="h-9 px-2.5 rounded bg-white border border-[#E3E3E3] hover:bg-[#F3F3F3] text-[#5E5E5E] inline-grid place-items-center transition-colors shrink-0"
+                >
+                  <ExternalLink size={14} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -381,7 +384,7 @@ export default function DetalhePesquisaPage() {
 
       {/* Tabela de Manifestações Recentes desta Pesquisa */}
       <div className="bg-white rounded-xl border border-[#E3E3E3] p-5 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] overflow-hidden">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between flex-wrap gap-2 mb-4">
           <div className="flex items-center gap-2">
             <MessageSquare size={18} className="text-[#075618]" />
             <h2 className="text-[1.1rem] font-bold leading-tight text-[#171717] m-0">

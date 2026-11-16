@@ -16,7 +16,7 @@ export function PesquisaDesempenhoGrid({
 
   return (
     <div className="bg-white rounded-xl border border-[#E3E3E3] p-5 shadow-[-10px_15px_30px_rgba(0,0,0,0.04)] h-full">
-      <div className="flex items-center justify-between mb-3.5">
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-3.5">
         <h2 className="text-[1.1rem] font-bold leading-tight text-[#171717] m-0">
           {abaAtiva === 'pesquisas'
             ? 'Desempenho por pesquisa'
@@ -65,7 +65,7 @@ export function PesquisaDesempenhoGrid({
               return (
                 <div
                   key={p.pesquisaId}
-                  className="grid grid-cols-[140px_1fr_44px] sm:grid-cols-[180px_1fr_44px] items-center gap-3 my-2"
+                  className="grid grid-cols-[minmax(95px,115px)_1fr_38px] sm:grid-cols-[180px_1fr_44px] items-center gap-2.5 sm:gap-3 my-2"
                 >
                   {/* Nome da pesquisa (rótulo informativo) */}
                   <span
@@ -111,7 +111,7 @@ export function PesquisaDesempenhoGrid({
                 return (
                   <div
                     key={u.unidadeId}
-                    className="grid grid-cols-[140px_1fr_44px] sm:grid-cols-[180px_1fr_44px] items-center gap-3 my-2"
+                    className="grid grid-cols-[minmax(95px,115px)_1fr_38px] sm:grid-cols-[180px_1fr_44px] items-center gap-2.5 sm:gap-3 my-2"
                   >
                     <span
                       title={u.unidadeNome}

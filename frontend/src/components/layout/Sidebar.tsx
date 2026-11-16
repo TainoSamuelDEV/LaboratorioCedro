@@ -5,14 +5,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../../contexts/AuthContext';
 import { PerfilUsuario } from '../../types/api';
-import {
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-} from '../ui/Drawer';
 
 interface NavItemConfig {
   id: string;
@@ -188,7 +180,7 @@ export function Sidebar() {
   const { usuario, logout } = useAuth();
 
   const [recolhido, setRecolhido] = useState(false);
-  const [drawerMobileAberto, setDrawerMobileAberto] = useState(false);
+  const [menuMobileAberto, setMenuMobileAberto] = useState(false);
 
   // Persiste estado de recolhimento do menu lateral no localStorage
   useEffect(() => {
@@ -213,10 +205,19 @@ export function Sidebar() {
     });
   };
 
-  // Fecha o Drawer mobile automaticamente ao navegar
+  // Fecha o menu mobile automaticamente ao navegar ou pressionar Escape
   useEffect(() => {
-    setDrawerMobileAberto(false);
+    setMenuMobileAberto(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!menuMobileAberto) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuMobileAberto(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [menuMobileAberto]);
 
   const itensVisiveis = useMemo(() => {
     if (!usuario) return [];
@@ -239,7 +240,7 @@ export function Sidebar() {
   };
 
   const handleLogout = () => {
-    setDrawerMobileAberto(false);
+    setMenuMobileAberto(false);
     logout();
     router.replace('/login');
   };
@@ -250,71 +251,120 @@ export function Sidebar() {
   return (
     <>
       {/* ====================================================================
-          BARRA SUPERIOR MOBILE (< 1024px) + DRAWER DE NAVEGAÇÃO
+          TOPBAR ÚNICA NO MOBILE (< 1024px) — FLUTUANTE E INTERRUPTÍVEL
          ==================================================================== */}
-      <header className="lg:hidden sticky top-0 z-30 bg-[#F3F3F3]/90 backdrop-blur-md px-4 pt-3 pb-1">
-        <div className="flex items-center justify-between h-14 px-4 bg-white border border-[#E3E3E3] rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.06)]">
-          <Link href="/dashboard" aria-label="Cedro, ir para o Dashboard" className="block">
-            <img
-              src="/logo-cedro-completa.svg"
-              alt="Laboratório Cedro"
-              className="h-[42px] w-auto block"
-            />
-          </Link>
+      <div
+        className={`lg:hidden fixed inset-0 z-30 bg-black/30 backdrop-blur-[1px] transition-[opacity,visibility] ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          menuMobileAberto
+            ? 'opacity-100 visible pointer-events-auto duration-200'
+            : 'opacity-0 invisible pointer-events-none duration-150'
+        }`}
+        onClick={() => setMenuMobileAberto(false)}
+        aria-hidden="true"
+      />
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setDrawerMobileAberto(true)}
-              aria-label="Abrir menu de navegação"
-              className="inline-flex items-center justify-center w-10 h-10 rounded-xl text-[#171717] hover:bg-[#F3F3F3] transition-colors cursor-pointer"
+      <header className="lg:hidden sticky top-0 z-40 px-4 pt-3 pointer-events-none">
+        <div className="relative pointer-events-auto">
+          <div className="flex items-center justify-between gap-3 h-14 px-4 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] ring-1 ring-black/5">
+            <Link
+              href="/dashboard"
+              aria-label="Cedro, ir para o Dashboard"
+              className="block min-w-0 transition-transform duration-150 ease-out active:scale-[0.97]"
+              onClick={() => setMenuMobileAberto(false)}
             >
-              <svg
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <line x1="4" y1="7" x2="20" y2="7" />
-                <line x1="4" y1="12" x2="20" y2="12" />
-                <line x1="4" y1="17" x2="20" y2="17" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <Drawer
-        open={drawerMobileAberto}
-        onOpenChange={setDrawerMobileAberto}
-        direction="left"
-      >
-        <DrawerContent className="p-0 flex flex-col justify-between">
-          <DrawerHeader className="px-5 pt-5 pb-4 border-b border-[#E3E3E3]">
-            <DrawerTitle className="flex items-center">
               <img
-                src="/logo-cedro-completa.svg"
+                src="/logo-cedro-completa.svg?v=2"
                 alt="Laboratório Cedro"
-                className="h-[42px] w-auto block"
+                className="h-9 sm:h-[42px] w-auto block"
               />
-            </DrawerTitle>
-          </DrawerHeader>
+            </Link>
 
-          <DrawerBody className="p-3 flex-1 flex flex-col gap-1 overflow-y-auto">
-            <nav aria-label="Menu mobile" className="flex flex-col gap-1 flex-1">
+            <div className="flex items-center gap-2 shrink-0">
+              <span
+                aria-hidden={menuMobileAberto}
+                className={`grid place-items-center w-8 h-8 rounded-full bg-[#075618] text-white text-[11px] font-black select-none pointer-events-none will-change-[transform,opacity] transition-[transform,opacity,filter] ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transform-none motion-reduce:blur-none ${
+                  menuMobileAberto
+                    ? 'translate-x-[44px] scale-50 opacity-0 blur-[2px] duration-180 delay-0'
+                    : 'translate-x-0 scale-100 opacity-100 blur-0 duration-200 delay-75'
+                }`}
+                title={usuario ? `${usuario.nome} (${perfilFormatado})` : 'Usuário'}
+              >
+                {iniciais}
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setMenuMobileAberto((aberto) => !aberto)}
+                aria-label={menuMobileAberto ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
+                aria-expanded={menuMobileAberto}
+                aria-controls="cedro-mobile-nav"
+                className="relative z-10 inline-flex items-center justify-center w-11 h-11 rounded-xl text-[#171717] hover:bg-[#F3F3F3] active:bg-[#EAEAEA] active:scale-[0.95] transition-[background-color,transform] duration-150 ease-out cursor-pointer"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className={`absolute transition-[opacity,transform,filter] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transform-none motion-reduce:blur-none ${
+                    menuMobileAberto
+                      ? 'opacity-0 scale-75 blur-[2px]'
+                      : 'opacity-100 scale-100 blur-0'
+                  }`}
+                >
+                  <line x1="4" y1="7" x2="20" y2="7" />
+                  <line x1="4" y1="12" x2="20" y2="12" />
+                  <line x1="4" y1="17" x2="20" y2="17" />
+                </svg>
+
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className={`absolute transition-[opacity,transform,filter] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transform-none motion-reduce:blur-none ${
+                    menuMobileAberto
+                      ? 'opacity-100 scale-100 blur-0'
+                      : 'opacity-0 scale-75 blur-[2px]'
+                  }`}
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="cedro-mobile-nav"
+            aria-hidden={!menuMobileAberto}
+            className={`origin-top-right will-change-[transform,opacity] absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.16)] ring-1 ring-black/5 overflow-hidden max-h-[calc(100dvh-92px)] overflow-y-auto overscroll-contain transition-[transform,opacity,visibility] ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transform-none ${
+              menuMobileAberto
+                ? 'opacity-100 translate-y-0 scale-100 visible pointer-events-auto duration-200'
+                : 'opacity-0 -translate-y-1.5 scale-[0.96] invisible pointer-events-none duration-150'
+            }`}
+          >
+            <nav aria-label="Menu mobile" className="p-3 flex flex-col gap-1">
               {itensOperacionais.map((item) => {
                 const ativo = verificarAtivo(item.href);
                 return (
                   <Link
                     key={item.id}
                     href={item.href}
+                    tabIndex={menuMobileAberto ? 0 : -1}
                     aria-current={ativo ? 'page' : undefined}
-                    className={`cedro-nav-item ${ativo ? 'is-active' : ''}`}
+                    className={`cedro-nav-item active:scale-[0.98] transition-transform duration-150 ease-out ${
+                      ativo ? 'is-active' : ''
+                    }`}
                   >
                     {item.icon}
                     <span className="cedro-nav-label">{item.label}</span>
@@ -324,15 +374,18 @@ export function Sidebar() {
 
               {itensAdministrativos.length > 0 && (
                 <>
-                  <div className="my-2 border-t border-[#E3E3E3]" />
+                  <div className="my-1.5 border-t border-[#E3E3E3]" />
                   {itensAdministrativos.map((item) => {
                     const ativo = verificarAtivo(item.href);
                     return (
                       <Link
                         key={item.id}
                         href={item.href}
+                        tabIndex={menuMobileAberto ? 0 : -1}
                         aria-current={ativo ? 'page' : undefined}
-                        className={`cedro-nav-item ${ativo ? 'is-active' : ''}`}
+                        className={`cedro-nav-item active:scale-[0.98] transition-transform duration-150 ease-out ${
+                          ativo ? 'is-active' : ''
+                        }`}
                       >
                         {item.icon}
                         <span className="cedro-nav-label">{item.label}</span>
@@ -342,32 +395,38 @@ export function Sidebar() {
                 </>
               )}
             </nav>
-          </DrawerBody>
 
-          <DrawerFooter className="p-3 border-t border-[#E3E3E3] bg-white flex-col sm:flex-col items-stretch gap-2">
-            <div className="flex items-center gap-2.5 p-1.5 bg-[#F3F3F3] rounded-full">
-              <span className="grid place-items-center shrink-0 w-9 h-9 rounded-full bg-[#075618] text-white text-[13px] font-black">
-                {iniciais}
-              </span>
-              <div className="min-w-0 flex-1">
-                <strong className="block text-sm text-[#171717] leading-tight truncate">
-                  {usuario?.nome}
-                </strong>
-                <small className="block text-xs text-[#5E5E5E] leading-tight truncate">
-                  {perfilFormatado}
-                </small>
+            <div className="p-3 border-t border-[#E3E3E3] bg-[#FAFAFA] flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span
+                  className={`grid place-items-center shrink-0 w-9 h-9 rounded-full bg-[#075618] text-white text-[13px] font-black select-none will-change-[transform,opacity] transition-[transform,opacity,filter] ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transform-none motion-reduce:blur-none ${
+                    menuMobileAberto
+                      ? 'translate-y-0 scale-100 opacity-100 blur-0 duration-200 delay-100'
+                      : '-translate-y-2 scale-75 opacity-0 blur-[2px] duration-120 delay-0'
+                  }`}
+                >
+                  {iniciais}
+                </span>
+                <div className="min-w-0">
+                  <strong className="block text-sm text-[#171717] leading-tight truncate">
+                    {usuario?.nome}
+                  </strong>
+                  <small className="block text-xs text-[#5E5E5E] leading-tight truncate">
+                    {perfilFormatado}
+                  </small>
+                </div>
               </div>
+
               <button
                 type="button"
                 onClick={handleLogout}
-                title="Sair da conta"
-                aria-label="Sair da conta"
-                className="grid place-items-center shrink-0 w-9 h-9 rounded-full text-[#5E5E5E] hover:text-[#CA2E24] hover:bg-white transition-colors cursor-pointer"
+                tabIndex={menuMobileAberto ? 0 : -1}
+                className="inline-flex items-center gap-1.5 px-3.5 h-10 rounded-xl border border-[#E3E3E3] bg-white text-xs font-bold text-[#CA2E24] hover:bg-[#FEF2F2] hover:border-[#FCA5A5] active:scale-[0.97] transition-[background-color,border-color,transform] duration-150 ease-out shrink-0 cursor-pointer"
               >
                 <svg
                   viewBox="0 0 24 24"
-                  width="18"
-                  height="18"
+                  width="16"
+                  height="16"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
@@ -379,11 +438,12 @@ export function Sidebar() {
                   <polyline points="16 17 21 12 16 7" />
                   <line x1="21" y1="12" x2="9" y2="12" />
                 </svg>
+                <span>Sair</span>
               </button>
             </div>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+          </div>
+        </div>
+      </header>
 
       {/* ====================================================================
           SIDEBAR FLUTUANTE DESKTOP (>= 1024px)

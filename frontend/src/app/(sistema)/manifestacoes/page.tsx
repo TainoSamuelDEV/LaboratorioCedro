@@ -114,7 +114,7 @@ export default function ManifestacoesPage() {
       </p>
 
       {/* Barra de Filtros (.fl do modelo de referência) */}
-      <div className="flex flex-wrap gap-3 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-3 mb-4">
         {/* Busca por texto */}
         <input
           type="search"
@@ -122,7 +122,7 @@ export default function ManifestacoesPage() {
           aria-label="Buscar"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className="flex-1 min-w-[220px] text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] placeholder:text-[#999] focus:outline-none focus:border-[#02A562]"
+          className="sm:col-span-2 lg:flex-1 lg:min-w-[240px] w-full text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] placeholder:text-[#999] focus:outline-none focus:border-[#02A562]"
         />
 
         {/* Filtro de Status */}
@@ -130,7 +130,7 @@ export default function ManifestacoesPage() {
           value={filtroStatus}
           onChange={(e) => setFiltroStatus(e.target.value)}
           aria-label="Filtrar por status"
-          className="text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
+          className="w-full lg:w-auto text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
         >
           <option value="">Todos os status</option>
           <option value="NOVA">Nova</option>
@@ -147,7 +147,7 @@ export default function ManifestacoesPage() {
             value={filtroUnidade}
             onChange={(e) => setFiltroUnidade(e.target.value)}
             aria-label="Filtrar por unidade"
-            className="text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
+            className="w-full lg:w-auto text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
           >
             <option value="">Todas as unidades</option>
             {unidades.map((u) => (
@@ -163,7 +163,7 @@ export default function ManifestacoesPage() {
           value={filtroNota}
           onChange={(e) => setFiltroNota(e.target.value)}
           aria-label="Filtrar por nota"
-          className="text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
+          className="w-full lg:w-auto text-sm text-[#171717] bg-white border-[1.5px] border-[#E3E3E3] rounded-lg px-3 h-[44px] cursor-pointer focus:outline-none focus:border-[#02A562]"
         >
           <option value="">Todas as notas</option>
           <option value="5">Nota 5</option>
